@@ -1,0 +1,11 @@
+name: Rune-Core
+main: com.dank1234.plugin.Main
+version: 0.1-DEVELOPMENT
+authors:
+  - dank1234
+database: true
+softdepend: []
+depend: []
+
+commands:
+  test:

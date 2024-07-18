@@ -1,0 +1,11 @@
+com\dank1234\utils\data\NamespaceKey.class
+com\dank1234\utils\command\ICommand.class
+com\dank1234\utils\data\UUIDType.class
+com\dank1234\utils\MessageType.class
+com\dank1234\plugin\global\TestCommand.class
+com\dank1234\utils\Logger.class
+com\dank1234\utils\Utils.class
+com\dank1234\utils\command\Register.class
+com\dank1234\utils\Config.class
+com\dank1234\plugin\Main.class
+com\dank1234\utils\command\Cmd.class
