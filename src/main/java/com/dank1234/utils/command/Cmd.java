@@ -5,5 +5,8 @@ import java.lang.annotation.RetentionPolicy;
 
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Cmd {
+    Server server();
+    String[] names();
+    String[] perms();
     boolean disabled();
 }
