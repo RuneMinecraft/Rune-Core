@@ -4,6 +4,7 @@ import com.dank1234.plugin.global.TestCommand;
 import com.dank1234.utils.Config;
 import com.dank1234.utils.Logger;
 import com.dank1234.utils.command.Register;
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -29,21 +30,23 @@ public final class Main extends JavaPlugin {
     @Override
     public void onEnable() {
         this.setNaggable(false);
+
         try {
             instance = this;
 
             Logger.log("Plugin Enabled.");
             Logger.log("Found the config file: " + Objects.requireNonNull(this.config().find()).getCanonicalPath());
 
-            this.register().registerCommands(new TestCommand());
-            this.register().registerListeners();
-        }catch(Exception e){
+            this.register().autoRegisterCommands();
+            this.register().autoRegisterListeners();
+
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, org.bukkit.command.@NotNull Command command, @NotNull String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         return this.register().register(sender, command, label, args);
     }
 }

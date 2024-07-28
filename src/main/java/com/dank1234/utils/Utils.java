@@ -1,12 +1,6 @@
 package com.dank1234.utils;
 
-import com.dank1234.plugin.Main;
 import org.bukkit.ChatColor;
-import org.bukkit.Server;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-
 import java.util.Map;
 
 public interface Utils {
@@ -109,38 +103,6 @@ public interface Utils {
             b.append("##");
         }
         return b.toString();
-    }
-
-    default void sendMessage(CommandSender player, String message) {
-        player.sendMessage(Colour(message));
-    }
-    default void permissionError(CommandSender player) {
-        sendMessage(player, "&cNo Permission!");
-    }
-    default void invalidArgumentsError(CommandSender player) {
-        sendMessage(player, "&cInvalid Arguments!");
-    }
-    default void nullPlayerError(CommandSender player) {
-        sendMessage(player, "&cThat player is not online or does not exist!");
-    }
-    default void nullPlayerError(CommandSender player, String name) {
-        sendMessage(player, "&cThe player &e&o" + name + " &cis not online or does not exist!");
-    }
-    default void customError(CommandSender player, String error) {
-        sendMessage(player, "&c" + error);
-    }
-    default void ExceptionThrownMessage(CommandSender player) {
-        sendMessage(player, "&cAn unexpected error has been thrown.\nPlease make a ticket in the discord and wait for an &4Admin+&c.");
-    }
-
-    default String getSimpleName(ItemStack stack) {
-        String name = stack.getType().name();
-        StringBuilder formattedName = new StringBuilder();
-        String[] words = name.split("_");
-        for (String word : words) {
-            formattedName.append(word.substring(0, 1).toUpperCase()).append(word.substring(1).toLowerCase()).append(" ");
-        }
-        return formattedName.toString();
     }
     default Object getKey(Object value, Map<?, ?> map) {
         for (Object key : map.keySet()) {

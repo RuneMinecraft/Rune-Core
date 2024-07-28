@@ -6,6 +6,3 @@ authors:
 database: true
 softdepend: []
 depend: []
-
-commands:
-  test:
