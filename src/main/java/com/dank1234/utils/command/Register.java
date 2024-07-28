@@ -10,6 +10,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.defaults.BukkitCommand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
+import org.jetbrains.annotations.NotNull;
 import org.reflections.Reflections;
 import org.reflections.scanners.TypeAnnotationsScanner;
 
@@ -37,14 +38,14 @@ public final class Register {
         Set<Class<?>> annotatedClasses = reflections.getTypesAnnotatedWith(Cmd.class, true);
 
         if (annotatedClasses.isEmpty()) {
-            Logger.log("No classes found with @Cmd annotation.");
+            Logger.log("No annotated commands found.");
         }
 
         List<String> classNames = new ArrayList<>();
         for (Class<?> clazz : annotatedClasses) {
             classNames.add(clazz.getSimpleName());
         }
-        Logger.log("Found annotated command classes: " + String.join(", ", classNames));
+        Logger.log("Found annotated commands: " + String.join(", ", classNames));
 
         for (Class<?> clazz : annotatedClasses) {
             try {
@@ -76,11 +77,11 @@ public final class Register {
         Set<Class<?>> annotatedClasses = reflections.getTypesAnnotatedWith(Event.class, true);
 
         if (annotatedClasses.isEmpty()) {
-            Logger.log("No classes found with @Event annotation.");
+            Logger.log("No annotated events found.");
         }
 
         for (Class<?> clazz : annotatedClasses) {
-            Logger.log("Found class with @Event annotation: " + clazz.getName());
+            Logger.log("Found annotated events: " + clazz.getSimpleName());
             try {
                 if (Listener.class.isAssignableFrom(clazz)) {
                     Listener listener = (Listener) clazz.getDeclaredConstructor().newInstance();
@@ -100,7 +101,7 @@ public final class Register {
 
             BukkitCommand command = new BukkitCommand(name) {
                 @Override
-                public boolean execute(CommandSender sender, String commandLabel, String[] args) {
+                public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, String[] args) {
                     return Register.get().register(sender, this, commandLabel, args);
                 }
             };
@@ -123,6 +124,7 @@ public final class Register {
 
                 handler.player(sender instanceof Player ? (Player) sender : null);
                 handler.sender(sender);
+                handler.args(args);
 
                 if (disabled(handler)) {
                     Message.create(MessageType.ERROR, handler.sender(), "This command is disabled!").send();

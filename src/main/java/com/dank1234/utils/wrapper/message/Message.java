@@ -1,9 +1,11 @@
 package com.dank1234.utils.wrapper.message;
 
+import com.dank1234.plugin.Main;
 import com.dank1234.utils.Logger;
 import com.dank1234.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -63,9 +65,17 @@ public class Message implements Utils {
         for (CommandSender player : this.players()) {
             Arrays.stream(this.messages()).toList().forEach(message -> {
                 player.sendMessage(Colour(this.type() + message));
+                if ((this.players().size() == Bukkit.getOnlinePlayers().size()) || this.players().size() != 1) {
+                    Bukkit.getConsoleSender().sendMessage(Colour(this.type() + message));
+                }
             });
         }
-        Logger.log(this.toString());
+    }
+    public void send(boolean log) {
+        this.send();
+        if (log) {
+            Logger.log(this.toString());
+        }
     }
 
     @Override

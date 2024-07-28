@@ -1,11 +1,10 @@
-package com.dank1234.plugin.global;
+package com.dank1234.plugin.global.commands;
 
 import com.dank1234.plugin.Main;
 import com.dank1234.utils.command.Cmd;
 import com.dank1234.utils.command.ICommand;
 import com.dank1234.utils.command.Server;
 import com.dank1234.utils.wrapper.message.Message;
-import com.dank1234.utils.wrapper.player.RSender;
 import org.bukkit.command.CommandSender;
 
 import java.util.Objects;
@@ -20,6 +19,6 @@ public class TestCommand extends ICommand {
 
     @Override
     public void execute(CommandSender sender, String[] args) {
-        Message.create(super.sender(), Objects.requireNonNull(Main.get().config().getValue("name"))).send();
+        Message.create(super.sender(), Objects.requireNonNull(Main.get().config().getValue("name"))).send(true);
     }
 }

@@ -1,10 +1,9 @@
-package com.dank1234.utils;
+package com.dank1234.utils.data;
 
+import com.dank1234.utils.Logger;
 import org.yaml.snakeyaml.Yaml;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
+import java.io.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -48,8 +47,24 @@ public final class Config {
                 return file;
             }
         }
-
         return null;
+    }
+
+    public File find(String ... locations) {
+        try {
+            for (String location : locations) {
+                File file = new File(location);
+                if (file.exists()) {
+                    boolean created = file.createNewFile();
+                    Logger.log("Could not find file at " + file.getCanonicalPath() + ". File created: " + created);
+                }
+                return file;
+            }
+
+            return null;
+        }catch(IOException ignored) {
+            return null;
+        }
     }
 
     public String getValue(String key) {
@@ -57,5 +72,32 @@ public final class Config {
             return configMap.get(key).toString();
         }
         return null;
+    }
+    public Object getObjectValue(String key) {
+        if (configMap != null && configMap.containsKey(key)) {
+            return configMap.get(key);
+        }
+        return null;
+    }
+
+
+
+    public void setValue(String key, String value) {
+        if (configMap != null) {
+            configMap.put(key, value);
+            saveConfig();
+        }
+    }
+
+    private void saveConfig() {
+        File configFile = find();
+        if (configFile != null) {
+            try (Writer writer = new FileWriter(configFile)) {
+                Yaml yaml = new Yaml();
+                yaml.dump(configMap, writer);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

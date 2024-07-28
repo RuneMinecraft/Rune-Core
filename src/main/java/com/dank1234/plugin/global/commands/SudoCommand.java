@@ -1,4 +1,4 @@
-package com.dank1234.plugin.global;
+package com.dank1234.plugin.global.commands;
 
 import com.dank1234.utils.command.Cmd;
 import com.dank1234.utils.command.ICommand;
@@ -24,7 +24,7 @@ public class SudoCommand extends ICommand {
     @Override
     public void execute(CommandSender sender, String[] args) {
         if (args.length <= 1) {
-            Message.create(MessageType.ERROR, sender(), Messages.ARGUMENTS+" &cUsage: /sudo <target> <command | message>").send();
+            Message.create(MessageType.ERROR, sender(), Messages.ARGUMENTS+" &cUsage: /sudo <target> <command | message>").send(false);
             return;
         }
         Player target = Bukkit.getPlayer(args[0]);

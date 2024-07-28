@@ -1,9 +1,10 @@
 package com.dank1234.plugin;
 
-import com.dank1234.plugin.global.TestCommand;
-import com.dank1234.utils.Config;
+import com.dank1234.utils.data.Config;
 import com.dank1234.utils.Logger;
 import com.dank1234.utils.command.Register;
+import com.dank1234.utils.data.Version;
+import com.dank1234.utils.data.VersionType;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -12,6 +13,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 
 public final class Main extends JavaPlugin {
+    private final Version version = Version.of(VersionType.DEVELOPMENT, "0.1");
+
     private final Register register = Register.get();
     private final Config config = Config.get();
     private static Main instance;
@@ -20,8 +23,11 @@ public final class Main extends JavaPlugin {
         return instance;
     }
 
+    public Version version(){
+        return this.version;
+    }
     public Register register() {
-        return register;
+        return this.register;
     }
     public Config config() {
         return this.config;

@@ -1,7 +1,12 @@
 package com.dank1234.utils;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import java.util.Map;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.*;
 
 public interface Utils {
     default String Colour(String s) {
@@ -109,5 +114,15 @@ public interface Utils {
             if (map.get(key).equals(value)) return key;
         }
         return null;
+    }
+    default Set<CommandSender> getOnlineOperators() {
+        Set<CommandSender> players = new HashSet<>();
+        for (CommandSender player : Bukkit.getOnlinePlayers()) {
+            if (player == null || !player.isOp()) {
+                continue;
+            }
+            players.add(player);
+        }
+        return players;
     }
 }
