@@ -59,6 +59,7 @@ public final class Register {
 
                         cmd.names(cmdAnnotation.names());
                         cmd.permissions(cmdAnnotation.perms());
+                        // testing git bash
 
                         for (String name : cmdAnnotation.names()) {
                             commandHandlers.put(name, cmd);
