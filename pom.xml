@@ -32,6 +32,7 @@
                             <outputFile>
                                 F:\plugins\Rune-Core.jar
                             </outputFile>
+                            <createSourcesJar/>
                         </configuration>
                     </execution>
                 </executions>
