@@ -29,9 +29,13 @@ public final class Config {
             try (InputStream input = new FileInputStream(configFile)) {
                 Yaml yaml = new Yaml();
                 configMap = yaml.load(input);
+                Logger.log("Configuration loaded successfully.");
             } catch (Exception e) {
                 e.printStackTrace();
+                Logger.log("Failed to load configuration: " + e.getMessage());
             }
+        } else {
+            Logger.log("Configuration file not found.");
         }
     }
 
@@ -50,37 +54,19 @@ public final class Config {
         return null;
     }
 
-    public File find(String ... locations) {
-        try {
-            for (String location : locations) {
-                File file = new File(location);
-                if (file.exists()) {
-                    boolean created = file.createNewFile();
-                    Logger.log("Could not find file at " + file.getCanonicalPath() + ". File created: " + created);
-                }
-                return file;
-            }
-
-            return null;
-        }catch(IOException ignored) {
-            return null;
-        }
-    }
-
     public String getValue(String key) {
         if (configMap != null && configMap.containsKey(key)) {
             return configMap.get(key).toString();
         }
         return null;
     }
+
     public Object getObjectValue(String key) {
         if (configMap != null && configMap.containsKey(key)) {
             return configMap.get(key);
         }
         return null;
     }
-
-
 
     public void setValue(String key, String value) {
         if (configMap != null) {

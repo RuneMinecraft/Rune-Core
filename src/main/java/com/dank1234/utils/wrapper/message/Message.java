@@ -63,12 +63,7 @@ public final class Message implements Utils {
         }
 
         for (CommandSender player : this.players()) {
-            Arrays.stream(this.messages()).toList().forEach(message -> {
-                player.sendMessage(Colour(this.type() + message));
-                if ((this.players().size() == Bukkit.getOnlinePlayers().size()) || this.players().size() != 1) {
-                    Bukkit.getConsoleSender().sendMessage(Colour(this.type() + message));
-                }
-            });
+            Arrays.stream(this.messages()).toList().forEach(message -> player.sendMessage(Colour(this.type() + message)));
         }
     }
     public void send(boolean log) {

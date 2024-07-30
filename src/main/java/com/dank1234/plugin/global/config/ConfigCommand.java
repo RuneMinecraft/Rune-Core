@@ -56,7 +56,7 @@ public class ConfigCommand extends ICommand {
 
         if (args[0].equalsIgnoreCase("set")) {
             if (args.length != 3) {
-                Message.create(sender(), Messages.ARGUMENTS+" &c/config set <key> <value>").send(false);
+                Message.create(sender(), Messages.ARGUMENTS+" &cUsage: /config set <key> <value>").send(false);
                 return;
             }
 

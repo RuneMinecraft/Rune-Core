@@ -29,13 +29,13 @@ public class ServerCommand extends ICommand {
         }
 
         if (super.checkArgument(0, "set")) {
-            if (args.length == 3) {
-                Message.create(sender(), Messages.ARGUMENTS+"&cUsage: /server set <type | release | description> <value>").send(false);
+            if (args.length != 3) {
+                Message.create(sender(), Messages.ARGUMENTS+" &cUsage: /server set <type | release | description> <value>").send(false);
                 return;
             }
 
             if (!(super.checkArgument(1, "type") || super.checkArgument(1, "release") || super.checkArgument(1, "description"))) {
-                Message.create(sender(), Messages.ARGUMENTS+"&cPlease either pick 'type', 'release' or 'description'!").send(false);
+                Message.create(sender(), Messages.ARGUMENTS+ "&cPlease either pick 'type', 'release' or 'description'!").send(false);
                 return;
             }
             String info = args[1];

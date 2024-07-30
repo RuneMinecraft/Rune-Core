@@ -15,7 +15,7 @@ import java.util.Objects;
 
 public final class Main extends JavaPlugin {
     private final Version version = Version.of(VersionType.DEVELOPMENT, "0.1");
-    private final Server server = Server.of();
+    private Server server;
 
     private final Register register = Register.get();
     private final Config config = Config.get();
@@ -44,6 +44,7 @@ public final class Main extends JavaPlugin {
 
         try {
             instance = this;
+            server = Server.of();
 
             Logger.log("Plugin Enabled.");
             Logger.log("Found the config file: " + Objects.requireNonNull(this.config().find()).getCanonicalPath());
