@@ -17,6 +17,7 @@ public final class Server {
     private Server(final ServerType type, final int release, final String description) {
         this.TYPE = type;
         this.RELEASE = release;
+        this.DESCRIPTION = description;
 
         this.SERVER_NAME = this.TYPE.name()+(release < 10 ? "0" + this.RELEASE : this.RELEASE);
     }
