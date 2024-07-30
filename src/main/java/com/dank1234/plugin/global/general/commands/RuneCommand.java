@@ -14,6 +14,7 @@ import org.bukkit.event.HandlerList;
 import java.util.*;
 import java.lang.reflect.Field;
 
+@SuppressWarnings("unchecked")
 @Cmd(
         server = ServerType.GLOBAL,
         names = "rune",

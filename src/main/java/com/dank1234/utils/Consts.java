@@ -10,5 +10,5 @@ import java.util.Objects;
 
 public final class Consts {
     public static final @NotNull Group MEMBER_GROUP = Objects.requireNonNull(LuckPermsProvider.get().getGroupManager().getGroup("default"));
-    public static final @NotNull Server DEFAULT_SERVER = Server.of(ServerType.GLOBAL, 0);
+    public static final @NotNull Server DEFAULT_SERVER = Server.of(ServerType.GLOBAL, 0, "The default server. An error has occurred in the code.");
 }
