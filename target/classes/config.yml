@@ -1,5 +1,4 @@
-name: Hub_01
-
-scoreboard:
-tab:
-
+server:
+  type: 'HUB'
+  release: '1'
+  description: 'The hub servers used to lobby players into all of the different sub-servers.'
