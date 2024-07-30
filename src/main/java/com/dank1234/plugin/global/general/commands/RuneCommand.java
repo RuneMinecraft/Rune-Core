@@ -1,23 +1,21 @@
-package com.dank1234.plugin.global.commands;
+package com.dank1234.plugin.global.general.commands;
 
 import com.dank1234.plugin.Main;
 import com.dank1234.utils.command.Cmd;
 import com.dank1234.utils.command.ICommand;
-import com.dank1234.utils.command.Server;
+import com.dank1234.utils.server.ServerType;
 import com.dank1234.utils.data.Config;
 import com.dank1234.utils.wrapper.message.Message;
-import com.dank1234.utils.wrapper.message.Messages;
 import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.event.HandlerList;
 
+import java.util.*;
 import java.lang.reflect.Field;
-import java.util.Map;
 
 @Cmd(
-        server = Server.GLOBAL,
+        server = ServerType.GLOBAL,
         names = "rune",
         perms = "admin",
         disabled = false
@@ -30,9 +28,9 @@ public class RuneCommand extends ICommand {
             Config config = Config.get();
             config.find("plugins/Rune-Core/credit.yml");
 
-            String[] developerList = (String[]) config.getObjectValue("developers");
+            List<String> developerList = (List<String>) config.getObjectValue("developers");
             if (developerList == null) {
-                developerList = new String[]{"dank1234"};
+                developerList = new ArrayList<>(Collections.singleton("dank1234"));
             }
 
             Message.create(super.sender(),

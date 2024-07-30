@@ -1,7 +1,7 @@
 package com.dank1234.utils.wrapper.player;
 
+import com.dank1234.utils.data.playerdata.PlayerDataManager;
 import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
@@ -9,11 +9,14 @@ import java.util.UUID;
 
 public final class RPlayer extends RSender {
     private final Player player;
+    private final PlayerDataManager pdm;
 
-    private RPlayer(final Player sender) {
-        super(sender.getPlayer());
-        this.player = sender;
+    private RPlayer(final Player player) {
+        super(player.getPlayer());
+        this.player = player;
+        this.pdm = PlayerDataManager.get(player);
     }
+
     public static RPlayer of(final Player sender) {
         return new RPlayer(sender);
     }
@@ -38,7 +41,10 @@ public final class RPlayer extends RSender {
         Arrays.stream(messages).toList().forEach(player::chat);
     }
 
-    public Player get() {
+    public Player player() {
         return this.player;
+    }
+    public PlayerDataManager playerDataManager() {
+        return this.pdm;
     }
 }

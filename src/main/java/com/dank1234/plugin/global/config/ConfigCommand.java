@@ -3,18 +3,16 @@ package com.dank1234.plugin.global.config;
 import com.dank1234.plugin.Main;
 import com.dank1234.utils.command.Cmd;
 import com.dank1234.utils.command.ICommand;
-import com.dank1234.utils.command.Server;
+import com.dank1234.utils.server.ServerType;
 import com.dank1234.utils.wrapper.message.Message;
 import com.dank1234.utils.wrapper.message.Messages;
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import java.util.Set;
 
 @Cmd(
-        server = Server.GLOBAL,
+        server = ServerType.GLOBAL,
         names = "config",
         perms = "admin",
         disabled = false

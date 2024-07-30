@@ -1,5 +1,6 @@
-package com.dank1234.plugin.global.events;
+package com.dank1234.plugin.global.general.events;
 
+import com.dank1234.utils.RankUtils;
 import com.dank1234.utils.command.Event;
 import com.dank1234.utils.wrapper.message.Message;
 import org.bukkit.event.EventHandler;
@@ -14,6 +15,6 @@ public class ChatFormatter implements Listener {
         String msg = e.getMessage();
         e.setCancelled(true);
 
-        Message.create(e.getPlayer().getName()+": "+msg).send(false);
+        Message.create("&8[&r"+RankUtils.getPrefix(e.getPlayer())+"&8]&r "+e.getPlayer().getName()+": "+msg).send(false);
     }
 }

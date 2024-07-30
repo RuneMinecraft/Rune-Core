@@ -2,6 +2,7 @@ package com.dank1234.utils.command;
 
 import com.dank1234.plugin.Main;
 import com.dank1234.utils.Logger;
+import com.dank1234.utils.server.ServerType;
 import com.dank1234.utils.wrapper.message.Message;
 import com.dank1234.utils.wrapper.message.MessageType;
 import org.bukkit.Bukkit;
@@ -32,7 +33,7 @@ public final class Register {
     private final Map<String, ICommand> commandHandlers = new HashMap<>();
 
     public void autoRegisterCommands() {
-        Server currentServer = Server.valueOf(Main.get().config().getValue("type"));
+        ServerType currentServer = ServerType.valueOf(Main.get().config().getValue("type"));
 
         Reflections reflections = new Reflections("com.dank1234.plugin", new TypeAnnotationsScanner());
         Set<Class<?>> annotatedClasses = reflections.getTypesAnnotatedWith(Cmd.class, true);
@@ -54,7 +55,7 @@ public final class Register {
 
                     Cmd cmdAnnotation = clazz.getAnnotation(Cmd.class);
                     if (cmdAnnotation != null) {
-                        if ((cmdAnnotation.server() != Server.GLOBAL) && currentServer != cmdAnnotation.server()) {
+                        if ((cmdAnnotation.server() != ServerType.GLOBAL) && currentServer != cmdAnnotation.server()) {
                             continue;
                         }
 
