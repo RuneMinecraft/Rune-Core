@@ -4,4 +4,9 @@ public enum ServerType {
     GLOBAL,
     HUB,
     SURVIVAL;
+
+    @Override
+    public String toString() {
+        return this.name();
+    }
 }

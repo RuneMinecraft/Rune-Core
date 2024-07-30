@@ -6,7 +6,7 @@ import net.luckperms.api.model.group.Group;
 import net.luckperms.api.model.user.User;
 import org.bukkit.entity.Player;
 
-public class RankUtils {
+public final class RankUtils {
     private static final LuckPerms luckperms = LuckPermsProvider.get();
 
     public static Group getGroup(Player player) {

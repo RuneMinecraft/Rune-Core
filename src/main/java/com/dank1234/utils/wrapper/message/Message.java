@@ -12,7 +12,7 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class Message implements Utils {
+public final class Message implements Utils {
     private final MessageType type;
     private final Set<CommandSender> players;
     private final String[] messages;

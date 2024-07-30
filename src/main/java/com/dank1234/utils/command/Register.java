@@ -33,7 +33,7 @@ public final class Register {
     private final Map<String, ICommand> commandHandlers = new HashMap<>();
 
     public void autoRegisterCommands() {
-        ServerType currentServer = ServerType.valueOf(Main.get().config().getValue("type"));
+        ServerType currentServer = ServerType.valueOf(Main.get().config().getValue("server.type"));
 
         Reflections reflections = new Reflections("com.dank1234.plugin", new TypeAnnotationsScanner());
         Set<Class<?>> annotatedClasses = reflections.getTypesAnnotatedWith(Cmd.class, true);

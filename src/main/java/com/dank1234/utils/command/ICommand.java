@@ -4,18 +4,20 @@ import com.dank1234.utils.wrapper.message.Message;
 import com.dank1234.utils.wrapper.message.MessageType;
 import com.dank1234.utils.Utils;
 import com.dank1234.utils.wrapper.message.Messages;
-import com.dank1234.utils.wrapper.player.RPlayer;
-import com.dank1234.utils.wrapper.player.RSender;
+import com.dank1234.utils.wrapper.player.RunePlayer;
+import com.dank1234.utils.wrapper.player.RuneSender;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.Arrays;
 
 public abstract class ICommand implements Utils {
     public abstract void execute(CommandSender sender, String[] args);
 
     private CommandSender sender;
-    private RSender rSender;
+    private RuneSender rSender;
     private Player player;
-    private RPlayer rPlayer;
+    private RunePlayer rPlayer;
 
     private String[] names;
     private String[] permissions;
@@ -23,23 +25,23 @@ public abstract class ICommand implements Utils {
 
     public void sender(CommandSender sender) {
         this.sender = sender;
-        this.rSender = RSender.of(sender);
+        this.rSender = RuneSender.of(sender);
     }
     public CommandSender sender() {
         return this.sender;
     }
-    public RSender rSender() {
+    public RuneSender rSender() {
         return this.rSender;
     }
 
     public void player(Player player) {
         this.player = player;
-        this.rPlayer = RPlayer.of(player);
+        this.rPlayer = RunePlayer.of(player);
     }
     public Player player() {
         return this.player;
     }
-    public RPlayer rPlayer(){
+    public RunePlayer rPlayer(){
         return this.rPlayer;
     }
 
@@ -99,5 +101,10 @@ public abstract class ICommand implements Utils {
     }
     public boolean isPlayer() {
         return player != null;
+    }
+
+    @Override
+    public String toString() {
+        return "Command[NAMES="+Arrays.toString(this.names())+"]";
     }
 }

@@ -42,4 +42,9 @@ public final class Server {
     public String SERVER_NAME() {
         return this.SERVER_NAME;
     }
+
+    @Override
+    public String toString() {
+        return "Server[TYPE="+this.TYPE()+", RELEASE="+this.RELEASE()+"]";
+    }
 }

@@ -5,7 +5,7 @@ import com.dank1234.utils.command.ICommand;
 import com.dank1234.utils.data.playerdata.PlayerDataManager;
 import com.dank1234.utils.wrapper.message.Message;
 import com.dank1234.utils.wrapper.message.Messages;
-import com.dank1234.utils.wrapper.player.RPlayer;
+import com.dank1234.utils.wrapper.player.RunePlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -24,7 +24,7 @@ public class DataCommand extends ICommand {
             return;
         }
 
-        final PlayerDataManager pdm = RPlayer.of(target).playerDataManager();
+        final PlayerDataManager pdm = RunePlayer.of(target).playerDataManager();
         pdm.loadData();
 
         if (super.checkArgument(1, "set")) {

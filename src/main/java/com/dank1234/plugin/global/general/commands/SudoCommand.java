@@ -7,7 +7,7 @@ import com.dank1234.utils.wrapper.message.Message;
 import com.dank1234.utils.wrapper.message.MessageType;
 import com.dank1234.utils.wrapper.message.Messages;
 import com.dank1234.utils.wrapper.player.ForceType;
-import com.dank1234.utils.wrapper.player.RPlayer;
+import com.dank1234.utils.wrapper.player.RunePlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -28,7 +28,7 @@ public class SudoCommand extends ICommand {
             return;
         }
         Player target = Bukkit.getPlayer(args[0]);
-        RPlayer rTarget = RPlayer.of(target);
+        RunePlayer rTarget = RunePlayer.of(target);
 
         String s = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
         if (s.startsWith("c://")) {

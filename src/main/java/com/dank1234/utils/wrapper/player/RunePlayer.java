@@ -7,24 +7,24 @@ import org.bukkit.entity.Player;
 import java.util.Arrays;
 import java.util.UUID;
 
-public final class RPlayer extends RSender {
+public final class RunePlayer extends RuneSender {
     private final Player player;
     private final PlayerDataManager pdm;
 
-    private RPlayer(final Player player) {
+    private RunePlayer(final Player player) {
         super(player.getPlayer());
         this.player = player;
         this.pdm = PlayerDataManager.get(player);
     }
 
-    public static RPlayer of(final Player sender) {
-        return new RPlayer(sender);
+    public static RunePlayer of(final Player sender) {
+        return new RunePlayer(sender);
     }
-    public static RPlayer of(final String username) {
-        return RPlayer.of(Bukkit.getPlayer(username));
+    public static RunePlayer of(final String username) {
+        return RunePlayer.of(Bukkit.getPlayer(username));
     }
-    public static RPlayer of(final UUID id) {
-        return RPlayer.of(Bukkit.getPlayer(id));
+    public static RunePlayer of(final UUID id) {
+        return RunePlayer.of(Bukkit.getPlayer(id));
     }
 
     public void force(ForceType type, String ... strings) {

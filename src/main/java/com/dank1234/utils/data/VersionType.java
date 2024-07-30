@@ -4,4 +4,9 @@ public enum VersionType {
     RELEASE,
     DEVELOPMENT,
     SNAPSHOT;
+
+    @Override
+    public String toString() {
+        return this.name();
+    }
 }

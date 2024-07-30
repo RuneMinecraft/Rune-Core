@@ -67,4 +67,9 @@ public final class Spawn {
     public Location location() {
         return new Location(world, xD, yD, zD, yaw, pitch);
     }
+
+    @Override
+    public String toString() {
+        return this.location().toString();
+    }
 }

@@ -10,6 +10,7 @@ public enum MessageType {
     MessageType(String prefix) {
         this.prefix = prefix;
     }
+
     @Override
     public String toString() {
         return prefix;

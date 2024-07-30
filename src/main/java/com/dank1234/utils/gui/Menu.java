@@ -6,7 +6,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.*;
 import java.util.function.BiConsumer;
 
-public class Menu {
+public final class Menu {
     private final MenuHolder holder;
     private final Integer size;
     private final List<ItemStack> items;
