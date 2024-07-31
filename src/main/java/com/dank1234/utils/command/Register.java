@@ -6,11 +6,14 @@ import com.dank1234.utils.server.ServerType;
 import com.dank1234.utils.wrapper.message.Message;
 import com.dank1234.utils.wrapper.message.MessageType;
 import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.defaults.BukkitCommand;
 import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.NotNull;
 import org.reflections.Reflections;
 import org.reflections.scanners.TypeAnnotationsScanner;
@@ -31,6 +34,7 @@ public final class Register {
     }
 
     private final Map<String, ICommand> commandHandlers = new HashMap<>();
+    private final List<Listener> registeredListeners = new ArrayList<>();
 
     public void autoRegisterCommands() {
         ServerType currentServer = ServerType.valueOf(Main.get().config().getValue("server.type"));
@@ -84,6 +88,7 @@ public final class Register {
 
         if (annotatedClasses.isEmpty()) {
             Logger.logRaw("[Bootstrap | Events] No events found.");
+            return;
         }
 
         List<String> classNames = new ArrayList<>();
@@ -99,12 +104,49 @@ public final class Register {
                     Event eventAnnotation = clazz.getAnnotation(Event.class);
 
                     Bukkit.getPluginManager().registerEvents(listener, Main.get());
-                    Logger.logRaw("[Bootstrap | Events] Event[Server="+eventAnnotation.server().name()+"] [Name="+clazz.getSimpleName()+"] registered!");
+                    registeredListeners.add(listener); // Track the listener
+                    Logger.logRaw("[Bootstrap | Events] Event[Server=" + eventAnnotation.server().name() + "] [Name=" + clazz.getSimpleName() + "] registered!");
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void unregisterCommands() {
+        Reflections reflections = new Reflections("com.dank1234.plugin", new TypeAnnotationsScanner());
+        Logger.logRaw("[Bootstrap | Commands] Scanning 'com.dank1234.plugin' for all commands.");
+
+        Set<Class<?>> annotatedClasses = reflections.getTypesAnnotatedWith(Cmd.class, true);
+        for (Class<?> clazz : annotatedClasses) {
+            try {
+                if (ICommand.class.isAssignableFrom(clazz)) {
+                    ICommand cmd = (ICommand) clazz.getDeclaredConstructor().newInstance();
+
+                    Cmd cmdAnnotation = clazz.getAnnotation(Cmd.class);
+                    if (cmdAnnotation != null) {
+                        cmd.names(cmdAnnotation.names());
+                        cmd.permissions(cmdAnnotation.perms());
+
+                        for (String name : cmdAnnotation.names()) {
+                            commandHandlers.put(name, cmd);
+                            unregisterBukkitCommand(name);
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        commandHandlers.clear();
+        Logger.logRaw("[Bootstrap | Commands] Unregistered all commands.");
+    }
+    public void unregisterListeners() {
+        for (Listener listener : registeredListeners) {
+            HandlerList.unregisterAll(listener);
+        }
+        registeredListeners.clear();
+        Logger.logRaw("[Bootstrap | Events] Unregistered all events.");
     }
 
     private void registerBukkitCommand(String name, Cmd cmdAnnotation) {
@@ -123,13 +165,12 @@ public final class Register {
             command.setAliases(Arrays.asList(cmdAnnotation.names()));
             command.setPermission(String.join(",", cmdAnnotation.perms()));
 
-            commandMap.register("runemc", command);
+            commandMap.register(Main.get().getName(), command);
             Logger.logRaw("[Bootstrap | Commands] Command[Server="+cmdAnnotation.server().name()+"] [Name="+name+"] [Disabled="+cmdAnnotation.disabled()+"] registered!");
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
     public boolean register(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {
         ICommand handler = null;
         try {
@@ -154,6 +195,21 @@ public final class Register {
         }
         return true;
     }
+    private void unregisterBukkitCommand(String commandName) {
+        try {
+            final Field bukkitCommandMap = Bukkit.getServer().getClass().getDeclaredField("commandMap");
+            bukkitCommandMap.setAccessible(true);
+            CommandMap commandMap = (CommandMap) bukkitCommandMap.get(Bukkit.getServer());
+
+            Command command = commandMap.getCommand(commandName);
+            if (command != null) {
+                command.unregister(commandMap);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public static boolean disabled(ICommand command) {
         Cmd cmd = command.getClass().getAnnotation(Cmd.class);
         return cmd != null && cmd.disabled();

@@ -1,4 +1,4 @@
-package com.dank1234.plugin.global.titles;
+package com.dank1234.plugin.survival.titles;
 
 public final class Title {
     private final String TEXT;

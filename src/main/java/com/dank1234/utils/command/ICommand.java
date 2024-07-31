@@ -35,8 +35,10 @@ public abstract class ICommand implements Utils {
     }
 
     public void player(Player player) {
-        this.player = player;
-        this.rPlayer = RunePlayer.of(player);
+        if (player != null) {
+            this.player = player;
+            this.rPlayer = RunePlayer.of(player);
+        }
     }
     public Player player() {
         return this.player;

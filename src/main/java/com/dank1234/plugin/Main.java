@@ -6,6 +6,7 @@ import com.dank1234.utils.data.Version;
 import com.dank1234.utils.server.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.plugin.InvalidPluginException;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -32,10 +33,12 @@ public final class Main extends JavaPlugin {
 
     @Override
     public void onLoad() {
-        instance = this;
+        try {
+            instance = this;
 
-        this.setNaggable(false);
-        bootstrap.load();
+            this.setNaggable(false);
+            bootstrap.load();
+        }catch(InvalidPluginException ignore) {}
     }
 
     @Override

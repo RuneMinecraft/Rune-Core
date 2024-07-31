@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
 import java.util.*;
 
 public interface Utils {
@@ -125,7 +126,6 @@ public interface Utils {
         }
         return players;
     }
-
     default String centreText(String text) {
         int padding = (55 - text.length()) / 2;
         StringBuilder paddedText = new StringBuilder();
@@ -141,5 +141,10 @@ public interface Utils {
         }
 
         return paddedText.toString();
+    }
+
+    default File getPluginByName(String path) {
+        path = "plugins/"+path;
+        return new File(path);
     }
 }
