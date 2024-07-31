@@ -39,6 +39,6 @@ jobs:
           path: ./plugin
 
       - name: Deploy to other PC
-        run: scp -o StrictHostKeyChecking=no ./plugin/*.jar "Daniel Kenyon@192.168.0.189:F:/plugins/RuneCore.jar"
+        run: scp -o StrictHostKeyChecking=no ./plugin/*.jar 'Daniel Kenyon'@'192.168.0.189':F:/plugins/RuneCore.jar
         env:
           SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY}}
