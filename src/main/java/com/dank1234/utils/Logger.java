@@ -8,4 +8,7 @@ public final class Logger {
             System.out.println("[Rune] [LOG] " + message);
         });
     }
+    public static void logRaw(String ... messages) {
+        Arrays.stream(messages).toList().forEach(System.out::println);
+    }
 }

@@ -125,4 +125,21 @@ public interface Utils {
         }
         return players;
     }
+
+    default String centreText(String text) {
+        int padding = (55 - text.length()) / 2;
+        StringBuilder paddedText = new StringBuilder();
+
+        for (int i = 0; i < padding; i++) {
+            paddedText.append("-");
+        }
+
+        paddedText.append(text);
+
+        while (paddedText.length() < 55) {
+            paddedText.append("-");
+        }
+
+        return paddedText.toString();
+    }
 }

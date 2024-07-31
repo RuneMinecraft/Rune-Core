@@ -36,17 +36,20 @@ public final class Register {
         ServerType currentServer = ServerType.valueOf(Main.get().config().getValue("server.type"));
 
         Reflections reflections = new Reflections("com.dank1234.plugin", new TypeAnnotationsScanner());
+        Logger.logRaw("[Bootstrap | Commands] Scanning 'com.dank1234.plugin' for all commands.");
+
         Set<Class<?>> annotatedClasses = reflections.getTypesAnnotatedWith(Cmd.class, true);
 
         if (annotatedClasses.isEmpty()) {
-            Logger.log("No annotated commands found.");
+            Logger.logRaw("[Bootstrap | Commands] No commands found.");
+            return;
         }
 
         List<String> classNames = new ArrayList<>();
         for (Class<?> clazz : annotatedClasses) {
             classNames.add(clazz.getSimpleName());
         }
-        Logger.log("Found annotated commands: " + String.join(", ", classNames));
+        Logger.logRaw("[Bootstrap | Commands] Found commands: " + String.join(", ", classNames));
 
         for (Class<?> clazz : annotatedClasses) {
             try {
@@ -75,18 +78,28 @@ public final class Register {
     }
     public void autoRegisterListeners() {
         Reflections reflections = new Reflections("com.dank1234.plugin", new TypeAnnotationsScanner());
+        Logger.logRaw("[Bootstrap | Events] Scanning 'com.dank1234.plugin' for all events.");
+
         Set<Class<?>> annotatedClasses = reflections.getTypesAnnotatedWith(Event.class, true);
 
         if (annotatedClasses.isEmpty()) {
-            Logger.log("No annotated events found.");
+            Logger.logRaw("[Bootstrap | Events] No events found.");
         }
 
+        List<String> classNames = new ArrayList<>();
         for (Class<?> clazz : annotatedClasses) {
-            Logger.log("Found annotated events: " + clazz.getSimpleName());
+            classNames.add(clazz.getSimpleName());
+        }
+        Logger.logRaw("[Bootstrap | Events] Found events: " + String.join(", ", classNames));
+
+        for (Class<?> clazz : annotatedClasses) {
             try {
                 if (Listener.class.isAssignableFrom(clazz)) {
                     Listener listener = (Listener) clazz.getDeclaredConstructor().newInstance();
+                    Event eventAnnotation = clazz.getAnnotation(Event.class);
+
                     Bukkit.getPluginManager().registerEvents(listener, Main.get());
+                    Logger.logRaw("[Bootstrap | Events] Event[Server="+eventAnnotation.server().name()+"] [Name="+clazz.getSimpleName()+"] registered!");
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -110,8 +123,8 @@ public final class Register {
             command.setAliases(Arrays.asList(cmdAnnotation.names()));
             command.setPermission(String.join(",", cmdAnnotation.perms()));
 
-            commandMap.register(Main.get().getName(), command);
-            Logger.log("Registered Command: [Server="+cmdAnnotation.server().name()+"] [Name="+name+"] [Disabled="+cmdAnnotation.disabled()+"]");
+            commandMap.register("runemc", command);
+            Logger.logRaw("[Bootstrap | Commands] Command[Server="+cmdAnnotation.server().name()+"] [Name="+name+"] [Disabled="+cmdAnnotation.disabled()+"] registered!");
         } catch (Exception e) {
             e.printStackTrace();
         }

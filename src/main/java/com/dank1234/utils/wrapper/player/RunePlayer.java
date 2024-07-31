@@ -2,11 +2,14 @@ package com.dank1234.utils.wrapper.player;
 
 import com.dank1234.utils.data.playerdata.PlayerDataManager;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
+import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.UUID;
 
+@Nullable
 public final class RunePlayer extends RuneSender {
     private final Player player;
     private final PlayerDataManager pdm;
@@ -39,6 +42,10 @@ public final class RunePlayer extends RuneSender {
     }
     public void chat(String ... messages) {
         Arrays.stream(messages).toList().forEach(player::chat);
+    }
+
+    public void gamemode(GameMode gamemode) {
+        this.player().setGameMode(gamemode);
     }
 
     public Player player() {

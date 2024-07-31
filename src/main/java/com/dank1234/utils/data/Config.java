@@ -12,9 +12,7 @@ public final class Config {
     private static Config instance;
     private Map<String, Object> configMap;
 
-    private Config() {
-        loadConfig();
-    }
+    private Config() {}
 
     public static Config get() {
         if (instance == null) {
@@ -23,19 +21,17 @@ public final class Config {
         return instance;
     }
 
-    private void loadConfig() {
+    public void loadConfig() {
         File configFile = find();
         if (configFile != null) {
             try (InputStream input = new FileInputStream(configFile)) {
                 Yaml yaml = new Yaml();
                 configMap = yaml.load(input);
-                Logger.log("Configuration loaded successfully.");
+                Logger.logRaw("[Boostrap | Config] Config file loaded successfully.");
             } catch (Exception e) {
                 e.printStackTrace();
-                Logger.log("Failed to load configuration: " + e.getMessage());
+                Logger.logRaw("[Boostrap | Config] Failed to load config file: " + e.getMessage());
             }
-        } else {
-            Logger.log("Configuration file not found.");
         }
     }
 
@@ -48,8 +44,10 @@ public final class Config {
         for (String location : possibleLocations) {
             File file = new File(location);
             if (file.exists()) {
+                Logger.logRaw("[Boostrap | Config] Found config file.");
                 return file;
             }
+            Logger.logRaw("[Boostrap | Config] No config file found.");
         }
         return null;
     }
