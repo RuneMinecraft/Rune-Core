@@ -15,6 +15,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.Objects;
+
 @Cmd(
         server = ServerType.SURVIVAL,
         names = {"eco", "economy"},
@@ -24,7 +27,7 @@ public class EcoCommand extends ICommand {
     @Override
     public void execute(CommandSender sender, String[] args) {
         try {
-            if (args.length <= 3) {
+            if (args.length <= 2) {
                 Message.create(sender(), Messages.ARGUMENTS+" &cUsage: /eco <player> <souls | tokens> <set | get | reset | give> <amount>").send(false);
                 return;
             }
@@ -43,27 +46,35 @@ public class EcoCommand extends ICommand {
                     Message.create(MessageType.ERROR, sender(), "&cPlease choose either 'tokens' or 'souls'.").send(false);
                     return;
                 }
+                Currency superType = type.getDeclaredConstructor().newInstance();
 
                 String action = args(2);
-                int amount = -1;
+                double amount = -1;
                 if (args.length == 4) {
-                    amount = Integer.parseInt(args(3));
+                    amount = Double.parseDouble(args(3));
                 }
+
+                double balance = Double.parseDouble(Objects.requireNonNull(runeTarget.playerDataManager().getData("eco." + superType.getName())).value());
 
                 switch (action) {
                     case "set":
-                            runeTarget.playerDataManager().setData("eco."+type.newInstance().getName(), amount);
-                            runeTarget.playerDataManager().saveData();
+                        runeTarget.playerDataManager().setData("eco."+superType.getName(), amount);
+                        runeTarget.playerDataManager().saveData();
                         break;
                     case "get":
+                        Message.create(sender(), "&aYour &"+superType.getColour()+superType.getName()+"&a balance is &e"+superType.getSymbol()+balance+"&a.").send(false);
                         break;
                     case "reset":
+                        runeTarget.playerDataManager().setData("eco."+superType.getName(), 0);
+                        runeTarget.playerDataManager().saveData();
                         break;
                     case "give":
+                        runeTarget.playerDataManager().setData("eco."+superType.getName(), amount+balance);
+                        runeTarget.playerDataManager().saveData();
                         break;
                 }
             }
-        } catch (InstantiationException | IllegalAccessException e) {
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
     }

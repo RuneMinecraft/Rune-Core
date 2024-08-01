@@ -2,6 +2,7 @@ package com.dank1234.plugin.global.playerdata;
 
 import com.dank1234.utils.command.Cmd;
 import com.dank1234.utils.command.ICommand;
+import com.dank1234.utils.data.playerdata.Data;
 import com.dank1234.utils.data.playerdata.PlayerDataManager;
 import com.dank1234.utils.wrapper.message.Message;
 import com.dank1234.utils.wrapper.message.Messages;
@@ -41,7 +42,10 @@ public class DataCommand extends ICommand {
         }
         else if (super.checkArgument(1, "get")) {
             if (args.length != 3) {
-                Message.create(sender(), Messages.ARGUMENTS + "&c Usage: /data <player> get <key>").send();
+                Message.create(sender(), "&aPersistent Data for player &f"+target.getName()+"&a:").send(false);
+                for (Data<String, String> data : pdm.getData()) {
+                    Message.create("&c|&a Key=[&f"+data.key()+"&a] Value=[&f"+data.value()+"&a]").send(false);
+                }
                 return;
             }
             String key = args[2];
