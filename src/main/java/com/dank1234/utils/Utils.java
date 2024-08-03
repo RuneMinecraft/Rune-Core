@@ -126,6 +126,16 @@ public interface Utils {
         }
         return players;
     }
+    default Set<CommandSender> getPlayersWithPermission(String permission) {
+        Set<CommandSender> players = new HashSet<>();
+        for (CommandSender player : Bukkit.getOnlinePlayers()) {
+            if (player == null || !player.hasPermission(permission)) {
+                continue;
+            }
+            players.add(player);
+        }
+        return players;
+    }
     default String centreText(String text) {
         int padding = (55 - text.length()) / 2;
         StringBuilder paddedText = new StringBuilder();

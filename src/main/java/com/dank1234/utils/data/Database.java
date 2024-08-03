@@ -8,9 +8,9 @@ import java.sql.Statement;
 public class Database {
     private Connection connection;
 
-    private final String JDBC_URL = "jdbc:mysql://82.19.55.80:3306/";
     private final String USERNAME = "dan";
     private final String PASSWORD = "admin";
+    private String JDBC_URL = "jdbc:mysql://82.19.55.80:3306/";
 
     private final String schema;
     private final String table;
@@ -35,26 +35,18 @@ public class Database {
     }
 
     private Database(String schema, String table) {
+        this.schema = schema;
+        this.table = table;
+
+        this.JDBC_URL = this.JDBC_URL() + this.schema();
+
         try {
             this.connection = DriverManager.getConnection(this.JDBC_URL(), this.USERNAME(), this.PASSWORD());
         }catch (SQLException e) {
             e.printStackTrace();
         }
-
-        this.schema = schema;
-        this.table = table;
     }
     public static Database of(String schema, String table) {
         return new Database(schema, table);
     }
-
-    private void checkSchema() {
-        try (Statement stmt = connection.createStatement()) {
-            stmt.executeUpdate("CREATE SCHEMA IF NOT EXISTS " + this.schema());
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-
 }

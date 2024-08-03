@@ -2,14 +2,16 @@ package com.dank1234.utils.data.punishments;
 
 import com.dank1234.plugin.global.punishlite.Punishment;
 import com.dank1234.plugin.global.punishlite.PunishmentType;
+import com.dank1234.plugin.global.punishlite.modifiers.Active;
+import com.dank1234.plugin.global.punishlite.modifiers.Public;
 import com.dank1234.plugin.global.punishlite.modifiers.Silent;
+import com.dank1234.plugin.global.punishlite.players.User;
 import com.dank1234.utils.data.Database;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.UUID;
+import java.util.*;
 
 public class PunishmentManager {
     private static final String SCHEMA = "runemc";
@@ -18,7 +20,7 @@ public class PunishmentManager {
     private static final Database database = Database.of(SCHEMA, TABLE);
 
     public static void insert(Punishment punishment) {
-        String insertSQL = "INSERT INTO " + TABLE + " (punishmentId, type, target, staff, reason, punishmentLength, startTime, endTime, modifier, active) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String insertSQL = "INSERT INTO " + TABLE + " (punishmentId, punishmentType, player, staff, reason, punishmentLength, startTime, endTime, modifier, active) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement pstmt = database.connection().prepareStatement(insertSQL)) {
             pstmt.setString(1, punishment.punishmentId().toString());
             pstmt.setString(2, punishment.type().name());
@@ -35,27 +37,81 @@ public class PunishmentManager {
             e.printStackTrace();
         }
     }
-    public Punishment getPunishment(String banId) {
-        String query = "SELECT * FROM " + TABLE + " WHERE banId = ?";
+    public static Punishment getPunishment(String banId) {
+        String query = "SELECT * FROM " + TABLE + " WHERE punishmentId = ?";
         try (PreparedStatement pstmt = database.connection().prepareStatement(query)) {
             pstmt.setString(1, banId);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
                 return Punishment.of(
-                        UUID.fromString(rs.getString("banId")),
-                        PunishmentType.valueOf(rs.getString("type")),
+                        UUID.fromString(rs.getString("punishmentId")),
+                        PunishmentType.valueOf(rs.getString("punishmentType")),
                         UUID.fromString(rs.getString("player")),
-                        UUID.fromString(rs.getString("punisher")),
+                        UUID.fromString(rs.getString("staff")),
                         rs.getString("reason"),
-                        rs.getLong("length"),
+                        rs.getLong("punishmentLength"),
+                        rs.getLong("startTime"),
                         rs.getLong("endTime"),
-                        rs.getBoolean("silent"),
-                        rs.getBoolean("active")
+                        rs.getBoolean("silent") ? Silent.class : Public.class,
+                        rs.getBoolean("active") ? Active.class : null
                 );
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static Punishment[] getPunishments(User user) {
+        List<Punishment> punishments = new ArrayList<>();
+        String query = "SELECT * FROM " + TABLE + " WHERE player = ?";
+        try (PreparedStatement pstmt = database.connection().prepareStatement(query)) {
+            pstmt.setString(1, user.uuid().toString());
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                Punishment punishment = Punishment.of(
+                        UUID.fromString(rs.getString("punishmentId")),
+                        PunishmentType.valueOf(rs.getString("punishmentType")),
+                        UUID.fromString(rs.getString("player")),
+                        UUID.fromString(rs.getString("staff")),
+                        rs.getString("reason"),
+                        rs.getLong("punishmentLength"),
+                        rs.getLong("startTime"),
+                        rs.getLong("endTime"),
+                        rs.getBoolean("silent") ? Silent.class : Public.class,
+                        rs.getBoolean("active") ? Active.class : null
+                );
+                punishments.add(punishment);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return punishments.toArray(new Punishment[0]);
+    }
+    public static Punishment[] getPunishments(PunishmentType type) {
+        List<Punishment> punishments = new ArrayList<>();
+        String query = "SELECT * FROM " + TABLE + " WHERE punishmentType = ?";
+        try (PreparedStatement pstmt = database.connection().prepareStatement(query)) {
+            pstmt.setString(1, type.name());
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                Punishment punishment = Punishment.of(
+                        UUID.fromString(rs.getString("punishmentId")),
+                        PunishmentType.valueOf(rs.getString("punishmentType")),
+                        UUID.fromString(rs.getString("player")),
+                        UUID.fromString(rs.getString("staff")),
+                        rs.getString("reason"),
+                        rs.getLong("punishmentLength"),
+                        rs.getLong("startTime"),
+                        rs.getLong("endTime"),
+                        rs.getBoolean("silent") ? Silent.class : Public.class,
+                        rs.getBoolean("active") ? Active.class : null
+                );
+                punishments.add(punishment);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return punishments.toArray(new Punishment[0]);
     }
 }
