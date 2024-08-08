@@ -11,6 +11,6 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 public class MuteEvent implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerChat(AsyncPlayerChatEvent e) {
-        if (PunishmentManager.)
+        // if (PunishmentManager.)
     }
 }

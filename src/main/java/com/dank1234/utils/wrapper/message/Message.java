@@ -1,11 +1,9 @@
 package com.dank1234.utils.wrapper.message;
 
-import com.dank1234.plugin.Main;
 import com.dank1234.utils.Logger;
 import com.dank1234.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
 
 import java.util.Arrays;
 import java.util.Collections;

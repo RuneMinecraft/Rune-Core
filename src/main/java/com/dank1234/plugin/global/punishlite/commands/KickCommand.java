@@ -18,7 +18,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 @Cmd(names="kick", perms="punish.kick")
 public class KickCommand extends ICommand {

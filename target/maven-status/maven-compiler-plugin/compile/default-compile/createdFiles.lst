@@ -2,6 +2,7 @@ com\dank1234\utils\data\punishments\PunishmentManager.class
 com\dank1234\plugin\global\gamemodes\CreativeCommand.class
 com\dank1234\plugin\global\gamemodes\SpectatorCommand.class
 com\dank1234\utils\Locale.class
+com\dank1234\plugin\global\punishlite\events\MuteEvent.class
 com\dank1234\utils\gui\MenuHolder.class
 com\dank1234\plugin\global\punishlite\commands\KickCommand.class
 com\dank1234\utils\data\Database.class

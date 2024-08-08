@@ -3,16 +3,18 @@ package com.dank1234.plugin.global.general.commands;
 import com.dank1234.plugin.Main;
 import com.dank1234.utils.command.Cmd;
 import com.dank1234.utils.command.ICommand;
-import com.dank1234.utils.server.ServerType;
 import com.dank1234.utils.data.Config;
+import com.dank1234.utils.server.ServerType;
 import com.dank1234.utils.wrapper.message.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.event.HandlerList;
 
-import java.util.*;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 @SuppressWarnings("unchecked")
 @Cmd(

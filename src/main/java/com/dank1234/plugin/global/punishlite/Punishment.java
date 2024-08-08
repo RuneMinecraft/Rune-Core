@@ -2,7 +2,6 @@ package com.dank1234.plugin.global.punishlite;
 
 import com.dank1234.plugin.global.punishlite.modifiers.Modifier;
 import com.dank1234.plugin.global.punishlite.modifiers.Silent;
-import com.dank1234.plugin.global.punishlite.players.User;
 import com.dank1234.utils.DateUtils;
 import com.dank1234.utils.Locale;
 import com.dank1234.utils.Utils;
@@ -10,13 +9,11 @@ import com.dank1234.utils.data.punishments.PunishmentManager;
 import com.dank1234.utils.data.punishments.UserManager;
 import com.dank1234.utils.wrapper.message.Message;
 import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
 public final class Punishment implements Utils {
