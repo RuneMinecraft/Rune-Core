@@ -9,10 +9,9 @@ public class Database {
 
     private final String USERNAME = "dan";
     private final String PASSWORD = "admin";
-    private String JDBC_URL = "jdbc:mysql://82.19.55.80:3306/";
+    private String JDBC_URL = "jdbc:mysql://localhost:3306/";
 
     private final String schema;
-    private final String table;
 
     public Connection connection() {
         return this.connection;
@@ -29,13 +28,9 @@ public class Database {
     public String schema() {
         return this.schema;
     }
-    public String table() {
-        return this.table;
-    }
 
-    private Database(String schema, String table) {
+    private Database(String schema) {
         this.schema = schema;
-        this.table = table;
 
         this.JDBC_URL = this.JDBC_URL() + this.schema();
 
@@ -45,7 +40,7 @@ public class Database {
             e.printStackTrace();
         }
     }
-    public static Database of(String schema, String table) {
-        return new Database(schema, table);
+    public static Database of(String schema) {
+        return new Database(schema);
     }
 }

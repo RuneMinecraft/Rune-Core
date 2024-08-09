@@ -33,4 +33,9 @@ public class Member {
         this.group = group;
         return this.group();
     }
+
+    @Override
+    public String toString() {
+        return this.player().getName();
+    }
 }

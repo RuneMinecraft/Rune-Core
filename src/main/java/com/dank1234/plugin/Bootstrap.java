@@ -4,6 +4,7 @@ import com.dank1234.utils.Logger;
 import com.dank1234.utils.Utils;
 import com.dank1234.utils.command.Register;
 import com.dank1234.utils.data.Config;
+import com.dank1234.utils.data.Database;
 import com.dank1234.utils.data.Version;
 import com.dank1234.utils.data.VersionType;
 import com.dank1234.utils.server.Server;
@@ -19,15 +20,13 @@ public class Bootstrap implements Utils {
     }
 
     final Version version = Version.of(VersionType.DEVELOPMENT, "0.1");
+    final Database database = Database.of("runemc");
     final Register register = Register.get();
     final Config config = Config.get();
     Server server;
 
     public void load() throws InvalidPluginException {
         pluginLoader = Main.get().getPluginLoader();
-
-        Plugin luckPerms = pluginLoader.loadPlugin(getPluginByName("LuckPerms.jar"));
-        pluginLoader.enablePlugin(luckPerms);
 
         Logger.logRaw(centreText("<--------------------------------------------------------->"));
         Logger.logRaw(centreText("<------------------> RuneMC | Rune-Core <----------------->"));

@@ -2,6 +2,7 @@ package com.dank1234.plugin;
 
 import com.dank1234.utils.command.Register;
 import com.dank1234.utils.data.Config;
+import com.dank1234.utils.data.Database;
 import com.dank1234.utils.data.Version;
 import com.dank1234.utils.server.Server;
 import org.bukkit.command.Command;
@@ -29,6 +30,9 @@ public final class Main extends JavaPlugin {
     }
     public Config config() {
         return this.bootstrap.config;
+    }
+    public Database database() {
+        return this.bootstrap.database;
     }
 
     @Override

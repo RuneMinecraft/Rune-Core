@@ -2,6 +2,7 @@ com\dank1234\utils\data\punishments\PunishmentManager.class
 com\dank1234\plugin\global\gamemodes\CreativeCommand.class
 com\dank1234\plugin\global\gamemodes\SpectatorCommand.class
 com\dank1234\utils\Locale.class
+com\dank1234\plugin\skyblock\Grid.class
 com\dank1234\plugin\global\punishlite\events\MuteEvent.class
 com\dank1234\utils\gui\MenuHolder.class
 com\dank1234\plugin\global\punishlite\commands\KickCommand.class
@@ -15,8 +16,10 @@ com\dank1234\plugin\survival\economy\Souls.class
 com\dank1234\utils\RuneClassLoader.class
 com\dank1234\plugin\survival\economy\commands\EcoCommand.class
 com\dank1234\plugin\global\punishlite\modifiers\Modifier.class
+com\dank1234\plugin\skyblock\Member.class
 com\dank1234\plugin\global\punishlite\players\User.class
 com\dank1234\plugin\global\spawn\SpawnCommand.class
+com\dank1234\plugin\skyblock\GridLocation.class
 com\dank1234\utils\command\ICommand.class
 com\dank1234\plugin\global\spawn\Spawn.class
 com\dank1234\utils\data\Version.class
@@ -28,6 +31,7 @@ com\dank1234\plugin\global\punishlite\commands\WarnCommand.class
 com\dank1234\utils\server\ServerType.class
 com\dank1234\utils\data\playerdata\PlayerDataManager.class
 com\dank1234\plugin\global\playerdata\DataCommand.class
+com\dank1234\plugin\skyblock\IslandUtils.class
 com\dank1234\utils\wrapper\message\Message.class
 com\dank1234\utils\wrapper\message\MessageType.class
 com\dank1234\plugin\global\gamemodes\AdventureCommand.class
@@ -35,7 +39,9 @@ com\dank1234\plugin\global\gamemodes\SurvivalCommand.class
 com\dank1234\plugin\survival\titles\Title.class
 com\dank1234\utils\data\ProgressBar.class
 com\dank1234\plugin\global\general\commands\TestCommand.class
+com\dank1234\plugin\skyblock\GroupType.class
 com\dank1234\utils\data\playerdata\Data.class
+com\dank1234\plugin\skyblock\Island.class
 com\dank1234\plugin\survival\economy\Tokens.class
 com\dank1234\utils\data\playerdata\DataManager.class
 com\dank1234\utils\wrapper\player\ForceType.class
@@ -71,6 +77,7 @@ com\dank1234\plugin\global\general\commands\ServerCommand.class
 com\dank1234\utils\wrapper\player\PlayerUtils.class
 com\dank1234\utils\data\punishments\UserManager.class
 com\dank1234\plugin\global\punishlite\PunishmentType.class
+com\dank1234\plugin\skyblock\IslandCommand.class
 com\dank1234\plugin\global\punishlite\commands\UnmuteCommand.class
 com\dank1234\plugin\Main.class
 com\dank1234\utils\command\Cmd.class

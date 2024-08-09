@@ -37,7 +37,6 @@ public interface Utils {
                             tmp = mess[i];
                             b.append(ChatColor.COLOR_CHAR);
                             b.append(tmp);
-                            // Double the color code
                             b.append(ChatColor.COLOR_CHAR);
                             b.append(tmp);
                         }
@@ -140,9 +139,7 @@ public interface Utils {
         int padding = (55 - text.length()) / 2;
         StringBuilder paddedText = new StringBuilder();
 
-        for (int i = 0; i < padding; i++) {
-            paddedText.append("-");
-        }
+        paddedText.append("-".repeat(Math.max(0, padding)));
 
         paddedText.append(text);
 
