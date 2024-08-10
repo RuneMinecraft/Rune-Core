@@ -8,12 +8,7 @@ import com.dank1234.utils.wrapper.message.Message;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 
-@Cmd(
-        server = ServerType.GLOBAL,
-        names = "spawn",
-        perms = "default",
-        disabled = false
-)
+@Cmd(names = "spawn", playerOnly = true)
 public class SpawnCommand extends ICommand {
 
     @Override

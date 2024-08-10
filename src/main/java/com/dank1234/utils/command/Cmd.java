@@ -14,4 +14,5 @@ public @interface Cmd {
     String[] names();
     String[] perms() default "default";
     boolean disabled() default false;
+    boolean playerOnly() default false;
 }

@@ -1,6 +1,7 @@
 package com.dank1234.utils.command;
 
 import com.dank1234.plugin.Main;
+import com.dank1234.utils.Locale;
 import com.dank1234.utils.Logger;
 import com.dank1234.utils.server.ServerType;
 import com.dank1234.utils.wrapper.message.Message;
@@ -157,6 +158,10 @@ public final class Register {
             BukkitCommand command = new BukkitCommand(name) {
                 @Override
                 public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, String[] args) {
+                    if (cmdAnnotation.playerOnly() && !(sender instanceof Player)) {
+                        Message.create(Bukkit.getConsoleSender(), Locale.PLAYER_ONLY_COMMAND).send();
+                        return false;
+                    }
                     return Register.get().register(sender, this, commandLabel, args);
                 }
             };

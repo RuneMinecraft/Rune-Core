@@ -1,8 +1,8 @@
 package com.dank1234.plugin.skyblock;
 
 public class GridLocation {
-    private final int x;
-    private final int y;
+    final int x;
+    final int y;
 
     public GridLocation(int x, int y) {
         this.x = x;

@@ -17,12 +17,7 @@ import java.util.Collections;
 import java.util.List;
 
 @SuppressWarnings("unchecked")
-@Cmd(
-        server = ServerType.GLOBAL,
-        names = "rune",
-        perms = "admin",
-        disabled = false
-)
+@Cmd(names = "rune", perms = "admin")
 public class RuneCommand extends ICommand {
 
     @Override

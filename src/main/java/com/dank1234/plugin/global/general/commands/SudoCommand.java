@@ -14,12 +14,7 @@ import org.bukkit.entity.Player;
 
 import java.util.Arrays;
 
-@Cmd(
-        server = ServerType.GLOBAL,
-        names = {"sudo"},
-        perms = {"admin"},
-        disabled = false
-)
+@Cmd(names = {"sudo"}, perms = {"admin"})
 public class SudoCommand extends ICommand {
     @Override
     public void execute(CommandSender sender, String[] args) {

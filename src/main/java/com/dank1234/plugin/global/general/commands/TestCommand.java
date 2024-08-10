@@ -6,7 +6,7 @@ import com.dank1234.utils.data.playerdata.PlayerDataManager;
 import com.dank1234.utils.wrapper.message.Message;
 import org.bukkit.command.CommandSender;
 
-@Cmd (names = "test")
+@Cmd(names = "test")
 public class TestCommand extends ICommand {
 
     @Override

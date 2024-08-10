@@ -44,7 +44,9 @@ public class Island {
     }
 
     public static Island create(UUID player, String name) {
-        return new Island(player, name);
+        Island island = new Island(player, name);
+        IslandUtils.createIsland(island.islandId, island.name(), island.leader().uuid(), island.grid().x, island.grid().y);
+        return island;
     }
     public static Island create(UUID player) {
         return Island.create(player, "");

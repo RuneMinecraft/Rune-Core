@@ -17,9 +17,9 @@ public class IslandUtils {
     public static void createTables() {
         String createIslandTable = """
             CREATE TABLE Island (
-                islandId UUID PRIMARY KEY,
-                name VARCHAR(255) NOT NULL,
-                leader UUID NOT NULL,
+                islandId VARCHAR(255) PRIMARY KEY,
+                name VARCHAR(255)     NOT NULL,
+                leader VARCHAR(255)   NOT NULL,
                 gridX INT NOT NULL,
                 gridY INT NOT NULL,
                 FOREIGN KEY (leader) REFERENCES Player(playerId) ON DELETE CASCADE
@@ -28,16 +28,16 @@ public class IslandUtils {
 
         String createPlayerTable = """
             CREATE TABLE Player (
-                playerId UUID PRIMARY KEY,
+                playerId VARCHAR(255) PRIMARY KEY,
                 playerName VARCHAR(255) NOT NULL
             );
         """;
 
         String createMemberTable = """
             CREATE TABLE Member (
-                memberId UUID PRIMARY KEY,
-                islandId UUID NOT NULL,
-                playerId UUID NOT NULL,
+                memberId VARCHAR(255) PRIMARY KEY,
+                islandId VARCHAR(255) NOT NULL,
+                playerId VARCHAR(255) NOT NULL,
                 groupType ENUM('MEMBER', 'OFFICER', 'SERGENT', 'CO_LEADER', 'LEADER') NOT NULL,
                 FOREIGN KEY (islandId) REFERENCES Island(islandId) ON DELETE CASCADE,
                 FOREIGN KEY (playerId) REFERENCES Player(playerId) ON DELETE CASCADE
