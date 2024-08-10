@@ -1,13 +1,11 @@
 package com.dank1234.plugin.skyblock;
 
+import com.dank1234.utils.players.IslandMember;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -16,44 +14,52 @@ public class Island {
     private static final int MAX_ISLAND_MEMBERS = 10; // THE MAX AMOUNT OF MEMBERS ON AN ISLAND
     private static final int ISLAND_SIZE = 200; // THE SIZE OF EACH ISLAND
 
-    private final Map<Member, GroupType> members = new HashMap<>(); // EACH MEMBER AND THEIR RANK
-    private final GridLocation grid = Grid.next(); // THE GRID COORDINATES (basically coords divided by 500 with no height)
-    private List<Block> blockList; // EVERY BLOCK IN THE ISLANDS LOCATION
+    private final Map<IslandMember, GroupType> members = new HashMap<>(); // EACH MEMBER AND THEIR RANK
+    private GridLocation grid = Grid.next(); // THE GRID COORDINATES (basically coords divided by 200 with no height)
 
     private final UUID islandId;
     private final String name; // DEFAULTED TO "leader's Island"
-    private final Member leader; // THE PERSON WHO OWNS THE ISLAND
+    private final IslandMember leader; // THE PERSON WHO OWNS THE ISLAND
     private final Location loc1; // FIRST CORNER
     private final Location loc2; // FAR CORNER FROM FIRST
 
-    public Island(UUID islandId, Player player, String name) {
+    public Island(UUID islandId, String name, UUID leader, int x, int y) {
         this.islandId = islandId;
         this.name = name;
-        this.leader = Member.of(player);
+        this.leader = IslandMember.of(leader);
+        this.grid = new GridLocation(x, y);
+
+        this.loc1 = new Location(ISLAND_WORLD, grid.getMinX(), -64, grid.getMinY());
+        this.loc2 = new Location(ISLAND_WORLD, grid.getMaxX(), 319, grid.getMaxY());
+    }
+    private Island(UUID islandId, UUID player, String name) {
+        this.islandId = islandId;
+        this.name = name;
+        this.leader = IslandMember.of(player);
         this.loc1 = new Location(ISLAND_WORLD(), grid.getMinX(), -64, grid.getMinY());
         this.loc2 = new Location(ISLAND_WORLD(), grid.getMaxX(), 319, grid.getMaxY());
     }
-    private Island(Player player, String name) {
+    private Island(UUID player, String name) {
         this(UUID.randomUUID(), player, name);
     }
 
-    public static Island create(Player player, String name) {
+    public static Island create(UUID player, String name) {
         return new Island(player, name);
     }
-    public static Island create(Player player) {
+    public static Island create(UUID player) {
         return Island.create(player, "");
     }
 
-    public void addMember(Member member) {
+    public void addMember(IslandMember member) {
         if (members.size() < MAX_ISLAND_MEMBERS) {
-            members.computeIfAbsent(member, Member::group);
+            members.computeIfAbsent(member, IslandMember::group);
             member.island(this);
         } else {
             // TODO: Handle full island.
             throw new IllegalStateException("Island is full. Maximum members reached.");
         }
     }
-    public void addMember(GroupType group, Member member) {
+    public void addMember(GroupType group, IslandMember member) {
         if (members.size() < MAX_ISLAND_MEMBERS) {
             members.put(member, group);
             member.island(this);
@@ -63,23 +69,20 @@ public class Island {
             throw new IllegalStateException("Island is full. Maximum members reached.");
         }
     }
-    public void removeMember(Member member) {
+    public void removeMember(IslandMember member) {
         members.remove(member);
         member.island(null);
         member.group(null);
     }
 
-    public Map<Member, GroupType> members() {
+    public Map<IslandMember, GroupType> members() {
         return members;
     }
     public GridLocation grid() {
         return grid;
     }
-    public List<Block> blockList() {
-        return blockList;
-    }
 
-    public Member leader() {
+    public IslandMember leader() {
         return leader;
     }
     public String name() {

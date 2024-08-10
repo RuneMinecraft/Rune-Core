@@ -24,6 +24,6 @@ public class GridLocation {
 
     @Override
     public String toString() {
-        return "[\nMin X: "+getMinX()+"\nMin Y:"+getMinY()+"\nMax X: "+getMaxX()+"\nMax Y: "+getMaxY()+"\n]";
+        return "["+x+", "+y+"]";
     }
 }

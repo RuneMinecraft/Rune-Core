@@ -1,8 +1,8 @@
 package com.dank1234.plugin.global.punishlite.events;
 
-import com.dank1234.plugin.global.punishlite.players.User;
 import com.dank1234.utils.command.Event;
 import com.dank1234.utils.data.punishments.UserManager;
+import com.dank1234.utils.players.User;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;

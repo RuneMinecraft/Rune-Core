@@ -1,7 +1,7 @@
 package com.dank1234.utils.data.punishments;
 
-import com.dank1234.plugin.global.punishlite.players.User;
 import com.dank1234.utils.data.Database;
+import com.dank1234.utils.players.User;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,7 +12,7 @@ public class UserManager {
     private static final String SCHEMA = "runemc";
     private static final String TABLE = "users";
 
-    private static final Database database = Database.of(SCHEMA, TABLE);
+    private static final Database database = Database.of(SCHEMA);
 
     public static void insert(User user) {
         String insertSQL = "INSERT INTO " + TABLE + " (uuid, username) VALUES (?, ?)";

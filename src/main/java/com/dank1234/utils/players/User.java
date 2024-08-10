@@ -1,4 +1,4 @@
-package com.dank1234.plugin.global.punishlite.players;
+package com.dank1234.utils.players;
 
 import com.dank1234.utils.data.punishments.UserManager;
 
@@ -6,11 +6,11 @@ import javax.annotation.Nullable;
 import java.util.UUID;
 
 @Nullable
-public final class User {
+public class User {
     private final UUID uuid;
     private final String username;
 
-    private User(UUID uuid, String username) {
+    User(UUID uuid, String username) {
         this.uuid = uuid;
         this.username = username;
     }

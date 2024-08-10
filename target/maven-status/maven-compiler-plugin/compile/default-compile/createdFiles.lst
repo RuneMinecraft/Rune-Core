@@ -5,6 +5,7 @@ com\dank1234\utils\Locale.class
 com\dank1234\plugin\skyblock\Grid.class
 com\dank1234\plugin\global\punishlite\events\MuteEvent.class
 com\dank1234\utils\gui\MenuHolder.class
+com\dank1234\utils\players\IslandMember.class
 com\dank1234\plugin\global\punishlite\commands\KickCommand.class
 com\dank1234\utils\data\Database.class
 com\dank1234\utils\gui\Menu.class
@@ -16,8 +17,6 @@ com\dank1234\plugin\survival\economy\Souls.class
 com\dank1234\utils\RuneClassLoader.class
 com\dank1234\plugin\survival\economy\commands\EcoCommand.class
 com\dank1234\plugin\global\punishlite\modifiers\Modifier.class
-com\dank1234\plugin\skyblock\Member.class
-com\dank1234\plugin\global\punishlite\players\User.class
 com\dank1234\plugin\global\spawn\SpawnCommand.class
 com\dank1234\plugin\skyblock\GridLocation.class
 com\dank1234\utils\command\ICommand.class
@@ -49,9 +48,11 @@ com\dank1234\utils\DateUtils.class
 com\dank1234\plugin\global\punishlite\modifiers\Global.class
 com\dank1234\plugin\survival\economy\Currency.class
 com\dank1234\utils\wrapper\player\RuneSender.class
+module-info.class
 com\dank1234\plugin\global\punishlite\modifiers\Silent.class
 com\dank1234\plugin\global\punishlite\Punishment.class
 com\dank1234\plugin\global\general\commands\RuneCommand.class
+com\dank1234\utils\players\User.class
 com\dank1234\plugin\global\pluginmanagement\PluginCommand.class
 com\dank1234\plugin\survival\titles\Titles.class
 com\dank1234\utils\Consts.class

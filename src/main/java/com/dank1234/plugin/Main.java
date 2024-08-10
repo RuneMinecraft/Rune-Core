@@ -1,5 +1,6 @@
 package com.dank1234.plugin;
 
+import com.dank1234.plugin.skyblock.IslandUtils;
 import com.dank1234.utils.command.Register;
 import com.dank1234.utils.data.Config;
 import com.dank1234.utils.data.Database;
@@ -42,6 +43,8 @@ public final class Main extends JavaPlugin {
 
             this.setNaggable(false);
             bootstrap.load();
+
+            IslandUtils.createTables();
         }catch(InvalidPluginException ignore) {}
     }
 

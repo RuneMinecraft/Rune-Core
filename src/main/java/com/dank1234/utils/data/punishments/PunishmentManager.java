@@ -5,8 +5,8 @@ import com.dank1234.plugin.global.punishlite.PunishmentType;
 import com.dank1234.plugin.global.punishlite.modifiers.Active;
 import com.dank1234.plugin.global.punishlite.modifiers.Public;
 import com.dank1234.plugin.global.punishlite.modifiers.Silent;
-import com.dank1234.plugin.global.punishlite.players.User;
 import com.dank1234.utils.data.Database;
+import com.dank1234.utils.players.User;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,7 +20,7 @@ public class PunishmentManager {
     private static final String SCHEMA = "runemc";
     private static final String TABLE = "punishments";
 
-    private static final Database database = Database.of(SCHEMA, TABLE);
+    private static final Database database = Database.of(SCHEMA);
 
     public static void insert(Punishment punishment) {
         String insertSQL = "INSERT INTO " + TABLE + " (punishmentId, punishmentType, player, staff, reason, punishmentLength, startTime, endTime, modifier, active) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
