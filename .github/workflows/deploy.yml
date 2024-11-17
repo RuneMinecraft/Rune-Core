@@ -25,7 +25,7 @@ jobs:
       - name: Deploy to Minecraft Server
         env:
           SERVER_IP: 81.101.214.225
-          SERVER_USER: sftpUser
+          SERVER_USER: ftpuser
           SERVER_PASSWORD: B24Z69K11M.
 
         run: |
