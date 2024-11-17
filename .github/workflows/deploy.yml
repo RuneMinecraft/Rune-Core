@@ -35,13 +35,13 @@ jobs:
 
         run: |
           # Upload plugin to HUB
-          curl -T target/Rune-Core-0.0.1.jar ftp://$SERVER_USER:$SERVER_PASSWORD@$SERVER_IP:/opt/mcsmanager/daemon/data/InstanceData/1c268d784f574099a622f9feb387a8c1/plugins/
+          sudo curl -T target/Rune-Core-0.0.1.jar ftp://$SERVER_USER:$SERVER_PASSWORD@$SERVER_IP:/opt/mcsmanager/daemon/data/InstanceData/1c268d784f574099a622f9feb387a8c1/plugins/
 
           # Upload plugin to PROXY
-          curl -T target/Rune-Core-0.0.1 ftp://$SERVER_USER:$SERVER_PASSWORD@$SERVER_IP:/opt/mcsmanager/daemon/data/InstanceData/eb73ef88e2134da084b04980448ed0a9/plugins/
+          sudo curl -T target/Rune-Core-0.0.1 ftp://$SERVER_USER:$SERVER_PASSWORD@$SERVER_IP:/opt/mcsmanager/daemon/data/InstanceData/eb73ef88e2134da084b04980448ed0a9/plugins/
 
           # Upload plugin to SURVIVAL
-          curl -T target/Rune-Core-0.0.1 ftp://$SERVER_USER:$SERVER_PASSWORD@$SERVER_IP:/opt/mcsmanager/daemon/data/InstanceData/2091a8f892c3422caa0758e423138a18/plugins/
+          sudo curl -T target/Rune-Core-0.0.1 ftp://$SERVER_USER:$SERVER_PASSWORD@$SERVER_IP:/opt/mcsmanager/daemon/data/InstanceData/2091a8f892c3422caa0758e423138a18/plugins/
 
           # Upload plugin to SKYBLOCK
-          curl -T target/Rune-Core-0.0.1 ftp://$SERVER_USER:$SERVER_PASSWORD@$SERVER_IP:/opt/mcsmanager/daemon/data/InstanceData/d02ff1361b114c4280fc0ffb06f6f934/plugins/
+          sudo curl -T target/Rune-Core-0.0.1 ftp://$SERVER_USER:$SERVER_PASSWORD@$SERVER_IP:/opt/mcsmanager/daemon/data/InstanceData/d02ff1361b114c4280fc0ffb06f6f934/plugins/
