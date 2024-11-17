@@ -1,5 +1,6 @@
 package com.dank1234.utils.wrapper.player;
 
+import com.dank1234.utils.data.playerdata.PlayerDataManager;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
@@ -11,10 +12,12 @@ import java.util.UUID;
 @Nullable
 public final class RunePlayer extends RuneSender {
     private final Player player;
+    private final PlayerDataManager pdm;
 
     private RunePlayer(final Player player) {
         super(player.getPlayer());
         this.player = player;
+        this.pdm = PlayerDataManager.get(player);
     }
 
     public static RunePlayer of(final Player sender) {
@@ -47,5 +50,8 @@ public final class RunePlayer extends RuneSender {
 
     public Player player() {
         return this.player;
+    }
+    public PlayerDataManager playerDataManager() {
+        return this.pdm;
     }
 }
