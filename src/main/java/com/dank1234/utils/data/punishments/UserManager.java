@@ -1,8 +1,7 @@
 package com.dank1234.utils.data.punishments;
 
 import com.dank1234.utils.data.Database;
-import com.dank1234.utils.players.IslandMember;
-import com.dank1234.utils.players.User;
+import com.dank1234.utils.wrapper.player.User;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -26,13 +25,14 @@ public class UserManager {
         }
     }
 
-    public static IslandMember getUser(UUID uuid) {
+
+    public static User getUser(UUID uuid) {
         String query = "SELECT * FROM " + TABLE + " WHERE uuid = ?";
         try (PreparedStatement pstmt = database.connection().prepareStatement(query)) {
             pstmt.setString(1, String.valueOf(uuid));
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
-                return IslandMember.of(
+                return User.of(
                         UUID.fromString(rs.getString("uuid")),
                         rs.getString("username")
                 );
@@ -42,13 +42,13 @@ public class UserManager {
         }
         return null;
     }
-    public static IslandMember getUser(String name) {
+    public static User getUser(String name) {
         String query = "SELECT * FROM " + TABLE + " WHERE username = ?";
         try (PreparedStatement pstmt = database.connection().prepareStatement(query)) {
             pstmt.setString(1, name);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
-                return IslandMember.of(
+                return User.of(
                         UUID.fromString(rs.getString("uuid")),
                         rs.getString("username")
                 );

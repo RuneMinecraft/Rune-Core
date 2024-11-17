@@ -1,44 +1,31 @@
-name: Build and Deploy
+name: Deploy Plugin to Server
 
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
-      - name: Set up JDK 11
-        uses: actions/setup-java@v1
+      - name: Set up Java
+        uses: actions/setup-java@v3
         with:
-          java-version: '11'
+          java-version: '17'
 
-      - name: Build with Maven
-        run: mvn clean package
+      - name: Build the plugin
+        run: ./mvn package
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: Rune-Core
-          path: target/Rune-Core-v0.0.1.jar
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Download artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: Rune-Core
-          path: ./plugin
-
-      - name: Deploy to other PC
-        run: scp -o StrictHostKeyChecking=no ./plugin/*.jar 'Daniel Kenyon'@'192.168.0.189':F:/plugins/RuneCore.jar
+      - name: Deploy to Minecraft Server
         env:
-          SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY}}
+          SERVER_IP: ${{ secrets.SERVER_IP }}
+          SERVER_USER: ${{ secrets.SERVER_USER }}
+          SERVER_PASSWORD: ${{ secrets.SERVER_PASSWORD }}
+        run: |
+          scp build/libs/your-plugin.jar $SERVER_USER@$SERVER_IP:/path/to/server/plugins/
+          ssh $SERVER_USER@$SERVER_IP "systemctl restart minecraft" # Optional: restart server to load plugin

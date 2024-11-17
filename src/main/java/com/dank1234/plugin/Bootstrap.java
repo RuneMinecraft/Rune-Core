@@ -51,7 +51,6 @@ public class Bootstrap implements Utils {
         register.autoRegisterListeners();
 
         Logger.logRaw("[RuneMC | Bootstrap] Plugin Enabled!");
-
     }
 
     public void disable() {

@@ -1,4 +1,4 @@
-package com.dank1234.plugin.global.gamemodes;
+package com.dank1234.plugin.global.general.commands;
 
 import com.dank1234.utils.command.Cmd;
 import com.dank1234.utils.command.ICommand;

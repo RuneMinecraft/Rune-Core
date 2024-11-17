@@ -9,7 +9,7 @@ public class Database {
 
     private final String USERNAME = "dan";
     private final String PASSWORD = "admin";
-    private String JDBC_URL = "jdbc:mysql://localhost:3306/";
+    private String JDBC_URL = "jdbc:mysql://90.204.54.189:3306/";
 
     private final String schema;
 
@@ -31,7 +31,6 @@ public class Database {
 
     private Database(String schema) {
         this.schema = schema;
-
         this.JDBC_URL = this.JDBC_URL() + this.schema();
 
         try {

@@ -15,6 +15,6 @@ public class ChatFormatter implements Listener {
         String msg = e.getMessage();
         e.setCancelled(true);
 
-        Message.create("&8[&r"+RankUtils.getPrefix(e.getPlayer())+"&8]&r "+e.getPlayer().getName()+": "+msg).send(false);
+        Message.create("&r"+RankUtils.getPrefix(e.getPlayer())+"&r "+e.getPlayer().getName()+" &8» &r"+msg).send(false);
     }
 }

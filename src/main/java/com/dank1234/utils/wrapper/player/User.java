@@ -1,5 +1,6 @@
-package com.dank1234.utils.players;
+package com.dank1234.utils.wrapper.player;
 
+import com.dank1234.utils.data.punishments.StaffManager;
 import com.dank1234.utils.data.punishments.UserManager;
 
 import javax.annotation.Nullable;
@@ -29,5 +30,11 @@ public class User {
     }
     public String username() {
         return this.username;
+    }
+
+    public boolean isStaff() {
+        return StaffManager.getAllStaff(StaffTrack.HELPER).contains(this) || StaffManager.getAllStaff(StaffTrack.MOD).contains(this)
+                || StaffManager.getAllStaff(StaffTrack.SRMOD).contains(this) || StaffManager.getAllStaff(StaffTrack.ADMIN).contains(this)
+                || StaffManager.getAllStaff(StaffTrack.DEV).contains(this) || StaffManager.getAllStaff(StaffTrack.MANAGER).contains(this);
     }
 }
