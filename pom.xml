@@ -30,7 +30,7 @@
                         </goals>
                         <configuration>
                             <outputFile>
-                                F:\plugins\Rune-Core.jar
+                                X:\Rune-Core\target\Rune-Core.jar
                             </outputFile>
                             <createSourcesJar/>
                         </configuration>
