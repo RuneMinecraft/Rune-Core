@@ -29,7 +29,7 @@ jobs:
 
       - name: Deploy to Minecraft Server
         env:
-          SERVER_IP: 82.101.214.225
+          SERVER_IP: 81.101.214.225
           SERVER_USER: RuneMC GitHub
           SERVER_PASSWORD: Password123!
         run: |
