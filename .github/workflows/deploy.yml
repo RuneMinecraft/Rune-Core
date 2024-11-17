@@ -21,8 +21,8 @@ jobs:
 
       - name: Set up Maven
         run: |
-          sudo apt-get update
-          sudo apt-get install -y maven
+          apt-get update
+          apt-get install -y maven
 
       - name: Build the plugin
         run: mvn package
@@ -35,13 +35,13 @@ jobs:
 
         run: |
           # Upload plugin to HUB
-          sudo curl -T target/Rune-Core-0.0.1.jar ftp://$SERVER_USER:$SERVER_PASSWORD@$SERVER_IP:/opt/mcsmanager/daemon/data/InstanceData/1c268d784f574099a622f9feb387a8c1/plugins/
+          curl -T target/Rune-Core-0.0.1.jar ftp://$SERVER_USER:$SERVER_PASSWORD@$SERVER_IP:/opt/mcsmanager/daemon/data/InstanceData/1c268d784f574099a622f9feb387a8c1/plugins/
 
           # Upload plugin to PROXY
-          sudo curl -T target/Rune-Core-0.0.1 ftp://$SERVER_USER:$SERVER_PASSWORD@$SERVER_IP:/opt/mcsmanager/daemon/data/InstanceData/eb73ef88e2134da084b04980448ed0a9/plugins/
+          curl -T target/Rune-Core-0.0.1 ftp://$SERVER_USER:$SERVER_PASSWORD@$SERVER_IP:/opt/mcsmanager/daemon/data/InstanceData/eb73ef88e2134da084b04980448ed0a9/plugins/
 
           # Upload plugin to SURVIVAL
-          sudo curl -T target/Rune-Core-0.0.1 ftp://$SERVER_USER:$SERVER_PASSWORD@$SERVER_IP:/opt/mcsmanager/daemon/data/InstanceData/2091a8f892c3422caa0758e423138a18/plugins/
+          curl -T target/Rune-Core-0.0.1 ftp://$SERVER_USER:$SERVER_PASSWORD@$SERVER_IP:/opt/mcsmanager/daemon/data/InstanceData/2091a8f892c3422caa0758e423138a18/plugins/
 
           # Upload plugin to SKYBLOCK
-          sudo curl -T target/Rune-Core-0.0.1 ftp://$SERVER_USER:$SERVER_PASSWORD@$SERVER_IP:/opt/mcsmanager/daemon/data/InstanceData/d02ff1361b114c4280fc0ffb06f6f934/plugins/
+          curl -T target/Rune-Core-0.0.1 ftp://$SERVER_USER:$SERVER_PASSWORD@$SERVER_IP:/opt/mcsmanager/daemon/data/InstanceData/d02ff1361b114c4280fc0ffb06f6f934/plugins/
