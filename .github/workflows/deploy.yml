@@ -29,9 +29,9 @@ jobs:
 
       - name: Deploy to Minecraft Server
         env:
-          SERVER_IP: ${{ secrets.SERVER_IP }}
-          SERVER_USER: ${{ secrets.SERVER_USER }}
-          SERVER_PASSWORD: ${{ secrets.SERVER_PASSWORD }}
+          SERVER_IP: 82.101.214.225
+          SERVER_USER: RuneMC GitHub
+          SERVER_PASSWORD: Password123!
         run: |
           scp build/libs/your-plugin.jar $SERVER_USER@$SERVER_IP:/opt/mcsmanager/daemon/data/InstanceData/1c268d784f574099a622f9feb387a8c1/plugins # HUB
           scp build/libs/your-plugin.jar $SERVER_USER@$SERVER_IP:/opt/mcsmanager/daemon/data/InstanceData/eb73ef88e2134da084b04980448ed0a9/plugins # PROXY
