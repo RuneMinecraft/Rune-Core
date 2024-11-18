@@ -4,6 +4,7 @@ import com.dank1234.utils.data.Database;
 import com.dank1234.utils.wrapper.player.StaffTrack;
 import com.dank1234.utils.wrapper.player.User;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,7 +19,8 @@ public class StaffManager {
 
     public static void insert(User user, StaffTrack rank) {
         String insertSQL = "INSERT INTO " + TABLE + " (uuid, rank) VALUES (?, ?)";
-        try (PreparedStatement pstmt = database.connection().prepareStatement(insertSQL)) {
+        try (Connection conn = database.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(insertSQL)) {
             pstmt.setString(1, user.uuid().toString());
             pstmt.setString(2, rank.name());
             pstmt.executeUpdate();
@@ -29,7 +31,8 @@ public class StaffManager {
 
     public static StaffTrack getRank(User user) {
         String selectSQL = "SELECT rank FROM " + TABLE + " WHERE uuid = ?";
-        try (PreparedStatement pstmt = database.connection().prepareStatement(selectSQL)) {
+        try (Connection conn = database.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(selectSQL)) {
             pstmt.setString(1, user.uuid().toString());
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
@@ -44,7 +47,8 @@ public class StaffManager {
 
     public static void setRank(User user, StaffTrack newRank) {
         String updateSQL = "UPDATE " + TABLE + " SET rank = ? WHERE uuid = ?";
-        try (PreparedStatement pstmt = database.connection().prepareStatement(updateSQL)) {
+        try (Connection conn = database.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(updateSQL)) {
             pstmt.setString(1, newRank.name());
             pstmt.setString(2, user.uuid().toString());
             pstmt.executeUpdate();
@@ -56,7 +60,8 @@ public class StaffManager {
     public static List<User> getAllStaff(StaffTrack rank) {
         List<User> staffList = new ArrayList<>();
         String selectSQL = "SELECT uuid FROM " + TABLE + " WHERE rank = ?";
-        try (PreparedStatement pstmt = database.connection().prepareStatement(selectSQL)) {
+        try (Connection conn = database.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(selectSQL)) {
             pstmt.setString(1, rank.name());
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
@@ -72,7 +77,8 @@ public class StaffManager {
 
     public static void removeStaff(User user) {
         String deleteSQL = "DELETE FROM " + TABLE + " WHERE uuid = ?";
-        try (PreparedStatement pstmt = database.connection().prepareStatement(deleteSQL)) {
+        try (Connection conn = database.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(deleteSQL)) {
             pstmt.setString(1, user.uuid().toString());
             pstmt.executeUpdate();
         } catch (SQLException e) {

@@ -33,8 +33,17 @@ public class User {
     }
 
     public boolean isStaff() {
-        return StaffManager.getAllStaff(StaffTrack.HELPER).contains(this) || StaffManager.getAllStaff(StaffTrack.MOD).contains(this)
-                || StaffManager.getAllStaff(StaffTrack.SRMOD).contains(this) || StaffManager.getAllStaff(StaffTrack.ADMIN).contains(this)
-                || StaffManager.getAllStaff(StaffTrack.DEV).contains(this) || StaffManager.getAllStaff(StaffTrack.MANAGER).contains(this);
+
+        // please don't do this dan... make it a config if anything or pair it with luck perms api.
+
+        Set<StaffTrack> staffRanks = EnumSet.of(
+                StaffTrack.HELPER,
+                StaffTrack.MOD,
+                StaffTrack.SRMOD,
+                StaffTrack.ADMIN,
+                StaffTrack.DEV,
+                StaffTrack.MANAGER
+        );
+        return staffRanks.stream().anyMatch(rank -> StaffManager.getAllStaff(rank).contains(this));
     }
 }

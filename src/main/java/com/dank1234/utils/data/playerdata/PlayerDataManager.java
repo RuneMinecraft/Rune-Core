@@ -23,31 +23,24 @@ public final class PlayerDataManager extends DataManager<Player> implements Pers
     @Override
     public void setData(String key, Object value) {
         String valueStr = value.toString();
-        boolean keyExists = false;
-        for (Data<String, String> datum : data) {
-            if (datum.key().equals(key)) {
-                datum.value(valueStr);
-                keyExists = true;
-                break;
-            }
-        }
-        if (!keyExists) {
+        Data<String, String> existingData = getData(key);
+        if (existingData != null) {
+            existingData.value(valueStr);
+        } else {
             data.add(Data.of(key, valueStr));
         }
     }
 
     @Override
     public List<Data<String, String>> getData() {
-        return data;
+        return new ArrayList<>(data);
     }
 
     public Data<String, String> getData(String key) {
-        for (Data<String, String> datum : data) {
-            if (datum.key().equals(key)) {
-                return datum;
-            }
-        }
-        return null;
+        return data.stream()
+            .filter(datum -> datum.key().equals(key))
+            .findFirst()
+            .orElse(null);
     }
 
     @Override
