@@ -32,6 +32,7 @@ com\dank1234\utils\wrapper\player\staff\Staff.class
 com\dank1234\utils\data\playerdata\Data.class
 com\dank1234\plugin\survival\economy\Tokens.class
 com\dank1234\utils\data\playerdata\DataManager.class
+com\dank1234\plugin\global\ranks\staff\ListCommand.class
 com\dank1234\plugin\global\ranks\staff\DemoteCommand.class
 com\dank1234\utils\DateUtils.class
 com\dank1234\plugin\global\ranks\staff\StaffModeCommand.class

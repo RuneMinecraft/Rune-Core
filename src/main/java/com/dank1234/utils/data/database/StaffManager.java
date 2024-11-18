@@ -81,6 +81,22 @@ public class StaffManager {
         return false;
     }
 
+    public static Optional<List<Staff>> getAll() {
+        String sql = "SELECT uuid FROM staff";
+        List<Staff> users = new ArrayList<>();
+
+        try (Connection conn = Database.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                users.add(Staff.of(rs.getString("uuid")));
+            }
+            return Optional.of(users);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return Optional.empty();
+    }
     public static Optional<List<Staff>> getAll(StaffRank rank) {
         String sql = "SELECT uuid FROM staff WHERE rank = ?";
         List<Staff> users = new ArrayList<>();

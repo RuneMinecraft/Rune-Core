@@ -85,15 +85,15 @@ public class Staff extends User {
     @Override
     public String toString() {
         return
-                "Staff[" +
-                        "\tname: " + this.username() +
-                        "\tuuid: " + this.uuid() +
-                        "\trank: " + this.rank +
-                        "\ttime: " + this.time +
-                        "\tmessages: " + this.messages +
-                        "\twarns: " + this.warns +
-                        "\tmutes: " + this.mutes +
-                        "\tbans: " + this.bans +
+                "Staff[" +"\n"+
+                        "    name: " + this.username() +"\n"+
+                        "    uuid: " + this.uuid() +"\n"+
+                        "    rank: " + this.rank +"\n"+
+                        "    time: " + this.time +"\n"+
+                        "    messages: " + this.messages +"\n"+
+                        "    warns: " + this.warns +"\n"+
+                        "    mutes: " + this.mutes +"\n"+
+                        "    bans: " + this.bans +"\n"+
                         "]";
     }
 }

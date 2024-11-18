@@ -35,9 +35,9 @@ public class User {
     @Override
     public String toString() {
         return
-                "User[" +
-                    "\tname: "+this.username()+
-                    "\tuuid: "+this.uuid()+
+                "User[\n" +
+                    "    name: "+this.username()+"\n"+
+                    "    uuid: "+this.uuid()+"\n"+
                 "]";
     }
 }

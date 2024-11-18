@@ -14,6 +14,6 @@ public class JoinListener implements Listener {
         if (UserManager.getUser(e.getPlayer().getUniqueId()).isPresent()) {
             return;
         }
-        UserManager.insert(User.of(e.getPlayer().getUniqueId()));
+        UserManager.insert(User.of(e.getPlayer().getUniqueId(), e.getPlayer().getName()));
     }
 }

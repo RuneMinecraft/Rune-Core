@@ -23,8 +23,7 @@ public class PromoteCommand extends ICommand {
 
         // Player is not staff. Add HELPER.
         if (StaffManager.getStaff(target.uuid()).isEmpty()) {
-            Staff newStaff = Staff.of(target.uuid());
-            newStaff.setRank(StaffRank.HELPER);
+            Staff newStaff = Staff.of(target.uuid(), target.username(), StaffRank.HELPER);
             StaffManager.insert(newStaff);
             // TODO: SEND MESSAGE
         } else { // Player is staff. Add the rank higher.
