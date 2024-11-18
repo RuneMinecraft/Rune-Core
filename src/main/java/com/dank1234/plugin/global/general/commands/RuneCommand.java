@@ -26,7 +26,7 @@ public class RuneCommand extends ICommand {
             Config config = Config.get();
             // config.find("plugins/Rune-Core/credit.yml");
 
-            List<String> developerList = (List<String>) config.getObjectValue("developers");
+            List<String> developerList = (List<String>) config.getValue("developers", List.class);
             if (developerList == null) {
                 developerList = new ArrayList<>(Collections.singleton("dank1234"));
             }

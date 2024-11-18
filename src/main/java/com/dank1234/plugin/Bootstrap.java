@@ -20,7 +20,7 @@ public class Bootstrap implements Utils {
     }
 
     final Version version = Version.of(VersionType.DEVELOPMENT, "0.1");
-    final Database database = Database.of("runemc");
+    final Database database = Database.of();
     final Register register = Register.get();
     final Config config = Config.get();
     Server server;

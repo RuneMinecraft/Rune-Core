@@ -1,5 +1,7 @@
 package com.dank1234.utils.data.punishments;
 
+import com.dank1234.plugin.Bootstrap;
+import com.dank1234.plugin.Main;
 import com.dank1234.utils.data.Database;
 import com.dank1234.utils.wrapper.player.User;
 
@@ -9,10 +11,9 @@ import java.sql.SQLException;
 import java.util.UUID;
 
 public class UserManager {
-    private static final String SCHEMA = "runemc";
     private static final String TABLE = "users";
 
-    private static final Database database = Database.of(SCHEMA);
+    private static final Database database = Main.get().database();
 
     public static void insert(User user) {
         String insertSQL = "INSERT INTO " + TABLE + " (uuid, username) VALUES (?, ?)";
@@ -24,7 +25,6 @@ public class UserManager {
             e.printStackTrace();
         }
     }
-
 
     public static User getUser(UUID uuid) {
         String query = "SELECT * FROM " + TABLE + " WHERE uuid = ?";
@@ -42,6 +42,7 @@ public class UserManager {
         }
         return null;
     }
+
     public static User getUser(String name) {
         String query = "SELECT * FROM " + TABLE + " WHERE username = ?";
         try (PreparedStatement pstmt = database.connection().prepareStatement(query)) {

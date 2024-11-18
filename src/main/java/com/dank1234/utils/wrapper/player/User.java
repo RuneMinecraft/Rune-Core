@@ -1,6 +1,5 @@
 package com.dank1234.utils.wrapper.player;
 
-import com.dank1234.utils.data.punishments.StaffManager;
 import com.dank1234.utils.data.punishments.UserManager;
 
 import javax.annotation.Nullable;

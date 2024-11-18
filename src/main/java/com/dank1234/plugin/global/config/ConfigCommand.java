@@ -49,7 +49,7 @@ public class ConfigCommand extends ICommand {
 
             String key = args[1];
             if (key != null) {
-                Message.create(sender(), "&6Value: &e"+Main.get().config().getValue(key)).send(false);
+                Message.create(sender(), "&6Value: &e"+Main.get().config().getValue(key, String.class)).send(false);
             }
             return;
         }
@@ -65,7 +65,7 @@ public class ConfigCommand extends ICommand {
             if (key != null && value != null) {
                 Main.get().config().setValue(key, value);
                 Main.get().reloadConfig();
-                Message.create(sender(), "&6Updated the value of &e"+key+"&6 to &e"+Main.get().config().getValue(key)).send(false);
+                Message.create(sender(), "&6Updated the value of &e"+key+"&6 to &e"+Main.get().config().getValue(key, String.class)).send(false);
             }
         }
     }

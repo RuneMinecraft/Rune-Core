@@ -2,8 +2,6 @@ package com.dank1234.plugin.global.ranks.staff;
 
 import com.dank1234.utils.command.Cmd;
 import com.dank1234.utils.command.ICommand;
-import com.dank1234.utils.data.Database;
-import com.dank1234.utils.data.punishments.StaffManager;
 import com.dank1234.utils.wrapper.message.Message;
 import com.dank1234.utils.wrapper.player.ForceType;
 import com.dank1234.utils.wrapper.player.User;

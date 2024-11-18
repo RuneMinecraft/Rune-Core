@@ -5,13 +5,13 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Database {
+    private Config config = Config.get();
     private Connection connection;
 
-    private final String USERNAME = "dan";
-    private final String PASSWORD = "admin";
-    private String JDBC_URL = "jdbc:mysql://90.204.54.189:3306/";
-
-    private final String schema;
+    private final String USERNAME = config.getValue("database.user", String.class);
+    private final String PASSWORD = config.getValue("database.password", String.class);
+    private String JDBC_URL = config.getValue("database.host", String.class);
+    private final String schema = config.getValue("database.schema", String.class);
 
     public Connection connection() {
         return this.connection;
@@ -29,8 +29,7 @@ public class Database {
         return this.schema;
     }
 
-    private Database(String schema) {
-        this.schema = schema;
+    private Database() {
         this.JDBC_URL = this.JDBC_URL() + this.schema();
 
         try {
@@ -39,7 +38,7 @@ public class Database {
             e.printStackTrace();
         }
     }
-    public static Database of(String schema) {
-        return new Database(schema);
+    public static Database of() {
+        return new Database();
     }
 }
