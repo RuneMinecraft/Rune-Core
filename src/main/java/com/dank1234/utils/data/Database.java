@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class Database {
+public final class Database {
     private Config config = Config.get();
     private Connection connection;
 
@@ -29,7 +29,7 @@ public class Database {
         return this.schema;
     }
 
-    private Database() {
+    public Database() {
         this.JDBC_URL = JDBC_URL + this.schema;
 
         try {

@@ -10,6 +10,8 @@ com\dank1234\plugin\survival\economy\Souls.class
 com\dank1234\utils\RuneClassLoader.class
 com\dank1234\plugin\survival\economy\commands\EcoCommand.class
 com\dank1234\plugin\global\general\commands\CreativeCommand.class
+com\dank1234\utils\data\database\UserManager.class
+com\dank1234\utils\wrapper\message\ForceType.class
 com\dank1234\plugin\global\spawn\SpawnCommand.class
 com\dank1234\plugin\global\general\commands\SurvivalCommand.class
 com\dank1234\utils\command\ICommand.class
@@ -25,11 +27,9 @@ com\dank1234\utils\wrapper\message\Message.class
 com\dank1234\utils\wrapper\message\MessageType.class
 com\dank1234\plugin\survival\titles\Title.class
 com\dank1234\utils\data\ProgressBar.class
-com\dank1234\plugin\global\general\commands\TestCommand.class
 com\dank1234\utils\data\playerdata\Data.class
 com\dank1234\plugin\survival\economy\Tokens.class
 com\dank1234\utils\data\playerdata\DataManager.class
-com\dank1234\utils\wrapper\player\ForceType.class
 com\dank1234\plugin\global\ranks\staff\DemoteCommand.class
 com\dank1234\utils\DateUtils.class
 com\dank1234\plugin\global\ranks\staff\StaffModeCommand.class
@@ -50,6 +50,7 @@ com\dank1234\plugin\global\general\events\ChatFormatter.class
 com\dank1234\utils\data\Config.class
 com\dank1234\utils\data\playerdata\PersistenceUtils.class
 com\dank1234\plugin\global\general\commands\SpectatorCommand.class
+com\dank1234\plugin\global\general\commands\UserCommand.class
 com\dank1234\utils\Utils.class
 com\dank1234\plugin\global\general\commands\SudoCommand.class
 com\dank1234\utils\command\Register.class
@@ -58,6 +59,5 @@ com\dank1234\plugin\global\spawn\SpawnListener.class
 com\dank1234\utils\RankUtils.class
 com\dank1234\plugin\global\config\ConfigCommand.class
 com\dank1234\plugin\global\general\commands\ServerCommand.class
-com\dank1234\utils\data\punishments\UserManager.class
 com\dank1234\plugin\Main.class
 com\dank1234\utils\command\Cmd.class

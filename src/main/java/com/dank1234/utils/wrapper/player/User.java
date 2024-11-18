@@ -1,6 +1,7 @@
 package com.dank1234.utils.wrapper.player;
 
-import com.dank1234.utils.data.punishments.UserManager;
+import com.dank1234.utils.Logger;
+import com.dank1234.utils.data.database.UserManager;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
@@ -18,10 +19,10 @@ public class User {
         return new User(uuid, username);
     }
     public static User of(UUID uuid) {
-        return UserManager.getUser(uuid);
+        return UserManager.getUser(uuid).orElse(null);
     }
     public static User of(String username) {
-        return UserManager.getUser(username);
+        return UserManager.getUser(username).orElse(null);
     }
 
     public UUID uuid() {
@@ -31,4 +32,12 @@ public class User {
         return this.username;
     }
 
+    @Override
+    public String toString() {
+        return
+                "User[" +
+                    "\tname: "+this.username()+
+                    "\tuuid: "+this.uuid()+
+                "]";
+    }
 }

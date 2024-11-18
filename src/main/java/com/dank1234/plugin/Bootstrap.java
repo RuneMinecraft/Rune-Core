@@ -7,6 +7,7 @@ import com.dank1234.utils.data.Config;
 import com.dank1234.utils.data.Database;
 import com.dank1234.utils.data.Version;
 import com.dank1234.utils.data.VersionType;
+import com.dank1234.utils.data.database.UserManager;
 import com.dank1234.utils.server.Server;
 import org.bukkit.plugin.InvalidPluginException;
 import org.bukkit.plugin.Plugin;
@@ -49,6 +50,8 @@ public class Bootstrap implements Utils {
         register.autoRegisterCommands();
         Logger.logRaw("[RuneMC | Bootstrap] Loading events...");
         register.autoRegisterListeners();
+
+        UserManager.ensureTableExists();
 
         Logger.logRaw("[RuneMC | Bootstrap] Plugin Enabled!");
     }

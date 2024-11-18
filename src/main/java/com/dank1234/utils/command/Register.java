@@ -63,7 +63,7 @@ public final class Register {
                     Cmd cmdAnnotation = clazz.getAnnotation(Cmd.class);
                     if (cmdAnnotation != null) {
                         if ((cmdAnnotation.server() != ServerType.GLOBAL) && currentServer != cmdAnnotation.server()) {
-                            continue;
+                            //continue;
                         }
 
                         cmd.names(cmdAnnotation.names());
