@@ -11,6 +11,7 @@ com\dank1234\utils\RuneClassLoader.class
 com\dank1234\plugin\survival\economy\commands\EcoCommand.class
 com\dank1234\plugin\global\general\commands\CreativeCommand.class
 com\dank1234\plugin\global\spawn\SpawnCommand.class
+com\dank1234\plugin\global\general\commands\SurvivalCommand.class
 com\dank1234\utils\command\ICommand.class
 com\dank1234\plugin\global\general\commands\RenameCommand.class
 com\dank1234\plugin\global\spawn\Spawn.class
@@ -22,13 +23,14 @@ com\dank1234\utils\data\playerdata\PlayerDataManager.class
 com\dank1234\plugin\global\playerdata\DataCommand.class
 com\dank1234\utils\wrapper\message\Message.class
 com\dank1234\utils\wrapper\message\MessageType.class
+com\dank1234\plugin\survival\titles\Title.class
 com\dank1234\utils\data\ProgressBar.class
 com\dank1234\plugin\global\general\commands\TestCommand.class
 com\dank1234\utils\data\playerdata\Data.class
-com\dank1234\utils\data\Config$InstanceHolder.class
 com\dank1234\plugin\survival\economy\Tokens.class
 com\dank1234\utils\data\playerdata\DataManager.class
 com\dank1234\utils\wrapper\player\ForceType.class
+com\dank1234\plugin\global\ranks\staff\DemoteCommand.class
 com\dank1234\utils\DateUtils.class
 com\dank1234\plugin\global\ranks\staff\StaffModeCommand.class
 com\dank1234\plugin\global\general\commands\DiscordCommand.class
@@ -41,10 +43,10 @@ com\dank1234\plugin\survival\titles\Titles.class
 com\dank1234\utils\Consts.class
 com\dank1234\utils\command\Register$1.class
 com\dank1234\utils\command\Event.class
-com\dank1234\utils\wrapper\player\StaffTrack.class
 com\dank1234\plugin\Bootstrap.class
 com\dank1234\utils\server\Server.class
 com\dank1234\utils\wrapper\message\Messages.class
+com\dank1234\plugin\global\general\events\ChatFormatter.class
 com\dank1234\utils\data\Config.class
 com\dank1234\utils\data\playerdata\PersistenceUtils.class
 com\dank1234\plugin\global\general\commands\SpectatorCommand.class

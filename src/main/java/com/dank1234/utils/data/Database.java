@@ -30,15 +30,39 @@ public class Database {
     }
 
     private Database() {
-        this.JDBC_URL = this.JDBC_URL() + this.schema();
+        this.JDBC_URL = JDBC_URL + this.schema;
 
         try {
-            this.connection = DriverManager.getConnection(this.JDBC_URL(), this.USERNAME(), this.PASSWORD());
+            this.connection = DriverManager.getConnection(this.JDBC_URL, USERNAME, PASSWORD);
+            System.out.println("Connected to the database: " + this.JDBC_URL);
         }catch (SQLException e) {
+            System.err.println("Error connecting to database: " + e.getMessage());
             e.printStackTrace();
         }
     }
     public static Database of() {
         return new Database();
+    }
+
+    public Connection getConnection() {
+        return this.connection;
+    }
+
+    public String getSchema() {
+        return this.schema;
+    }
+
+    public void closeConnection() {
+        if (this.connection != null) {
+            try {
+                this.connection.close();
+                System.out.println("Database connection closed");
+            } catch (SQLException e) {
+                System.err.println("Error closing the database connection: " + e.getMessage());
+                e.printStackTrace();
+            } finally {
+                this.connection = null;
+            }
+        }
     }
 }

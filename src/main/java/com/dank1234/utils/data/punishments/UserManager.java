@@ -5,9 +5,11 @@ import com.dank1234.plugin.Main;
 import com.dank1234.utils.data.Database;
 import com.dank1234.utils.wrapper.player.User;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.UUID;
 
 public class UserManager {
@@ -17,10 +19,26 @@ public class UserManager {
 
     public static void insert(User user) {
         String insertSQL = "INSERT INTO " + TABLE + " (uuid, username) VALUES (?, ?)";
-        try (PreparedStatement pstmt = database.connection().prepareStatement(insertSQL)) {
+        try (Connection conn = database.getConnection(); 
+         PreparedStatement pstmt = conn.prepareStatement(insertSQL)) {
             pstmt.setString(1, user.uuid().toString());
             pstmt.setString(2, user.username());
-            pstmt.executeUpdate();
+            pstmt.executeUpdate();            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void insertBatch(List<User> users) {
+        String insertSQL = "INSERT INTO " + TABLE + " (uuid, username) VALUES (?, ?)";
+        try (Connection conn = database.getConnection(); 
+         PreparedStatement pstmt = conn.prepareStatement(insertSQL)) {
+            for (User user : users) {
+                pstmt.setString(1, user.uuid().toString());
+                pstmt.setString(2, user.username());
+                pstmt.addBatch();
+            }
+            pstmt.executeBatch();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -28,14 +46,16 @@ public class UserManager {
 
     public static User getUser(UUID uuid) {
         String query = "SELECT * FROM " + TABLE + " WHERE uuid = ?";
-        try (PreparedStatement pstmt = database.connection().prepareStatement(query)) {
-            pstmt.setString(1, String.valueOf(uuid));
-            ResultSet rs = pstmt.executeQuery();
-            if (rs.next()) {
-                return User.of(
+        try (Connection conn = database.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, uuid.toString());
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return User.of(
                         UUID.fromString(rs.getString("uuid")),
                         rs.getString("username")
-                );
+                    );
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -45,14 +65,16 @@ public class UserManager {
 
     public static User getUser(String name) {
         String query = "SELECT * FROM " + TABLE + " WHERE username = ?";
-        try (PreparedStatement pstmt = database.connection().prepareStatement(query)) {
+        try (Connection conn = database.getConnection(); 
+         PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setString(1, name);
-            ResultSet rs = pstmt.executeQuery();
-            if (rs.next()) {
-                return User.of(
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return User.of(
                         UUID.fromString(rs.getString("uuid")),
                         rs.getString("username")
-                );
+                    );
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();

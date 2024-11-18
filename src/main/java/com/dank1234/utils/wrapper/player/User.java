@@ -31,9 +31,4 @@ public class User {
         return this.username;
     }
 
-    public boolean isStaff() {
-        return StaffManager.getAllStaff(StaffTrack.HELPER).contains(this) || StaffManager.getAllStaff(StaffTrack.MOD).contains(this)
-                || StaffManager.getAllStaff(StaffTrack.SRMOD).contains(this) || StaffManager.getAllStaff(StaffTrack.ADMIN).contains(this)
-                || StaffManager.getAllStaff(StaffTrack.DEV).contains(this) || StaffManager.getAllStaff(StaffTrack.MANAGER).contains(this);
-    }
 }

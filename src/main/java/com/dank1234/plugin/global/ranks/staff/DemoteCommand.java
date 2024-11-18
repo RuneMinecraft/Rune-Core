@@ -20,12 +20,12 @@ public class DemoteCommand extends ICommand {
 
         User target = User.of(args(0));
         if (target != null) {
-            if (!target.isStaff()) {
+            //if (!target.isStaff()) {
                 Message.create(player(), "&cThat user is not staff!").send(false);
                 return;
-            }
-            rPlayer().force(ForceType.COMMAND, "lp user "+target.username()+" parent cleartrack staff");
-            rPlayer().force(ForceType.COMMAND, "lp user "+target.username()+" permission unset rune.staff."+ StaffManager.getRank(target).name().toLowerCase());
+            //}
+            //rPlayer().force(ForceType.COMMAND, "lp user "+target.username()+" parent cleartrack staff");
+            //rPlayer().force(ForceType.COMMAND, "lp user "+target.username()+" permission unset rune.staff."+ StaffManager.getRank(target).name().toLowerCase());
         }else{
             rPlayer().force(ForceType.COMMAND, "say bye");
         }
