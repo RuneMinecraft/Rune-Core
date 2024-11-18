@@ -1,6 +1,8 @@
 com\dank1234\plugin\global\general\commands\AdventureCommand.class
 com\dank1234\utils\Locale.class
+com\dank1234\utils\wrapper\player\staff\StaffRank.class
 com\dank1234\utils\gui\MenuHolder.class
+com\dank1234\plugin\global\general\events\JoinListener.class
 com\dank1234\plugin\global\ranks\staff\PromoteCommand.class
 com\dank1234\utils\data\Database.class
 com\dank1234\utils\gui\Menu.class
@@ -26,6 +28,7 @@ com\dank1234\utils\wrapper\message\Message.class
 com\dank1234\utils\wrapper\message\MessageType.class
 com\dank1234\plugin\survival\titles\Title.class
 com\dank1234\utils\data\ProgressBar.class
+com\dank1234\utils\wrapper\player\staff\Staff.class
 com\dank1234\utils\data\playerdata\Data.class
 com\dank1234\plugin\survival\economy\Tokens.class
 com\dank1234\utils\data\playerdata\DataManager.class
@@ -44,6 +47,7 @@ com\dank1234\utils\command\Register$1.class
 com\dank1234\utils\command\Event.class
 com\dank1234\plugin\Bootstrap.class
 com\dank1234\utils\server\Server.class
+com\dank1234\utils\data\database\StaffManager.class
 com\dank1234\utils\wrapper\message\Messages.class
 com\dank1234\plugin\global\general\events\ChatFormatter.class
 com\dank1234\utils\data\Config.class

@@ -1,16 +1,33 @@
 package com.dank1234.utils.data;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+
+import java.sql.*;
 
 public final class Database {
-    private Config config = Config.get();
+    private static HikariDataSource dataSource;
+    private static Config config = Config.get();
     private Connection connection;
 
     static {
         try {
             Class.forName("org.mariadb.jdbc.Driver");
+
+            HikariConfig hikariConfig = new HikariConfig();
+            hikariConfig.setJdbcUrl(config.getValue("database.host", String.class) + config.getValue("database.schema", String.class));
+            hikariConfig.setUsername((config.getValue("database.user", String.class)));
+            hikariConfig.setPassword((config.getValue("database.password", String.class)));
+
+            hikariConfig.setMaximumPoolSize(10);
+            hikariConfig.setMinimumIdle(2);
+            hikariConfig.setIdleTimeout(30000);
+            hikariConfig.setMaxLifetime(1800000);
+            hikariConfig.setConnectionTimeout(10000);
+
+            hikariConfig.setConnectionTestQuery("SELECT 1");
+
+            dataSource = new HikariDataSource(hikariConfig);
         } catch (ClassNotFoundException e) {
             System.err.println("MariaDB driver not found: " + e.getMessage());
             e.printStackTrace();
@@ -53,25 +70,35 @@ public final class Database {
         return new Database();
     }
 
-    public Connection getConnection() throws Exception {
-        return !this.connection.isClosed() ? this.connection : DriverManager.getConnection(this.JDBC_URL, USERNAME, PASSWORD);
+    public static Connection getConnection() throws SQLException {
+        return dataSource.getConnection();
     }
 
-    public String getSchema() {
-        return this.schema;
+    public static void close(Connection conn, PreparedStatement stmt, ResultSet rs) {
+        try {
+            if (rs != null) rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try {
+            if (stmt != null) stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try {
+            if (conn != null) conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void closeConnection() {
-        if (this.connection != null) {
-            try {
-                this.connection.close();
-                System.out.println("Database connection closed");
-            } catch (SQLException e) {
-                System.err.println("Error closing the database connection: " + e.getMessage());
-                e.printStackTrace();
-            } finally {
-                this.connection = null;
-            }
+    public static void close(Connection conn, PreparedStatement stmt) {
+        close(conn, stmt, null);
+    }
+
+    public static void shutdown() {
+        if (dataSource != null) {
+            dataSource.close();
         }
     }
 }

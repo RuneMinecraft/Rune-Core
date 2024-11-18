@@ -39,7 +39,7 @@ public class Staff extends User {
         return StaffManager.getStaff(username).orElse(null);
     }
 
-    public String rank() {
+    public StaffRank rank() {
         return rank;
     }
     public void setRank(StaffRank rank) {

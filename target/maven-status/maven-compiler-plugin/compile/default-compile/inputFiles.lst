@@ -1,5 +1,7 @@
 X:\Rune-Core\src\main\java\com\dank1234\plugin\global\general\commands\SpectatorCommand.java
+X:\Rune-Core\src\main\java\com\dank1234\utils\wrapper\player\staff\StaffRank.java
 X:\Rune-Core\src\main\java\com\dank1234\plugin\survival\titles\Title.java
+X:\Rune-Core\src\main\java\com\dank1234\utils\wrapper\player\staff\Staff.java
 X:\Rune-Core\src\main\java\com\dank1234\plugin\global\ranks\staff\DemoteCommand.java
 X:\Rune-Core\src\main\java\com\dank1234\plugin\Bootstrap.java
 X:\Rune-Core\src\main\java\com\dank1234\utils\DateUtils.java
@@ -20,12 +22,14 @@ X:\Rune-Core\src\main\java\com\dank1234\plugin\survival\economy\Tokens.java
 X:\Rune-Core\src\main\java\com\dank1234\plugin\global\spawn\SpawnCommand.java
 X:\Rune-Core\src\main\java\com\dank1234\plugin\global\general\commands\RuneCommand.java
 X:\Rune-Core\src\main\java\com\dank1234\plugin\global\pluginmanagement\PluginCommand.java
+X:\Rune-Core\src\main\java\com\dank1234\plugin\global\general\events\JoinListener.java
 X:\Rune-Core\src\main\java\com\dank1234\utils\server\ServerType.java
 X:\Rune-Core\src\main\java\com\dank1234\plugin\global\general\commands\DiscordCommand.java
 X:\Rune-Core\src\main\java\com\dank1234\plugin\survival\titles\Titles.java
 X:\Rune-Core\src\main\java\com\dank1234\utils\data\database\UserManager.java
 X:\Rune-Core\src\main\java\com\dank1234\utils\command\Register.java
 X:\Rune-Core\src\main\java\com\dank1234\utils\wrapper\message\MessageType.java
+X:\Rune-Core\src\main\java\com\dank1234\utils\data\database\StaffManager.java
 X:\Rune-Core\src\main\java\com\dank1234\utils\gui\Menu.java
 X:\Rune-Core\src\main\java\com\dank1234\utils\command\ICommand.java
 X:\Rune-Core\src\main\java\com\dank1234\plugin\Main.java

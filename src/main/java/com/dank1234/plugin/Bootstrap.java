@@ -7,6 +7,7 @@ import com.dank1234.utils.data.Config;
 import com.dank1234.utils.data.Database;
 import com.dank1234.utils.data.Version;
 import com.dank1234.utils.data.VersionType;
+import com.dank1234.utils.data.database.StaffManager;
 import com.dank1234.utils.data.database.UserManager;
 import com.dank1234.utils.server.Server;
 import org.bukkit.plugin.InvalidPluginException;
@@ -59,9 +60,12 @@ public class Bootstrap implements Utils {
         Logger.logRaw("[RuneMC | Bootstrap] Plugin Enabled!");
 
         UserManager.ensureTableExists();
+        StaffManager.ensureTableExists();
     }
 
     public void disable() {
+        Logger.logRaw("[RuneMC | Bootstrap] Disconnecting from database...");
+        Runtime.getRuntime().addShutdownHook(new Thread(Database::shutdown));
         Logger.logRaw("[RuneMC | Bootstrap] Disabling all commands...");
         register.unregisterCommands();
         Logger.logRaw("[RuneMC | Bootstrap] Disabling all events...");
