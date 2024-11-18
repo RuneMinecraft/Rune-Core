@@ -20,14 +20,15 @@ public class Bootstrap implements Utils {
         return Bootstrap.pluginLoader;
     }
 
-    final Version version = Version.of(VersionType.DEVELOPMENT, "0.1");
-    final Database database = Database.of();
-    final Register register = Register.get();
-    final Config config = Config.get();
+    Version version = Version.of(VersionType.DEVELOPMENT, "0.1");
+    Database database;
+    Register register;
+    Config config;
     Server server;
 
     public void load() throws InvalidPluginException {
         pluginLoader = Main.get().getPluginLoader();
+        config = Config.get();
 
         Logger.logRaw(centreText("<--------------------------------------------------------->"));
         Logger.logRaw(centreText("<------------------> RuneMC | Rune-Core <----------------->"));
@@ -41,8 +42,12 @@ public class Bootstrap implements Utils {
 
         Logger.logRaw("[RuneMC | Bootstrap] Loading config...");
         config.loadConfig();
+
         Logger.logRaw("[RuneMC | Bootstrap] Initializing server info...");
         server = Server.of();
+
+        database = Database.of();
+        register = Register.get();
     }
 
     public void enable() {
@@ -51,9 +56,9 @@ public class Bootstrap implements Utils {
         Logger.logRaw("[RuneMC | Bootstrap] Loading events...");
         register.autoRegisterListeners();
 
-        UserManager.ensureTableExists();
-
         Logger.logRaw("[RuneMC | Bootstrap] Plugin Enabled!");
+
+        UserManager.ensureTableExists();
     }
 
     public void disable() {

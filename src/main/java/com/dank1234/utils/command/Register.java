@@ -63,7 +63,7 @@ public final class Register {
                     Cmd cmdAnnotation = clazz.getAnnotation(Cmd.class);
                     if (cmdAnnotation != null) {
                         if ((cmdAnnotation.server() != ServerType.GLOBAL) && currentServer != cmdAnnotation.server()) {
-                            //continue;
+                            continue;
                         }
 
                         cmd.names(cmdAnnotation.names());
@@ -165,8 +165,10 @@ public final class Register {
                     return Register.get().register(sender, this, commandLabel, args);
                 }
             };
+            List<String> aliases = new ArrayList<>(Arrays.stream(cmdAnnotation.names()).toList());
+            aliases.remove(name);
 
-            command.setAliases(Arrays.asList(cmdAnnotation.names()));
+            command.setAliases(aliases);
             command.setPermission(String.join(",", cmdAnnotation.perms()));
 
             commandMap.register(Main.get().getName(), command);

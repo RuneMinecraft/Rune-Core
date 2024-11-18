@@ -11,7 +11,7 @@ public class User {
     private final UUID uuid;
     private final String username;
 
-    User(UUID uuid, String username) {
+    protected User(UUID uuid, String username) {
         this.uuid = uuid;
         this.username = username;
     }

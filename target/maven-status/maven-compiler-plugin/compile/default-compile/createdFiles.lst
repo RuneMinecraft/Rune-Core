@@ -1,7 +1,6 @@
 com\dank1234\plugin\global\general\commands\AdventureCommand.class
 com\dank1234\utils\Locale.class
 com\dank1234\utils\gui\MenuHolder.class
-com\dank1234\plugin\global\administration\DevCommand.class
 com\dank1234\plugin\global\ranks\staff\PromoteCommand.class
 com\dank1234\utils\data\Database.class
 com\dank1234\utils\gui\Menu.class

@@ -8,6 +8,15 @@ public final class Database {
     private Config config = Config.get();
     private Connection connection;
 
+    static {
+        try {
+            Class.forName("org.mariadb.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            System.err.println("MariaDB driver not found: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
     private final String USERNAME = config.getValue("database.user", String.class);
     private final String PASSWORD = config.getValue("database.password", String.class);
     private String JDBC_URL = config.getValue("database.host", String.class);
@@ -44,8 +53,8 @@ public final class Database {
         return new Database();
     }
 
-    public Connection getConnection() {
-        return this.connection;
+    public Connection getConnection() throws Exception {
+        return !this.connection.isClosed() ? this.connection : DriverManager.getConnection(this.JDBC_URL, USERNAME, PASSWORD);
     }
 
     public String getSchema() {
