@@ -21,8 +21,9 @@ public final class Config {
     // added reentrantlock for thread safety
     private static final ReentrantLock lock = new ReentrantLock();
     private static Config instance;
-    
-    private Map<String, Object> configMap;
+
+    // NULL CHECKSSSS
+    private Map<String, Object> configMap = new Hashmap<>();
     private File loadedConfigFile;
     
     private Config() {}
@@ -39,23 +40,30 @@ public final class Config {
     }
 
     public void loadConfig() {
+        lock.lock();
+        try {
+            loadedConfigFile = findConfigFile().orElse(null);
 
-        loadedConfigFile = findConfigFile().orElse(null);
+            if (loadedConfigFile == null) {
+                Logger.logRaw("[BootStrap | Config] No config file found.");
+                return;
+            }
+    
+            try (InputStream input = new FileInputStream(loadedConfigFile)) {
+                Yaml yaml = new Yaml();
 
-        if (loadedConfigFile == null) {
-            Logger.logRaw("[BootStrap | Config] No config file found.");
-            return;
-        }
-
-        try (InputStream input = new FileInputStream(loadedConfigFile)) {
-            Yaml yaml = new Yaml();
-            configMap = yaml.load(input);
-            Logger.logRaw("[BootStrap | Config] Config file loaded successfly");
-        } caatach (IOExpection e) {
-            Logger.lograw("[Bootstrap | Config] Failed to load coifng file: : " + e.getMessage());
-            e.printStackTrace();
-        }
-        
+                // paranoia
+                Map<String, Object> loadedMap = yaml.load(input);
+                configMap = (loadedMap != null) ? loadedMap : new HashMap<>();
+                
+                Logger.logRaw("[BootStrap | Config] Config file loaded successfly");
+            } catch (IOException e) {
+                Logger.logRaw("[Bootstrap | Config] Failed to load coifng file: : " + e.getMessage());
+                e.printStackTrace();
+            }   
+        } finally {
+            lock.unlock();
+        }    
     }
 
     public Optional<File> findConfigFile() {
@@ -65,13 +73,14 @@ public final class Config {
             .map(File::new)
             .filter(File::exists)
             .peek(file -> Logger.logRaw("[Bootstrap | Config] Found config file: " + file.getPath()))
+            .findFirst();
     }
 
     public Optional<String> getString(String key) {
         return Optional.ofNullable(getValue(key, String.class));
     }
 
-    public <T> T getValue(String key, class<T> type) {
+    public <T> T getValue(String key, Class<T> type) {
         
         // supports any type using generics and improves type safety
         if (configMap != null && configMap.containsKey(key)) {
@@ -84,23 +93,31 @@ public final class Config {
     }
 
     public void setValue(String key, String value) {
-        if (configMap != null) {
+        lock.lock();
+        try {
+
+            // more paranoia
+            if (configMap == null) {
+                configMap = new HashMap<>();
+            }
             configMap.put(key, value);
             saveConfig();
+        } finally {
+            lock.unlock();
         }
     }
 
     private void saveConfig() {
         if (loadedConfigFile == null) {
             Logger.logRaw("[Bootstrap | Config] No configuration file to save.");
-            return
+            return;
         }
 
         try (Writer writer = new FileWriter(loadedConfigFile)) {
             Yaml yaml = new Yaml();
             yaml.dump(configMap, writer);
             Logger.logRaw("[Bootstrap | Config] Config file saved successfly.");
-        } catch (IOExpection e) {
+        } catch (IOException e) {
             Logger.logRaw("[Bootstrap | Config] Filed to save config file: " + e.getMessage());
             e.printStackTrace();
         }
