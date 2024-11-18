@@ -5,6 +5,7 @@ import org.yaml.snakeyaml.Yaml;
 
 import java.io.*;
 import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.locks.ReentrantLock;
@@ -22,8 +23,8 @@ public final class Config {
     private static final ReentrantLock lock = new ReentrantLock();
     private static Config instance;
 
-    // NULL CHECKSSSS
-    private Map<String, Object> configMap = new Hashmap<>();
+    // config data
+    private Map<String, Object> configMap = new HashMap<>();
     private File loadedConfigFile;
     
     private Config() {}
@@ -83,7 +84,7 @@ public final class Config {
     public <T> T getValue(String key, Class<T> type) {
         
         // supports any type using generics and improves type safety
-        if (configMap != null && configMap.containsKey(key)) {
+        if (configMap.containsKey(key)) {
             Object value = configMap.get(key);
             if (type.isInstance(value)) {
                 return type.cast(value);
@@ -95,11 +96,6 @@ public final class Config {
     public void setValue(String key, String value) {
         lock.lock();
         try {
-
-            // more paranoia
-            if (configMap == null) {
-                configMap = new HashMap<>();
-            }
             configMap.put(key, value);
             saveConfig();
         } finally {
