@@ -22,7 +22,6 @@ public class Bootstrap implements Utils {
     }
 
     Version version = Version.of(VersionType.DEVELOPMENT, "0.1");
-    Database database;
     Register register;
     Config config;
     Server server;
@@ -47,7 +46,6 @@ public class Bootstrap implements Utils {
         Logger.logRaw("[RuneMC | Bootstrap] Initializing server info...");
         server = Server.of();
 
-        database = Database.of();
         register = Register.get();
     }
 

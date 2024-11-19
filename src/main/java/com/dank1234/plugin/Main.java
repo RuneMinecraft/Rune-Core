@@ -31,9 +31,6 @@ public final class Main extends JavaPlugin {
     public Config config() {
         return this.bootstrap.config;
     }
-    public Database database() {
-        return this.bootstrap.database;
-    }
 
     @Override
     public void onLoad() {

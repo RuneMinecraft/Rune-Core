@@ -3,6 +3,8 @@ package com.dank1234.utils.data.database;
 import com.dank1234.plugin.Main;
 import com.dank1234.utils.data.Database;
 import com.dank1234.utils.wrapper.player.User;
+import com.dank1234.utils.wrapper.player.staff.Staff;
+import com.dank1234.utils.wrapper.player.staff.StaffRank;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -48,7 +50,7 @@ public class UserManager {
 
     public static Optional<User> getUser(UUID uuid) {
         String sql = "SELECT * FROM " + TABLE + " WHERE uuid = ?";
-        return executeQuery(sql, pstmt -> pstmt.setString(1, name), rs -> rs.next() ? mapResultSetToUser(rs) : null);
+        return executeQuery(sql, pstmt -> pstmt.setString(1, String.valueOf(uuid)), rs -> rs.next() ? mapResultSetToUser(rs) : null);
     }
 
     public static Optional<User> getUser(String name) {
@@ -91,6 +93,10 @@ public class UserManager {
             e.printStackTrace();
             return Optional.empty();
         }
+    }
+
+    private static User mapResultSetToUser(ResultSet rs) throws SQLException {
+        return User.of(UUID.fromString(rs.getString("uuid")), rs.getString("username"));
     }
 
     @FunctionalInterface

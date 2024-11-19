@@ -16,9 +16,9 @@ public class PromoteCommand extends ICommand {
     @Override
     public void execute(CommandSender sender, String[] args) {
         User target;
-        if (UserManager.getUser(args(0)).isPresent()) {
+        if (User.of(args(0)) != null) {
             // User is provided and assigned.
-            target = UserManager.getUser(args(0)).get();
+            target = User.of(args(0));
         }else throw new IllegalStateException("User is null!");
 
         // Player is not staff. Add HELPER.
@@ -34,6 +34,8 @@ public class PromoteCommand extends ICommand {
                 return;
             }
             staff.setRank(StaffRank.getByOrdinal(staff.rank().ordinal() + 1));
+            StaffManager.delete(staff.uuid());
+            StaffManager.insert(staff);
             // TODO: SEND MESSAGE
         }
     }

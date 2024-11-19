@@ -8,7 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public final class Database {
+public final class  Database {
     private static HikariDataSource dataSource;
 
     static {

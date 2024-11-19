@@ -42,44 +42,51 @@ public class Staff extends User {
     public StaffRank rank() {
         return rank;
     }
-    public void setRank(StaffRank rank) {
+    public Staff setRank(StaffRank rank) {
         this.rank = rank;
+        return this;
     }
     public long time() {
         return time;
     }
-    public void setTime(long time) {
+    public Staff setTime(long time) {
         this.time = time;
+        return this;
     }
     public int messages() {
         return messages;
     }
-    public void setMessages(int messages) {
+    public Staff setMessages(int messages) {
         this.messages = messages;
+        return this;
     }
     public int warns() {
         return warns;
     }
-    public void setWarns(int warns) {
+    public Staff setWarns(int warns) {
         this.warns = warns;
+        return this;
     }
     public int mutes() {
         return mutes;
     }
-    public void setMutes(int mutes) {
+    public Staff setMutes(int mutes) {
         this.mutes = mutes;
+        return this;
     }
     public int bans() {
         return bans;
     }
-    public void setBans(int bans) {
+    public Staff setBans(int bans) {
         this.bans = bans;
+        return this;
     }
     public boolean staffMode() {
         return staffMode;
     }
-    public void setStaffMode(boolean staffMode) {
+    public Staff setStaffMode(boolean staffMode) {
         this.staffMode = staffMode;
+        return this;
     }
 
     @Override

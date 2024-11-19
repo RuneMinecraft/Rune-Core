@@ -2,14 +2,12 @@ package com.dank1234.utils.data.database;
 
 import com.dank1234.plugin.Main;
 import com.dank1234.utils.data.Database;
+import com.dank1234.utils.wrapper.player.User;
 import com.dank1234.utils.wrapper.player.staff.Staff;
 import com.dank1234.utils.wrapper.player.staff.StaffRank;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 public class StaffManager {
     private static final String TABLE = "staff";
@@ -42,6 +40,10 @@ public class StaffManager {
             pstmt.setBoolean(8, user.staffMode());
         });
     }
+    public static void delete(UUID uuid) {
+        String sql = "DELETE FROM " + TABLE + " WHERE uuid = ?";
+        executeUpdate(sql, pstmt -> pstmt.setString(1, uuid.toString()));
+    }
 
     public static Optional<Object> getValue(UUID uuid, String field) {
         String sql = "SELECT " + field + " FROM staff WHERE uuid = ?";
@@ -51,7 +53,7 @@ public class StaffManager {
     public static boolean setValue(UUID uuid, String field, Object value) {
         String sql = "UPDATE staff SET " + field + " = ? WHERE uuid = ?";
         return executeUpdate(sql, pstmt -> {
-            pstmt.setObject(1, value);
+            pstmt.setString(1, (String) value);
             pstmt.setString(2, uuid.toString());
         }) > 0;
     }
@@ -61,7 +63,18 @@ public class StaffManager {
         return executeQuery(sql, pstmt -> pstmt.setString(1, rank.name()), rs -> {
             List<Staff> staffList = new ArrayList<>();
             while (rs.next()) {
-                staffList.add(mapResultSetToStaff(rs));
+                staffList.add(mapResultSetToUser(rs));
+            }
+            return staffList;
+        });
+    }
+
+    public static Optional<List<Staff>> getAll() {
+        String sql = "SELECT uuid FROM staff";
+        return executeQuery(sql, pstmt -> {}, rs -> {
+            List<Staff> staffList = new ArrayList<>();
+            while (rs.next()) {
+                staffList.add(mapResultSetToUser(rs));
             }
             return staffList;
         });
@@ -69,14 +82,14 @@ public class StaffManager {
 
     public static Optional<Staff> getStaff(UUID uuid) {
         String sql = "SELECT * FROM staff WHERE uuid = ?";
-        return executeQuery(sql, pstmt -> pstmt.setString(1, uuid.toString()), rs -> rs.next() ? mapResultSetToStaff(rs) : null);
+        return executeQuery(sql, pstmt -> pstmt.setString(1, uuid.toString()), rs -> rs.next() ? mapResultSetToUser(rs) : null);
     }
 
     public static Optional<Staff> getStaff(String username) {
         String sql = "SELECT staff.* FROM staff " +
                 "INNER JOIN users ON staff.uuid = users.uuid " +
                 "WHERE users.username = ?";
-        return executeQuery(sql, pstmt -> pstmt.setString(1, username), rs -> rs.next() ? mapResultSetToStaff(rs) : null);
+        return executeQuery(sql, pstmt -> pstmt.setString(1, username), rs -> rs.next() ? mapResultSetToUser(rs) : null);
     }
 
     public static boolean isInStaffMode(UUID uuid) {
@@ -88,8 +101,17 @@ public class StaffManager {
     }
 
     private static Staff mapResultSetToUser(ResultSet rs) throws SQLException {
-        return Staff.of(rs.getString("uuid"))
-                .setRank(StaffRank.valueOf(rs.getString("rank")))
+        User user = User.of(UUID.fromString(rs.getString("uuid")));
+        String rankString = rs.getString("rank");
+        StaffRank rank;
+
+        try {
+            rank = StaffRank.valueOf(rankString);
+        } catch (IllegalArgumentException | NullPointerException e) {
+            rank = StaffRank.HELPER;
+        }
+
+        return Staff.of(user.uuid(), user.username(), rank)
                 .setTime(rs.getLong("time"))
                 .setMessages(rs.getInt("messages"))
                 .setWarns(rs.getInt("warns"))

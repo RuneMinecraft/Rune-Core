@@ -11,7 +11,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 public class JoinListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
-        if (UserManager.getUser(e.getPlayer().getUniqueId()).isPresent()) {
+        if (User.of(e.getPlayer().getUniqueId()) != null) {
             return;
         }
         UserManager.insert(User.of(e.getPlayer().getUniqueId(), e.getPlayer().getName()));
