@@ -2,7 +2,6 @@ package com.dank1234.utils.data.database;
 
 import com.dank1234.plugin.Main;
 import com.dank1234.utils.data.Database;
-import com.dank1234.utils.wrapper.player.User;
 import com.dank1234.utils.wrapper.player.staff.Staff;
 import com.dank1234.utils.wrapper.player.staff.StaffRank;
 
@@ -27,18 +26,12 @@ public class StaffManager {
                 "staffmode BOOLEAN DEFAULT FALSE, " +
                 "FOREIGN KEY (uuid) REFERENCES users(uuid) ON DELETE CASCADE" +
                 ")";
-        try (Connection conn = Database.getConnection();
-             Statement stmt = conn.createStatement()) {
-            stmt.execute(sql);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        executeUpdate(sql);
     }
 
     public static void insert(Staff user) {
         String sql = "INSERT INTO " + TABLE + " (uuid, rank, time, messages, warns, mutes, bans, staffmode) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-        try (Connection conn = Database.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        executeUpdate(sql, pstmt -> {
             pstmt.setString(1, user.uuid().toString());
             pstmt.setString(2, user.rank().name());
             pstmt.setLong(3, user.time());
@@ -47,108 +40,47 @@ public class StaffManager {
             pstmt.setInt(6, user.mutes());
             pstmt.setInt(7, user.bans());
             pstmt.setBoolean(8, user.staffMode());
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        });
     }
 
     public static Optional<Object> getValue(UUID uuid, String field) {
         String sql = "SELECT " + field + " FROM staff WHERE uuid = ?";
-        try (Connection conn = Database.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, uuid.toString());
-            ResultSet rs = pstmt.executeQuery();
-            if (rs.next()) {
-                return Optional.ofNullable(rs.getObject(field));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return Optional.empty();
+        return executeQuery(sql, pstmt -> pstmt.setString(1, uuid.toString()), rs -> rs.getObject(field));
     }
 
     public static boolean setValue(UUID uuid, String field, Object value) {
         String sql = "UPDATE staff SET " + field + " = ? WHERE uuid = ?";
-        try (Connection conn = Database.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        return executeUpdate(sql, pstmt -> {
             pstmt.setObject(1, value);
             pstmt.setString(2, uuid.toString());
-            return pstmt.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
+        }) > 0;
     }
 
-    public static Optional<List<Staff>> getAll() {
-        String sql = "SELECT uuid FROM staff";
-        List<Staff> users = new ArrayList<>();
-
-        try (Connection conn = Database.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                users.add(Staff.of(rs.getString("uuid")));
-            }
-            return Optional.of(users);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return Optional.empty();
-    }
     public static Optional<List<Staff>> getAll(StaffRank rank) {
         String sql = "SELECT uuid FROM staff WHERE rank = ?";
-        List<Staff> users = new ArrayList<>();
-
-        try (Connection conn = Database.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, rank.toString());
-            ResultSet rs = pstmt.executeQuery();
+        return executeQuery(sql, pstmt -> pstmt.setString(1, rank.name()), rs -> {
+            List<Staff> staffList = new ArrayList<>();
             while (rs.next()) {
-                users.add(Staff.of(rs.getString("uuid")));
+                staffList.add(mapResultSetToStaff(rs));
             }
-            return Optional.of(users);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return Optional.empty();
+            return staffList;
+        });
     }
 
     public static Optional<Staff> getStaff(UUID uuid) {
         String sql = "SELECT * FROM staff WHERE uuid = ?";
-        try (Connection conn = Database.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, uuid.toString());
-            ResultSet rs = pstmt.executeQuery();
-            if (rs.next()) {
-                return Optional.of(mapResultSetToUser(rs));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return Optional.empty();
+        return executeQuery(sql, pstmt -> pstmt.setString(1, uuid.toString()), rs -> rs.next() ? mapResultSetToStaff(rs) : null);
     }
 
     public static Optional<Staff> getStaff(String username) {
         String sql = "SELECT staff.* FROM staff " +
                 "INNER JOIN users ON staff.uuid = users.uuid " +
                 "WHERE users.username = ?";
-        try (Connection conn = Database.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, username);
-            ResultSet rs = pstmt.executeQuery();
-            if (rs.next()) {
-                return Optional.of(mapResultSetToUser(rs));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return Optional.empty();
+        return executeQuery(sql, pstmt -> pstmt.setString(1, username), rs -> rs.next() ? mapResultSetToStaff(rs) : null);
     }
 
     public static boolean isInStaffMode(UUID uuid) {
-        return getValue(uuid, "staffmode").map(value -> (Boolean) value).orElse(false);
+        return getValue(uuid, "staffmode").map(Boolean.class::cast).orElse(false);
     }
 
     public static boolean setStaffMode(UUID uuid, boolean staffMode) {
@@ -156,14 +88,54 @@ public class StaffManager {
     }
 
     private static Staff mapResultSetToUser(ResultSet rs) throws SQLException {
-        Staff user = Staff.of(rs.getString("uuid"));
-        user.setRank(StaffRank.valueOf(rs.getString("rank")));
-        user.setTime(rs.getLong("time"));
-        user.setMessages(rs.getInt("messages"));
-        user.setWarns(rs.getInt("warns"));
-        user.setMutes(rs.getInt("mutes"));
-        user.setBans(rs.getInt("bans"));
-        user.setStaffMode(rs.getBoolean("staffmode"));
-        return user;
+        return Staff.of(rs.getString("uuid"))
+                .setRank(StaffRank.valueOf(rs.getString("rank")))
+                .setTime(rs.getLong("time"))
+                .setMessages(rs.getInt("messages"))
+                .setWarns(rs.getInt("warns"))
+                .setMutes(rs.getInt("mutes"))
+                .setBans(rs.getInt("bans"))
+                .setStaffMode(rs.getBoolean("staffmode"));
+    }
+
+    private static int executeUpdate(String sql) {
+        try (Connection conn = Database.getConnection(); Statement stmt = conn.createStatement()) {
+            return stmt.executeUpdate(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    private static int executeUpdate(String sql, SQLConsumer<PreparedStatement> consumer) {
+        try (Connection conn = Database.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            consumer.accept(pstmt);
+            return pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    private static <T> Optional<T> executeQuery(String sql, SQLConsumer<PreparedStatement> consumer, SQLFunction<ResultSet, T> mapper) {
+        try (Connection conn = Database.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            consumer.accept(pstmt);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                return Optional.ofNullable(mapper.apply(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return Optional.empty();
+        }
+    }
+
+    @FunctionalInterface
+    private interface SQLConsumer<T> {
+        void accept(T t) throws SQLException;
+    }
+
+    @FunctionalInterface
+    private interface SQLFunction<T, R> {
+        R apply(T t) throws SQLException;
     }
 }
