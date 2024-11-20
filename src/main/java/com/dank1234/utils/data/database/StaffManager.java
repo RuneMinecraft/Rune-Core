@@ -5,6 +5,7 @@ import com.dank1234.utils.data.Database;
 import com.dank1234.utils.wrapper.player.User;
 import com.dank1234.utils.wrapper.player.staff.Staff;
 import com.dank1234.utils.wrapper.player.staff.StaffRank;
+import org.bukkit.Bukkit;
 
 import java.sql.*;
 import java.util.*;
@@ -53,7 +54,7 @@ public class StaffManager {
     public static boolean setValue(UUID uuid, String field, Object value) {
         String sql = "UPDATE staff SET " + field + " = ? WHERE uuid = ?";
         return executeUpdate(sql, pstmt -> {
-            pstmt.setString(1, (String) value);
+            pstmt.setObject(1, value);
             pstmt.setString(2, uuid.toString());
         }) > 0;
     }
@@ -92,12 +93,8 @@ public class StaffManager {
         return executeQuery(sql, pstmt -> pstmt.setString(1, username), rs -> rs.next() ? mapResultSetToUser(rs) : null);
     }
 
-    public static boolean isInStaffMode(UUID uuid) {
+    public static boolean inStaffMode(UUID uuid) {
         return getValue(uuid, "staffmode").map(Boolean.class::cast).orElse(false);
-    }
-
-    public static boolean setStaffMode(UUID uuid, boolean staffMode) {
-        return setValue(uuid, "staffmode", staffMode);
     }
 
     private static Staff mapResultSetToUser(ResultSet rs) throws SQLException {

@@ -8,37 +8,31 @@ import com.dank1234.utils.wrapper.message.ForceType;
 import com.dank1234.utils.wrapper.player.User;
 import com.dank1234.utils.wrapper.player.staff.Staff;
 import com.dank1234.utils.wrapper.player.staff.StaffRank;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
 import java.util.Objects;
 
 @Cmd(names="staff/demote", perms="rune.staff.manager")
 public class DemoteCommand extends ICommand {
-    // Database staffDatabase = Database.of("staff");
-
     @Override
     public void execute(CommandSender sender, String[] args) {
         User target;
         if (User.of(args(0)) != null) {
             // User is provided and assigned.
             target = User.of(args(0));
-        }else throw new IllegalStateException("User is null!");
+        } else throw new IllegalStateException("User is null!");
 
-        // Player is not staff.
-        if (Staff.of(target.uuid()) != null) {
-            // TODO: SEND MESSAGE
-        } else { // Player is staff. Add the rank lower.
+        if (StaffManager.getStaff(target.uuid()).isEmpty()) {
+            Message.create(player(), "&cThat player is not staff!").send();
+        } else {
             Staff staff = Staff.of(target.uuid());
             if (args.length == 2) {
                 StaffRank rank = StaffRank.valueOf(args(1).toUpperCase());
-                if (staff.rank().equals(StaffRank.MANAGER)) {
-                    // nice try pricks no demoting me - dan
-                    // TODO: SEND MESSAGE
-                    return;
-                }
-                if (staff.rank().ordinal() == 0) { // They are the lowest rank. Remove staff.
+
+                if (staff.rank().ordinal() == 0) {
                     StaffManager.delete(staff.uuid());
-                    // TODO: SEND MESSAGE
+                    Message.create(player(), "").send(); // TODO: Write this idk
                     return;
                 }
                 staff.setRank(rank);

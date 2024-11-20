@@ -3,11 +3,12 @@ package com.dank1234.plugin.global.ranks.staff;
 import com.dank1234.utils.command.Cmd;
 import com.dank1234.utils.command.ICommand;
 import com.dank1234.utils.data.database.StaffManager;
-import com.dank1234.utils.data.database.UserManager;
+import com.dank1234.utils.data.database.UserManager; // ?
 import com.dank1234.utils.wrapper.message.Message;
 import com.dank1234.utils.wrapper.player.User;
 import com.dank1234.utils.wrapper.player.staff.Staff;
 import com.dank1234.utils.wrapper.player.staff.StaffRank;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -19,7 +20,7 @@ public class PromoteCommand extends ICommand {
         if (User.of(args(0)) != null) {
             // User is provided and assigned.
             target = User.of(args(0));
-        }else throw new IllegalStateException("User is null!");
+        } else throw new IllegalStateException("User is null!");
 
         // Player is not staff. Add HELPER.
         if (StaffManager.getStaff(target.uuid()).isEmpty()) {
@@ -34,9 +35,12 @@ public class PromoteCommand extends ICommand {
                 return;
             }
             staff.setRank(StaffRank.getByOrdinal(staff.rank().ordinal() + 1));
+            staff.setStaffMode(false);
+
             StaffManager.delete(staff.uuid());
             StaffManager.insert(staff);
-            // TODO: SEND MESSAGE
+
+            staff.setStaffMode(true);
         }
     }
 }

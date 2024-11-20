@@ -2,6 +2,7 @@ package com.dank1234.utils.wrapper.player.staff;
 
 import com.dank1234.utils.data.database.StaffManager;
 import com.dank1234.utils.wrapper.player.User;
+import org.bukkit.Bukkit;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
@@ -86,7 +87,9 @@ public class Staff extends User {
     }
     public Staff setStaffMode(boolean staffMode) {
         this.staffMode = staffMode;
-        return this;
+        StaffManager.setValue(this.uuid(), "staffmode", staffMode);
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user "+User.of(this.uuid()).username()+" parent "+(staffMode ? "remove " : "add ")+this.rank().getGroup().getName());
+        return this; // somethings broken wit this
     }
 
     @Override

@@ -25,6 +25,7 @@ X:\Rune-Core\src\main\java\com\dank1234\plugin\global\pluginmanagement\PluginCom
 X:\Rune-Core\src\main\java\com\dank1234\plugin\global\general\events\JoinListener.java
 X:\Rune-Core\src\main\java\com\dank1234\utils\server\ServerType.java
 X:\Rune-Core\src\main\java\com\dank1234\plugin\global\general\commands\DiscordCommand.java
+X:\Rune-Core\src\main\java\com\dank1234\plugin\global\general\commands\DataCommand.java
 X:\Rune-Core\src\main\java\com\dank1234\plugin\survival\titles\Titles.java
 X:\Rune-Core\src\main\java\com\dank1234\utils\data\database\UserManager.java
 X:\Rune-Core\src\main\java\com\dank1234\utils\command\Register.java

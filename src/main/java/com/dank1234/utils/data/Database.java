@@ -36,10 +36,7 @@ public final class  Database {
         }
     }
 
-    private Database() {
-
-    }
-
+    private Database() {}
     public static Connection getConnection() throws SQLException {
         return dataSource.getConnection();
     }
