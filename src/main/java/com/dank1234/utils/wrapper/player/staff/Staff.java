@@ -1,5 +1,6 @@
 package com.dank1234.utils.wrapper.player.staff;
 
+import com.dank1234.plugin.Main;
 import com.dank1234.utils.data.database.StaffManager;
 import com.dank1234.utils.wrapper.player.User;
 import org.bukkit.Bukkit;
@@ -88,8 +89,10 @@ public class Staff extends User {
     public Staff setStaffMode(boolean staffMode) {
         this.staffMode = staffMode;
         StaffManager.setValue(this.uuid(), "staffmode", staffMode);
-        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user "+User.of(this.uuid()).username()+" parent "+(staffMode ? "remove " : "add ")+this.rank().getGroup().getName());
-        return this; // somethings broken wit this
+        Bukkit.getScheduler().runTask(main.getInstance(), () -> {
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + user.username() + " parent " + (staffMode ? "remove " : "add ") + this.rank().getGroup().getName());
+        });
+        return this;
     }
 
     @Override
