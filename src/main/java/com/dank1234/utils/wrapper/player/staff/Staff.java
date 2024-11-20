@@ -89,7 +89,7 @@ public class Staff extends User {
     public Staff setStaffMode(boolean staffMode) {
         this.staffMode = staffMode;
         StaffManager.setValue(this.uuid(), "staffmode", staffMode);
-        Bukkit.getScheduler().runTask(main.getInstance(), () -> {
+        Bukkit.getScheduler().runTask(Main.get(), () -> {
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + user.username() + " parent " + (staffMode ? "remove " : "add ") + this.rank().getGroup().getName());
         });
         return this;
