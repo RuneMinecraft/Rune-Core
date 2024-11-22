@@ -5,7 +5,6 @@ import com.dank1234.utils.server.ServerType;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.model.group.Group;
 import org.jetbrains.annotations.NotNull;
-
 import java.util.Objects;
 
 public final class Consts {

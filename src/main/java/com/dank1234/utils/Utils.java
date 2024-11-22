@@ -8,6 +8,7 @@ import java.io.File;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 public interface Utils {
     default String Colour(String s) {
@@ -153,5 +154,12 @@ public interface Utils {
     default File getPluginByName(String path) {
         path = "plugins/"+path;
         return new File(path);
+    }
+
+    static boolean isPlayerOnline(UUID uuid) {
+        return Bukkit.getPlayer(uuid) != null;
+    }
+    static boolean isPlayerOnline(String username) {
+        return Bukkit.getPlayer(username) != null;
     }
 }

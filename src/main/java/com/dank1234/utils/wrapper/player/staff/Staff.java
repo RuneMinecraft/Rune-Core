@@ -1,8 +1,10 @@
 package com.dank1234.utils.wrapper.player.staff;
 
 import com.dank1234.plugin.Main;
+import com.dank1234.utils.RankUtils;
 import com.dank1234.utils.data.database.StaffManager;
 import com.dank1234.utils.wrapper.player.User;
+import net.luckperms.api.LuckPermsProvider;
 import org.bukkit.Bukkit;
 
 import javax.annotation.Nullable;
@@ -87,11 +89,12 @@ public class Staff extends User {
         return staffMode;
     }
     public Staff setStaffMode(boolean staffMode) {
+        if (staffMode == this.staffMode()) {
+            return this;
+        }
         this.staffMode = staffMode;
         StaffManager.setValue(this.uuid(), "staffmode", staffMode);
-        Bukkit.getScheduler().runTask(Main.get(), () -> {
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + user.username() + " parent " + (staffMode ? "remove " : "add ") + this.rank().getGroup().getName());
-        });
+        Bukkit.getScheduler().runTask(Main.get(), () -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + User.of(this.uuid()).username() + " parent " + (staffMode ? "remove " : "add ") + this.rank().getGroup().getName()));
         return this;
     }
 

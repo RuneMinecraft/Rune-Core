@@ -26,6 +26,6 @@ public class ChatFormatter implements Listener {
             prefix = staff.rank().toString();
         }
 
-        Message.create(prefix+" &r"+RankUtils.getPrefix(e.getPlayer())+"&r "+e.getPlayer().getName()+" &8» &r"+msg).send(false);
+        Message.create(prefix+" &r"+RankUtils.getPrefix(User.of(e.getPlayer().getUniqueId()))+"&r "+e.getPlayer().getName()+" &8» &r"+msg).send(false);
     }
 }

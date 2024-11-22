@@ -18,29 +18,28 @@ public class PromoteCommand extends ICommand {
     public void execute(CommandSender sender, String[] args) {
         User target;
         if (User.of(args(0)) != null) {
-            // User is provided and assigned.
             target = User.of(args(0));
         } else throw new IllegalStateException("User is null!");
 
-        // Player is not staff. Add HELPER.
+        Staff staff;
         if (StaffManager.getStaff(target.uuid()).isEmpty()) {
-            Staff newStaff = Staff.of(target.uuid(), target.username(), StaffRank.HELPER);
-            StaffManager.insert(newStaff);
-            // TODO: SEND MESSAGE
+            staff = Staff.of(target.uuid(), target.username(), StaffRank.HELPER);
+            StaffManager.insert(staff);
         } else { // Player is staff. Add the rank higher.
-            Staff staff = Staff.of(target.uuid());
+            staff = Staff.of(target.uuid());
             if (staff.rank().equals(StaffRank.MANAGER)) {
-                // THEY ARE MANAGER / CAN'T BE PROMOTED
-                // TODO: SEND MESSAGE
+                Message.create(player(), "&cThat player is manager so cannot be promoted further.").send();
                 return;
             }
-            staff.setRank(StaffRank.getByOrdinal(staff.rank().ordinal() + 1));
             staff.setStaffMode(false);
+            staff.setRank(StaffRank.getByOrdinal(staff.rank().ordinal() + 1));
 
             StaffManager.delete(staff.uuid());
             StaffManager.insert(staff);
 
             staff.setStaffMode(true);
         }
+
+        Message.create(player(), "&aPromoted &f"+args(0)+"&a to &f"+staff.rank().toString()+"&a.").send();
     }
 }

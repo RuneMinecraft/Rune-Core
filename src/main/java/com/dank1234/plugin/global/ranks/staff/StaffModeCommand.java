@@ -16,7 +16,7 @@ public class StaffModeCommand extends ICommand {
     @Override
     public void execute(CommandSender sender, String[] args) {
         User target = User.of(sender.getName());
-        if (args.length >= 1 ||User.of(args(0)) != null) {
+        if (args.length >= 1 && User.of(args(0)) != null) {
             target = User.of(args(0));
         }
 

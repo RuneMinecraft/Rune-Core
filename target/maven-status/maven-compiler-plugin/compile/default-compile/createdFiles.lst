@@ -30,6 +30,7 @@ com\dank1234\utils\wrapper\message\MessageType.class
 com\dank1234\plugin\survival\titles\Title.class
 com\dank1234\utils\data\ProgressBar.class
 com\dank1234\utils\wrapper\player\staff\Staff.class
+com\dank1234\plugin\global\ranks\staff\StaffStatsCommand.class
 com\dank1234\utils\data\playerdata\Data.class
 com\dank1234\plugin\survival\economy\Tokens.class
 com\dank1234\utils\data\playerdata\DataManager.class
