@@ -4,99 +4,128 @@ import com.dank1234.utils.Logger;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.*;
-import java.util.List;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.stream.Stream;
 
 public final class Config {
-
-    // im just going to put list here instead of in the function
     private static final List<String> CONFIG_LOCATIONS = List.of(
-        "plugins/Rune-Core/config.yml",
-        "config/Rune-Core/config.yml"
+            "plugins/Rune-Core/config.yml",
+            "config/Rune-Core/config.yml"
     );
 
-    // added reentrantlock for thread safety
     private static final ReentrantLock lock = new ReentrantLock();
-    private static Config instance;
 
-    // config data
-    private Map<String, Object> configMap = new HashMap<>();
+    private Map<String, Object> configData = new HashMap<>();
     private File loadedConfigFile;
-    
+
     private Config() {}
 
-    public static Config get() {
-        if (instance == null) {
-            synchronized (Config.class) {
-                if (instance == null) {
-                    instance = new Config();   
-                }
-            }
-        }
-        return instance;
+    private static final class InstanceHolder {
+        private static final Config instance = new Config();
     }
 
+    /**
+     * Gets the singleton instance of the Config class.
+     */
+    public static Config get() {
+        return InstanceHolder.instance;
+    }
+
+    /**
+     * Loads the configuration file into memory.
+     */
     public void loadConfig() {
         lock.lock();
         try {
             loadedConfigFile = findConfigFile().orElse(null);
 
             if (loadedConfigFile == null) {
-                Logger.logRaw("[BootStrap | Config] No config file found.");
+                Logger.log("[Config] No config file found.");
                 return;
             }
-    
+
             try (InputStream input = new FileInputStream(loadedConfigFile)) {
                 Yaml yaml = new Yaml();
 
-                // paranoia
+                // Parse the YAML file into a map
                 Map<String, Object> loadedMap = yaml.load(input);
-                configMap = (loadedMap != null) ? loadedMap : new HashMap<>();
-                
-                Logger.logRaw("[BootStrap | Config] Config file loaded successfly");
+                configData = (loadedMap != null) ? loadedMap : new HashMap<>();
+
+                Logger.log("[Config] Config file loaded successfully: " + loadedConfigFile.getPath());
             } catch (IOException e) {
-                Logger.logRaw("[Bootstrap | Config] Failed to load coifng file: : " + e.getMessage());
+                Logger.log("[Config] Failed to load config file: " + e.getMessage());
                 e.printStackTrace();
-            }   
+            }
         } finally {
             lock.unlock();
-        }    
+        }
     }
 
+    /**
+     * Finds the first available configuration file in the predefined locations.
+     */
     public Optional<File> findConfigFile() {
-
-        // added streams for file search better then spamming if statements DAN
         return CONFIG_LOCATIONS.stream()
-            .map(File::new)
-            .filter(File::exists)
-            .peek(file -> Logger.logRaw("[Bootstrap | Config] Found config file: " + file.getPath()))
-            .findFirst();
+                .map(File::new)
+                .filter(File::exists)
+                .peek(file -> Logger.log("[Config] Found config file: " + file.getPath()))
+                .findFirst();
     }
 
-    public Optional<String> getString(String key) {
-        return Optional.ofNullable(getValue(key, String.class));
-    }
+    /**
+     * Retrieves a configuration value by its key.
+     *
+     * @param key  The key path to the value (e.g., "database.host").
+     * @param type The expected type of the value.
+     * @param <T>  The type parameter.
+     * @return The configuration value, or {@code null} if not found or mismatched type.
+     */
+    public <T> T getValue(Class<T> type, String key) {
+        Objects.requireNonNull(key, "Key cannot be null");
 
-    public <T> T getValue(String key, Class<T> type) {
-        
-        // supports any type using generics and improves type safety
-        if (configMap.containsKey(key)) {
-            Object value = configMap.get(key);
-            if (type.isInstance(value)) {
-                return type.cast(value);
+        String[] keys = key.split("\\.");
+        Object value = configData;
+
+        for (String k : keys) {
+            if (value instanceof Map<?, ?> map) {
+                value = map.get(k);
+            } else {
+                return null; // Invalid path
             }
         }
-        return null;
+
+        if (type.isInstance(value)) {
+            return type.cast(value);
+        }
+
+        return null; // Mismatched type or missing key
     }
 
-    public void setValue(String key, String value) {
+    /**
+     * Retrieves a configuration value as a String.
+     */
+    public Optional<String> getString(String key) {
+        return Optional.ofNullable(getValue(String.class, key));
+    }
+
+    /**
+     * Sets a configuration value and saves the config file.
+     *
+     * @param key   The key path to set (e.g., "server.name").
+     * @param value The new value to set.
+     */
+    public void setValue(String key, Object value) {
         lock.lock();
         try {
-            configMap.put(key, value);
+            // Traverse and update the map for nested keys
+            String[] keys = key.split("\\.");
+            Map<String, Object> map = configData;
+
+            for (int i = 0; i < keys.length - 1; i++) {
+                map = (Map<String, Object>) map.computeIfAbsent(keys[i], k -> new HashMap<>());
+            }
+            map.put(keys[keys.length - 1], value);
+
             saveConfig();
         } finally {
             lock.unlock();
@@ -105,16 +134,17 @@ public final class Config {
 
     private void saveConfig() {
         if (loadedConfigFile == null) {
-            Logger.logRaw("[Bootstrap | Config] No configuration file to save.");
+            Logger.log("[Config] No configuration file to save.");
             return;
         }
 
         try (Writer writer = new FileWriter(loadedConfigFile)) {
             Yaml yaml = new Yaml();
-            yaml.dump(configMap, writer);
-            Logger.logRaw("[Bootstrap | Config] Config file saved successfly.");
+            yaml.dump(configData, writer);
+
+            Logger.log("[Config] Config file saved successfully.");
         } catch (IOException e) {
-            Logger.logRaw("[Bootstrap | Config] Filed to save config file: " + e.getMessage());
+            Logger.log("[Config] Failed to save config file: " + e.getMessage());
             e.printStackTrace();
         }
     }

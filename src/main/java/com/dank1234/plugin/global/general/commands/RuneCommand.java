@@ -10,8 +10,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.event.HandlerList;
+import org.checkerframework.checker.units.qual.C;
 
 import java.lang.reflect.Field;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -26,7 +28,7 @@ public class RuneCommand extends ICommand {
             Config config = Config.get();
             // config.find("plugins/Rune-Core/credit.yml");
 
-            List<String> developerList = (List<String>) config.getValue("developers", List.class);
+            List<String> developerList = (List<String>) config.getValue(List.class, "credits.devs");
             if (developerList == null) {
                 developerList = new ArrayList<>(Collections.singleton("dank1234"));
             }

@@ -6,12 +6,12 @@ import net.luckperms.api.model.group.Group;
 import net.luckperms.api.model.group.GroupManager;
 
 public enum StaffRank {
-    HELPER(LuckPermsProvider.get().getGroupManager().getGroup("helper")),
-    MOD(LuckPermsProvider.get().getGroupManager().getGroup("mod")),
-    SRMOD(LuckPermsProvider.get().getGroupManager().getGroup("srmod")),
-    ADMIN(LuckPermsProvider.get().getGroupManager().getGroup("admin")),
-    DEV(LuckPermsProvider.get().getGroupManager().getGroup("dev")),
-    MANAGER(LuckPermsProvider.get().getGroupManager().getGroup("manager"));
+    HELPER(LuckPermsProvider.get().getGroupManager().getGroup("staff.helper")),
+    MOD(LuckPermsProvider.get().getGroupManager().getGroup("staff.mod")),
+    SRMOD(LuckPermsProvider.get().getGroupManager().getGroup("staff.srmod")),
+    ADMIN(LuckPermsProvider.get().getGroupManager().getGroup("staff.admin")),
+    DEV(LuckPermsProvider.get().getGroupManager().getGroup("staff.dev")),
+    MANAGER(LuckPermsProvider.get().getGroupManager().getGroup("staff.manager"));
 
     public final Group rank;
 

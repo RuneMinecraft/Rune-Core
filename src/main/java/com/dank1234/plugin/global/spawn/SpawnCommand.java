@@ -20,14 +20,14 @@ public class SpawnCommand extends ICommand {
         if (super.checkArgument(0, "set")) {
             Location loc = player().getLocation();
 
-            Main.get().config().setValue("spawn.world", loc.getWorld().getName());
+            // Main.get().config().setValue("spawn.world", loc.getWorld().getName());
 
-            Main.get().config().setValue("spawn.x", loc.getX()+"");
-            Main.get().config().setValue("spawn.y", loc.getY()+"");
-            Main.get().config().setValue("spawn.z", loc.getZ()+"");
+            // Main.get().config().setValue("spawn.x", loc.getX()+"");
+            // Main.get().config().setValue("spawn.y", loc.getY()+"");
+            // Main.get().config().setValue("spawn.z", loc.getZ()+"");
 
-            Main.get().config().setValue("spawn.yaw", loc.getYaw()+"");
-            Main.get().config().setValue("spawn.pitch", loc.getPitch()+"");
+            // Main.get().config().setValue("spawn.yaw", loc.getYaw()+"");
+            // Main.get().config().setValue("spawn.pitch", loc.getPitch()+"");
 
             Message.create(player(), "&6Set the spawn location to").send();
         }

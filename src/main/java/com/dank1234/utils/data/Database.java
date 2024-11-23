@@ -2,14 +2,16 @@ package com.dank1234.utils.data;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import org.checkerframework.checker.units.qual.C;
 
+import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public final class  Database {
-    private static HikariDataSource dataSource;
+    private static final HikariDataSource dataSource;
 
     static {
         HikariConfig hikariConfig = new HikariConfig();
@@ -18,9 +20,9 @@ public final class  Database {
         try {
             Class.forName("org.mariadb.jdbc.Driver");
 
-            hikariConfig.setJdbcUrl(config.getValue("database.host", String.class) + config.getValue("database.schema", String.class));
-            hikariConfig.setUsername((config.getValue("database.user", String.class)));
-            hikariConfig.setPassword((config.getValue("database.password", String.class)));
+            hikariConfig.setJdbcUrl(config.getValue(String.class, "database.host") + config.getValue(String.class, "database.schema"));
+            hikariConfig.setUsername((config.getValue(String.class, "database.user")));
+            hikariConfig.setPassword((config.getValue(String.class, "database.password")));
 
             hikariConfig.setMaximumPoolSize(10);
             hikariConfig.setMinimumIdle(2);

@@ -22,10 +22,11 @@ public class ChatFormatter implements Listener {
         Staff staff = Staff.of(e.getPlayer().getUniqueId());
         if (staff == null) {
             prefix = "";
-        }else {
-            prefix = staff.rank().toString();
+        } else {
+            prefix = staff.rank().toString()+" ";
+            staff.setMessages(staff.messages()+1);
         }
 
-        Message.create(prefix+" &r"+RankUtils.getPrefix(User.of(e.getPlayer().getUniqueId()))+"&r "+e.getPlayer().getName()+" &8» &r"+msg).send(false);
+        Message.create(prefix+"&r"+RankUtils.getPrefix(User.of(e.getPlayer().getUniqueId()))+"&r "+e.getPlayer().getName()+" &8» &r"+msg).send(false);
     }
 }

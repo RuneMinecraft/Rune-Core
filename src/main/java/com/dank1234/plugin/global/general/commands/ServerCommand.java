@@ -41,7 +41,7 @@ public class ServerCommand extends ICommand {
             String value = args[2];
 
             try {
-                Main.get().config().setValue("server." + info, value);
+                // Main.get().config().setValue("server." + info, value);
                 Message.create(sender(), "&aSuccessfully changed the server info!").send(false);
                 Message.create(sender(),
                         "&c<-- &6Server Info &c-->",

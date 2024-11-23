@@ -27,21 +27,25 @@ public class DemoteCommand extends ICommand {
             Message.create(player(), "&cThat player is not staff!").send();
         } else {
             Staff staff = Staff.of(target.uuid());
-            if (args.length == 2) {
-                StaffRank rank = StaffRank.valueOf(args(1).toUpperCase());
+            if (args.length != 2) {
+                StaffRank rank = StaffRank.getByOrdinal(staff.rank().ordinal()-1);
 
                 if (staff.rank().ordinal() == 0) {
                     StaffManager.delete(staff.uuid());
-                    Message.create(player(), "").send(); // TODO: Write this idk
+                    Message.create(player(), "&cThat player cannot be demoted further. Removing staff").send(); // TODO: Write this idk
                     return;
                 }
+                staff.setStaffMode(false);
                 staff.setRank(rank);
+
                 StaffManager.delete(staff.uuid());
                 StaffManager.insert(staff);
-                // TODO: SEND MESSAGE
-            }else{
+
+                Message.create(player(), "&CDemoted &f"+target.username()+"&c to &f"+rank.toString()+"&c.");
+            }else if (args(1).equalsIgnoreCase("all")){
+                staff.setStaffMode(false);
                 StaffManager.delete(target.uuid());
-                // TODO: SEND MESSAGE
+                Message.create(player(), "&cDemoted &f"+target.username()+"&c to &fMEMBER").send();
             }
         }
     }

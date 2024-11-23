@@ -14,6 +14,8 @@ import org.bukkit.plugin.InvalidPluginException;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginLoader;
 
+import java.nio.file.Path;
+
 @SuppressWarnings({"removal"})
 public class Bootstrap implements Utils {
     private static PluginLoader pluginLoader;

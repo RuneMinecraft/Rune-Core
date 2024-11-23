@@ -19,15 +19,15 @@ public final class Spawn {
 
     private Spawn() {
         if (Main.get().isEnabled()) {
-            worldName = config.getValue("spawn.world", String.class);
+            worldName = config.getValue(String.class, "spawn.world");
             world = Bukkit.getWorld(worldName);
 
-            xD = config.getValue("spawn.x", Double.class);
-            yD = config.getValue("spawn.y", Double.class);
-            zD = config.getValue("spawn.z", Double.class);
+            xD = config.getValue(Double.class, "spawn.x");
+            yD = config.getValue(Double.class, "spawn.y");
+            zD = config.getValue(Double.class, "spawn.z");
 
-            yD1 = config.getValue("spawn.yaw", Double.class);
-            pD = config.getValue("spawn.pitch", Double.class);
+            yD1 = config.getValue(Double.class, "spawn.yaw");
+            pD = config.getValue(Double.class, "spawn.pitch");
         }
         yaw = (float) yD1;
         pitch = (float) pD;

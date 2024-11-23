@@ -19,7 +19,7 @@ import java.util.Set;
 )
 public class ConfigCommand extends ICommand {
     @Override
-    public void execute(CommandSender sender, String[] args) {
+    public void execute(CommandSender sender, String[] args) {/*
         if (args.length == 0 || args[0].equalsIgnoreCase("help")) {
             Message.create(sender(),
                     "&c<-- &6Config Help &c-->",
@@ -68,5 +68,5 @@ public class ConfigCommand extends ICommand {
                 Message.create(sender(), "&6Updated the value of &e"+key+"&6 to &e"+Main.get().config().getValue(key, String.class)).send(false);
             }
         }
-    }
+    */}
 }

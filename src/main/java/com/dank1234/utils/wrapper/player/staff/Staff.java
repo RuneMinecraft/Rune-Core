@@ -5,6 +5,7 @@ import com.dank1234.utils.RankUtils;
 import com.dank1234.utils.data.database.StaffManager;
 import com.dank1234.utils.wrapper.player.User;
 import net.luckperms.api.LuckPermsProvider;
+import net.luckperms.api.query.QueryOptions;
 import org.bukkit.Bukkit;
 
 import javax.annotation.Nullable;
@@ -94,7 +95,13 @@ public class Staff extends User {
         }
         this.staffMode = staffMode;
         StaffManager.setValue(this.uuid(), "staffmode", staffMode);
-        Bukkit.getScheduler().runTask(Main.get(), () -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + User.of(this.uuid()).username() + " parent " + (staffMode ? "remove " : "add ") + this.rank().getGroup().getName()));
+        Bukkit.getScheduler().runTask(Main.get(), () -> {
+            if (staffMode) {
+                RankUtils.removeStaffTrack(User.of(this.uuid()));
+                return;
+            }
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + User.of(this.uuid()).username() + " parent add " + this.rank().rank.getName());
+        });
         return this;
     }
 

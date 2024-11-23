@@ -25,7 +25,7 @@ public class PromoteCommand extends ICommand {
         if (StaffManager.getStaff(target.uuid()).isEmpty()) {
             staff = Staff.of(target.uuid(), target.username(), StaffRank.HELPER);
             StaffManager.insert(staff);
-        } else { // Player is staff. Add the rank higher.
+        } else {
             staff = Staff.of(target.uuid());
             if (staff.rank().equals(StaffRank.MANAGER)) {
                 Message.create(player(), "&cThat player is manager so cannot be promoted further.").send();
