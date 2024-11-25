@@ -1,21 +1,22 @@
 package com.dank1234.utils.data.database;
 
-import com.dank1234.plugin.Main;
-import com.dank1234.utils.data.Database;
 import com.dank1234.utils.wrapper.player.User;
 import com.dank1234.utils.wrapper.player.staff.Staff;
 import com.dank1234.utils.wrapper.player.staff.StaffRank;
-import org.bukkit.Bukkit;
 
-import java.sql.*;
-import java.util.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
-public class StaffManager {
+public class StaffManager extends SQLUtils{
     private static final String TABLE = "staff";
 
     public static void ensureTableExists() {
         String sql = "CREATE TABLE IF NOT EXISTS staff (" +
-                "uuid CHAR(36) PRIMARY KEY, " +
+                "uuid VARCHAR(36) PRIMARY KEY, " +
                 "rank VARCHAR(50) NOT NULL, " +
                 "time BIGINT DEFAULT 0, " +
                 "messages INT DEFAULT 0, " +
@@ -50,7 +51,6 @@ public class StaffManager {
         String sql = "SELECT " + field + " FROM staff WHERE uuid = ?";
         return executeQuery(sql, pstmt -> pstmt.setString(1, uuid.toString()), rs -> rs.getObject(field));
     }
-
     public static boolean setValue(UUID uuid, String field, Object value) {
         String sql = "UPDATE staff SET " + field + " = ? WHERE uuid = ?";
         return executeUpdate(sql, pstmt -> {
@@ -69,7 +69,6 @@ public class StaffManager {
             return staffList;
         });
     }
-
     public static Optional<List<Staff>> getAll() {
         String sql = "SELECT uuid FROM staff";
         return executeQuery(sql, pstmt -> {}, rs -> {
@@ -85,18 +84,12 @@ public class StaffManager {
         String sql = "SELECT * FROM staff WHERE uuid = ?";
         return executeQuery(sql, pstmt -> pstmt.setString(1, uuid.toString()), rs -> rs.next() ? mapResultSetToUser(rs) : null);
     }
-
     public static Optional<Staff> getStaff(String username) {
         String sql = "SELECT staff.* FROM staff " +
                 "INNER JOIN users ON staff.uuid = users.uuid " +
                 "WHERE users.username = ?";
         return executeQuery(sql, pstmt -> pstmt.setString(1, username), rs -> rs.next() ? mapResultSetToUser(rs) : null);
     }
-
-    public static boolean inStaffMode(UUID uuid) {
-        return getValue(uuid, "staffmode").map(Boolean.class::cast).orElse(false);
-    }
-
     private static Staff mapResultSetToUser(ResultSet rs) throws SQLException {
         User user = User.of(UUID.fromString(rs.getString("uuid")));
         String rankString = rs.getString("rank");
@@ -115,46 +108,5 @@ public class StaffManager {
                 .setMutes(rs.getInt("mutes"))
                 .setBans(rs.getInt("bans"))
                 .setStaffMode(rs.getBoolean("staffmode"));
-    }
-
-    private static int executeUpdate(String sql) {
-        try (Connection conn = Database.getConnection(); Statement stmt = conn.createStatement()) {
-            return stmt.executeUpdate(sql);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return 0;
-        }
-    }
-
-    private static int executeUpdate(String sql, SQLConsumer<PreparedStatement> consumer) {
-        try (Connection conn = Database.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            consumer.accept(pstmt);
-            return pstmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return 0;
-        }
-    }
-
-    private static <T> Optional<T> executeQuery(String sql, SQLConsumer<PreparedStatement> consumer, SQLFunction<ResultSet, T> mapper) {
-        try (Connection conn = Database.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            consumer.accept(pstmt);
-            try (ResultSet rs = pstmt.executeQuery()) {
-                return Optional.ofNullable(mapper.apply(rs));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return Optional.empty();
-        }
-    }
-
-    @FunctionalInterface
-    private interface SQLConsumer<T> {
-        void accept(T t) throws SQLException;
-    }
-
-    @FunctionalInterface
-    private interface SQLFunction<T, R> {
-        R apply(T t) throws SQLException;
     }
 }

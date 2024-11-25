@@ -2,15 +2,10 @@ package com.dank1234.utils;
 
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
-import net.luckperms.api.context.ContextSet;
-import net.luckperms.api.model.data.DataType;
 import net.luckperms.api.model.group.Group;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.node.Node;
-import net.luckperms.api.query.Flag;
-import net.luckperms.api.query.QueryMode;
 import net.luckperms.api.query.QueryOptions;
-import org.bukkit.entity.Player;
 
 public final class RankUtils {
     private static final LuckPerms luckperms = LuckPermsProvider.get();

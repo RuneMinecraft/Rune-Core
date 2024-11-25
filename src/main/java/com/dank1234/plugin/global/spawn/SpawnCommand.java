@@ -1,9 +1,7 @@
 package com.dank1234.plugin.global.spawn;
 
-import com.dank1234.plugin.Main;
 import com.dank1234.utils.command.Cmd;
 import com.dank1234.utils.command.ICommand;
-import com.dank1234.utils.server.ServerType;
 import com.dank1234.utils.wrapper.message.Message;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;

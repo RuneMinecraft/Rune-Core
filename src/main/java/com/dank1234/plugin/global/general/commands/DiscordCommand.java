@@ -9,6 +9,6 @@ import org.bukkit.command.CommandSender;
 public class DiscordCommand extends ICommand {
     @Override
     public void execute(CommandSender sender, String[] args) {
-        Message.create("&6RuneMC Discord: &chttps://discord.runemc.net/").send(false);
+        Message.create(player(), "&6RuneMC Discord: &chttps://discord.runemc.net/").send(false);
     }
 }

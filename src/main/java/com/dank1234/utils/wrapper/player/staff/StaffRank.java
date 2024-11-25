@@ -1,9 +1,7 @@
 package com.dank1234.utils.wrapper.player.staff;
 
-import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.model.group.Group;
-import net.luckperms.api.model.group.GroupManager;
 
 public enum StaffRank {
     HELPER(LuckPermsProvider.get().getGroupManager().getGroup("staff.helper")),

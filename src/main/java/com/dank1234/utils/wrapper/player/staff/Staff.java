@@ -4,8 +4,6 @@ import com.dank1234.plugin.Main;
 import com.dank1234.utils.RankUtils;
 import com.dank1234.utils.data.database.StaffManager;
 import com.dank1234.utils.wrapper.player.User;
-import net.luckperms.api.LuckPermsProvider;
-import net.luckperms.api.query.QueryOptions;
 import org.bukkit.Bukkit;
 
 import javax.annotation.Nullable;
@@ -49,6 +47,7 @@ public class Staff extends User {
     }
     public Staff setRank(StaffRank rank) {
         this.rank = rank;
+        StaffManager.setValue(this.uuid(), "rank", rank.toString());
         return this;
     }
     public long time() {
@@ -56,6 +55,7 @@ public class Staff extends User {
     }
     public Staff setTime(long time) {
         this.time = time;
+        StaffManager.setValue(this.uuid(), "time", time);
         return this;
     }
     public int messages() {
@@ -63,6 +63,7 @@ public class Staff extends User {
     }
     public Staff setMessages(int messages) {
         this.messages = messages;
+        StaffManager.setValue(this.uuid(), "messages", messages);
         return this;
     }
     public int warns() {
@@ -70,6 +71,7 @@ public class Staff extends User {
     }
     public Staff setWarns(int warns) {
         this.warns = warns;
+        StaffManager.setValue(this.uuid(), "warns", warns);
         return this;
     }
     public int mutes() {
@@ -77,6 +79,7 @@ public class Staff extends User {
     }
     public Staff setMutes(int mutes) {
         this.mutes = mutes;
+        StaffManager.setValue(this.uuid(), "mutes", mutes);
         return this;
     }
     public int bans() {
@@ -84,6 +87,7 @@ public class Staff extends User {
     }
     public Staff setBans(int bans) {
         this.bans = bans;
+        StaffManager.setValue(this.uuid(), "bans", bans);
         return this;
     }
     public boolean staffMode() {

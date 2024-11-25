@@ -7,14 +7,13 @@ import com.dank1234.utils.data.Config;
 import com.dank1234.utils.data.Database;
 import com.dank1234.utils.data.Version;
 import com.dank1234.utils.data.VersionType;
+import com.dank1234.utils.data.database.AuctionManager;
+import com.dank1234.utils.data.database.EcoManager;
 import com.dank1234.utils.data.database.StaffManager;
 import com.dank1234.utils.data.database.UserManager;
 import com.dank1234.utils.server.Server;
 import org.bukkit.plugin.InvalidPluginException;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginLoader;
-
-import java.nio.file.Path;
 
 @SuppressWarnings({"removal"})
 public class Bootstrap implements Utils {
@@ -34,9 +33,6 @@ public class Bootstrap implements Utils {
 
         Logger.logRaw(centreText("<--------------------------------------------------------->"));
         Logger.logRaw(centreText("<------------------> RuneMC | Rune-Core <----------------->"));
-        Logger.logRaw(centreText("<--------------------------------------------------------->"));
-        Logger.logRaw(centreText("<-----------------------> Authors <----------------------->"));
-        Logger.logRaw(centreText("<---> dank1234 - DuckLord - nLaykon - Encrypted_funds <--->"));
         Logger.logRaw(centreText("<--------------------------------------------------------->"));
         Logger.logRaw(centreText("<-----------------------> Version <----------------------->"));
         Logger.logRaw(centreText("<------------------> "+version+" <-------------------->"));
@@ -61,15 +57,20 @@ public class Bootstrap implements Utils {
 
         UserManager.ensureTableExists();
         StaffManager.ensureTableExists();
+        EcoManager.ensureTableExists();
+        AuctionManager.ensureTableExists();
     }
 
     public void disable() {
         Logger.logRaw("[RuneMC | Bootstrap] Disconnecting from database...");
         Runtime.getRuntime().addShutdownHook(new Thread(Database::shutdown));
+
         Logger.logRaw("[RuneMC | Bootstrap] Disabling all commands...");
         register.unregisterCommands();
+
         Logger.logRaw("[RuneMC | Bootstrap] Disabling all events...");
         register.unregisterListeners();
+
         Logger.logRaw("[RuneMC | Bootstrap] Plugin Disabled!");
     }
 }

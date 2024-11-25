@@ -4,20 +4,14 @@ import com.dank1234.utils.Utils;
 import com.dank1234.utils.wrapper.message.Message;
 import com.dank1234.utils.wrapper.message.MessageType;
 import com.dank1234.utils.wrapper.message.Messages;
-import com.dank1234.utils.wrapper.player.RunePlayer;
-import com.dank1234.utils.wrapper.player.RuneSender;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import java.util.Arrays;
 
 public abstract class ICommand implements Utils {
     public abstract void execute(CommandSender sender, String[] args);
 
     private CommandSender sender;
-    private RuneSender rSender;
     private Player player;
-    private RunePlayer rPlayer;
 
     private String[] names;
     private String[] permissions;
@@ -25,26 +19,18 @@ public abstract class ICommand implements Utils {
 
     public void sender(CommandSender sender) {
         this.sender = sender;
-        this.rSender = RuneSender.of(sender);
     }
     public CommandSender sender() {
         return this.sender;
-    }
-    public RuneSender rSender() {
-        return this.rSender;
     }
 
     public void player(Player player) {
         if (player != null) {
             this.player = player;
-            this.rPlayer = RunePlayer.of(player);
         }
     }
     public Player player() {
         return this.player;
-    }
-    public RunePlayer rPlayer(){
-        return this.rPlayer;
     }
 
     public void names(String[] names) {
@@ -88,7 +74,7 @@ public abstract class ICommand implements Utils {
 
     public boolean checkArgument(int i, String s) {
         if (i >= args.length) {
-            Message.create(this.sender(), Messages.ARGUMENTS.toString());
+            Message.create(this.sender(), Messages.ARGUMENTS.toString()).send();
             return false;
         }
         return args[i].equalsIgnoreCase(s);
@@ -103,10 +89,5 @@ public abstract class ICommand implements Utils {
     }
     public boolean isPlayer() {
         return player != null;
-    }
-
-    @Override
-    public String toString() {
-        return "Command[NAMES="+Arrays.toString(this.names())+"]";
     }
 }

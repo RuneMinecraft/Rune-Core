@@ -7,8 +7,6 @@ import com.dank1234.utils.wrapper.message.Message;
 import com.dank1234.utils.wrapper.player.staff.Staff;
 import org.bukkit.command.CommandSender;
 
-import java.util.Optional;
-
 @Cmd(names="staff/list")
 public class ListCommand extends ICommand {
     @Override

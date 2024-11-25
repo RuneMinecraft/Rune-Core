@@ -4,14 +4,10 @@ import com.dank1234.utils.command.Cmd;
 import com.dank1234.utils.command.ICommand;
 import com.dank1234.utils.data.database.StaffManager;
 import com.dank1234.utils.wrapper.message.Message;
-import com.dank1234.utils.wrapper.message.ForceType;
 import com.dank1234.utils.wrapper.player.User;
 import com.dank1234.utils.wrapper.player.staff.Staff;
 import com.dank1234.utils.wrapper.player.staff.StaffRank;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-
-import java.util.Objects;
 
 @Cmd(names="staff/demote", perms="rune.staff.manager")
 public class DemoteCommand extends ICommand {

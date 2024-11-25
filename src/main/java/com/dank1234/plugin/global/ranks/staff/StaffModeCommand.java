@@ -6,8 +6,6 @@ import com.dank1234.utils.data.database.StaffManager;
 import com.dank1234.utils.wrapper.message.Message;
 import com.dank1234.utils.wrapper.player.User;
 import com.dank1234.utils.wrapper.player.staff.Staff;
-import net.luckperms.api.LuckPermsProvider;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
 @Cmd(names="staffmode")

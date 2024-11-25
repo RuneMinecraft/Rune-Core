@@ -1,6 +1,7 @@
 package com.dank1234.plugin.global.general.events;
 
 import com.dank1234.utils.command.Event;
+import com.dank1234.utils.data.database.EcoManager;
 import com.dank1234.utils.data.database.UserManager;
 import com.dank1234.utils.wrapper.player.User;
 import org.bukkit.event.EventHandler;
@@ -15,5 +16,6 @@ public class JoinListener implements Listener {
             return;
         }
         UserManager.insert(User.of(e.getPlayer().getUniqueId(), e.getPlayer().getName()));
+        EcoManager.insert(User.of(e.getPlayer().getUniqueId()));
     }
 }
