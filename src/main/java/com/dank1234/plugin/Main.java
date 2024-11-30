@@ -1,17 +1,63 @@
 package com.dank1234.plugin;
 
+import com.dank1234.utils.command.Register;
+import com.dank1234.utils.data.Config;
+import com.dank1234.utils.data.Version;
+import com.dank1234.utils.server.Server;
+import com.dank1234.utils.wrapper.message.Message;
+import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.plugin.InvalidPluginException;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Arrays;
 
 public final class Main extends JavaPlugin {
+    private final Bootstrap bootstrap = new Bootstrap();
+
+    private static Main instance;
+    public static Main get() {
+        return instance;
+    }
+
+    public Version version(){
+        return this.bootstrap.version;
+    }
+    public Server server() {
+        return this.bootstrap.server;
+    }
+    public Register register() {
+        return this.bootstrap.register;
+    }
+    public Config config() {
+        return this.bootstrap.config;
+    }
+
+    @Override
+    public void onLoad() {
+        try {
+            instance = this;
+
+            this.setNaggable(false);
+            bootstrap.load();
+        }catch(InvalidPluginException ignore) {}
+    }
 
     @Override
     public void onEnable() {
-        // Plugin startup logic
-
+        bootstrap.enable();
     }
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+        bootstrap.disable();
+    }
+
+    @Override
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
+        Message.create(Bukkit.getConsoleSender(), sender.getName()+" executed the command '/"+label+" "+Arrays.toString(Arrays.copyOfRange(args, 0, args.length))+"'").send();
+        return this.register().register(sender, command, label, args);
     }
 }

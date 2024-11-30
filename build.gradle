@@ -19,6 +19,13 @@ repositories {
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.3-R0.1-SNAPSHOT")
+    compileOnly("net.luckperms:api:5.4")
+
+    implementation("org.yaml:snakeyaml:2.0")
+    implementation("org.reflections:reflections:0.9.12")
+    implementation("org.jetbrains:annotations:24.1.0")
+    implementation("org.mariadb.jdbc:mariadb-java-client:3.4.1")
+    implementation("com.zaxxer:HikariCP:5.1.0")
 }
 
 def targetJavaVersion = 21
@@ -31,14 +38,6 @@ java {
     }
 }
 
-tasks.withType(JavaCompile).configureEach {
-    options.encoding = 'UTF-8'
-
-    if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
-        options.release.set(targetJavaVersion)
-    }
-}
-
 processResources {
     def props = [version: version]
     inputs.properties props
@@ -46,4 +45,26 @@ processResources {
     filesMatching('plugin.yml') {
         expand props
     }
+}
+
+tasks.register('copyJar', Copy) {
+    group = 'build'
+    description = 'Copies the built JAR to the server plugins folder.'
+
+    def serverPluginPath = file("S:/opt/mcsmanager/daemon/data/InstanceData/7fa7bc4eb4544091add082ae0b906aa0/plugins/")
+    def builtJar = file("${buildDir}/libs/${project.name}-${version}.jar")
+
+    from(builtJar)
+    into(serverPluginPath)
+    rename { "Rune-Core-${version}.jar" }
+
+    doFirst {
+        if (!builtJar.exists()) {
+            throw new GradleException("Built JAR not found: $builtJar")
+        }
+    }
+}
+
+tasks.build {
+    finalizedBy(tasks.copyJar)
 }

@@ -1,5 +1,14 @@
 name: Rune-Core
-version: '0.1'
 main: com.dank1234.plugin.Main
-api-version: '1.21'
-load: STARTUP
+version: 0.1-DEVELOPMENT
+database: true
+load: POSTWORLD
+api-version: 1.20
+
+authors:
+  - dank1234
+softdepend:
+  - LuckPerms
+depend:
+  - LuckPerms
+
