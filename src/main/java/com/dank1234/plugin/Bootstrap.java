@@ -13,22 +13,15 @@ import com.dank1234.utils.data.database.StaffManager;
 import com.dank1234.utils.data.database.UserManager;
 import com.dank1234.utils.server.Server;
 import org.bukkit.plugin.InvalidPluginException;
-import org.bukkit.plugin.PluginLoader;
 
-@SuppressWarnings({"removal"})
 public class Bootstrap implements Utils {
-    private static PluginLoader pluginLoader;
-    public static PluginLoader pluginLoader() {
-        return Bootstrap.pluginLoader;
-    }
 
     Version version = Version.of(VersionType.DEVELOPMENT, "0.1");
     Register register;
     Config config;
     Server server;
 
-    public void load() throws InvalidPluginException {
-        pluginLoader = Main.get().getPluginLoader();
+    public void load() {
         config = Config.get();
 
         Logger.logRaw(centreText("<--------------------------------------------------------->"));

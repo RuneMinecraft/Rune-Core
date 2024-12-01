@@ -1,5 +1,7 @@
 plugins {
     id 'java'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+    id("io.papermc.paperweight.userdev") version "1.7.3"
 }
 
 group = 'com.dank1234'
@@ -18,6 +20,8 @@ repositories {
 }
 
 dependencies {
+    paperweight.paperDevBundle("1.21.3-R0.1-SNAPSHOT")
+
     compileOnly("io.papermc.paper:paper-api:1.21.3-R0.1-SNAPSHOT")
     compileOnly("net.luckperms:api:5.4")
 
@@ -47,24 +51,12 @@ processResources {
     }
 }
 
-tasks.register('copyJar', Copy) {
-    group = 'build'
-    description = 'Copies the built JAR to the server plugins folder.'
-
-    def serverPluginPath = file("S:/opt/mcsmanager/daemon/data/InstanceData/7fa7bc4eb4544091add082ae0b906aa0/plugins/")
-    def builtJar = file("${buildDir}/libs/${project.name}-${version}.jar")
-
-    from(builtJar)
-    into(serverPluginPath)
-    rename { "Rune-Core-${version}.jar" }
-
-    doFirst {
-        if (!builtJar.exists()) {
-            throw new GradleException("Built JAR not found: $builtJar")
-        }
-    }
+tasks.shadowJar {
+    archiveFileName = "Rune-Core-${version}.jar"
+    destinationDirectory = file("S:/opt/mcsmanager/daemon/data/InstanceData/7fa7bc4eb4544091add082ae0b906aa0/plugins")
+    mergeServiceFiles()
 }
 
 tasks.build {
-    finalizedBy(tasks.copyJar)
+    dependsOn(tasks.shadowJar)
 }

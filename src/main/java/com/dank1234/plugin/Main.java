@@ -37,17 +37,21 @@ public final class Main extends JavaPlugin {
 
     @Override
     public void onLoad() {
-        try {
-            instance = this;
+        instance = this;
 
-            this.setNaggable(false);
-            bootstrap.load();
-        }catch(InvalidPluginException ignore) {}
+        this.setNaggable(false);
+        //bootstrap.load();
     }
 
     @Override
     public void onEnable() {
+        bootstrap.load();
         bootstrap.enable();
+        try {
+            System.out.println(Class.forName("net.minecraft.server.level.ServerLevel"));
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

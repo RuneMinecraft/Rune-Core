@@ -35,7 +35,7 @@ public class PluginCommand extends ICommand {
                 if (plugin.isEnabled()) {
                     return;
                 }
-                Bootstrap.pluginLoader().enablePlugin(plugin);
+                // Bootstrap.pluginLoader().enablePlugin(plugin);
             }
         }
         else if (super.checkArgument(0, "disable")) {
@@ -51,7 +51,7 @@ public class PluginCommand extends ICommand {
                 if (!plugin.isEnabled()) {
                     return;
                 }
-                Bootstrap.pluginLoader().disablePlugin(plugin);
+                // Bootstrap.pluginLoader().disablePlugin(plugin);
             }
         }
     }
