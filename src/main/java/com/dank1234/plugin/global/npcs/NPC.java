@@ -27,6 +27,7 @@ import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.net.URI;
@@ -92,21 +93,7 @@ public class NPC {
 
             ServerGamePacketListenerImpl connection = craftPlayer.getHandle().connection;
 
-            ClientboundPlayerInfoUpdatePacket.Entry playerInfoEntry = new ClientboundPlayerInfoUpdatePacket.Entry(
-                    serverPlayer.getUUID(),
-                    serverPlayer.getGameProfile(),
-                    Collections.emptyList(),
-                    0,
-                    GameType.CREATIVE,
-                    Component.literal(serverPlayer.getName().getString()),
-                    0,
-                    null
-            );
-
-            ClientboundPlayerInfoUpdatePacket addPlayerPacket = new ClientboundPlayerInfoUpdatePacket(
-                    ClientboundPlayerInfoUpdatePacket.Action.ADD_PLAYER,
-                    Collections.singletonList(playerInfoEntry)
-            );
+            ClientboundPlayerInfoUpdatePacket addPlayerPacket = clientboundPlayerInfoUpdatePacket();
             connection.send(addPlayerPacket);
 
             ClientboundAddEntityPacket addEntityPacket = new ClientboundAddEntityPacket(
@@ -126,13 +113,32 @@ public class NPC {
         });
 
         Bukkit.getScheduler().runTaskLater(Main.get(), () -> {
-            Bukkit.getOnlinePlayers().forEach(player -> {
-                if (player instanceof CraftPlayer craftPlayer) {
+            Bukkit.getOnlinePlayers().forEach(pl -> {
+                if (pl instanceof CraftPlayer craftPlayer) {
                     ServerGamePacketListenerImpl connection = craftPlayer.getHandle().connection;
                     connection.send(new ClientboundPlayerInfoRemovePacket(Collections.singletonList(serverPlayer.getUUID())));
                 }
             });
         }, 20L);
+    }
+
+    private @NotNull ClientboundPlayerInfoUpdatePacket clientboundPlayerInfoUpdatePacket() {
+        ClientboundPlayerInfoUpdatePacket.Entry playerInfoEntry = new ClientboundPlayerInfoUpdatePacket.Entry(
+                serverPlayer.getUUID(),
+                serverPlayer.getGameProfile(),
+                false,
+                0,
+                GameType.CREATIVE,
+                Component.literal(serverPlayer.getName().getString()),
+                0,
+                null
+        );
+
+        ClientboundPlayerInfoUpdatePacket addPlayerPacket = new ClientboundPlayerInfoUpdatePacket(
+                EnumSet.of(ClientboundPlayerInfoUpdatePacket.Action.ADD_PLAYER),
+                Collections.singletonList(playerInfoEntry)
+        );
+        return addPlayerPacket;
     }
 
     private CompletableFuture<Void> fetchSkinTextureAsync(GameProfile profile, String skinName) {
