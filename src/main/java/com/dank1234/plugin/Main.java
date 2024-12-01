@@ -13,6 +13,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
+import java.util.List;
 
 public final class Main extends JavaPlugin {
     private final Bootstrap bootstrap = new Bootstrap();
@@ -22,6 +23,9 @@ public final class Main extends JavaPlugin {
         return instance;
     }
 
+    public List<String> worlds() {
+        return this.bootstrap.worlds;
+    }
     public Version version(){
         return this.bootstrap.version;
     }

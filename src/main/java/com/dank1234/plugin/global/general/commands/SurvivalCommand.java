@@ -10,7 +10,7 @@ import org.bukkit.command.CommandSender;
 
 @Cmd(
         server = ServerType.GLOBAL,
-        names = {"survival"},
+        names = {"gms", "gmsurvival", "survival"},
         perms = {"admin"},
         disabled = false
 )
