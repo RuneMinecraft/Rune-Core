@@ -12,6 +12,7 @@ import com.dank1234.utils.data.database.EcoManager;
 import com.dank1234.utils.data.database.StaffManager;
 import com.dank1234.utils.data.database.UserManager;
 import com.dank1234.utils.server.Server;
+import com.dank1234.utils.server.ServerType;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
@@ -64,6 +65,10 @@ public class Bootstrap implements Utils {
         StaffManager.ensureTableExists();
         EcoManager.ensureTableExists();
         AuctionManager.ensureTableExists();
+
+        if (server.TYPE() == ServerType.BOX) {
+            // MineRunnable.start(); TODO: FIX THE RUNNABLE BEFORE REMOVING COMMENT
+        }
     }
 
     public void disable() {

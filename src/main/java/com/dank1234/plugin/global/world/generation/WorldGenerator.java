@@ -1,8 +1,7 @@
 package com.dank1234.plugin.global.world.generation;
 
-
-import com.dank1234.plugin.global.world.generation.generator.NormalWorldGenerator;
 import com.dank1234.plugin.global.world.generation.generator.VoidWorldGenerator;
+import com.dank1234.utils.Logger;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 
@@ -20,10 +19,10 @@ public class WorldGenerator {
 
         switch (type) {
             case VOID -> creator.generator(VoidWorldGenerator.get());
-            case NORMAL -> creator.generator(NormalWorldGenerator.get());
-            case NETHER -> creator.generator(VoidWorldGenerator.get());
-            case END -> creator.generator(VoidWorldGenerator.get());
-            default -> System.out.println("haha got it wrong idiot. what are you? alfie or something????");
+            case NORMAL -> creator.generator(VoidWorldGenerator.get()); //TODO: WRITE THIS CLASS
+            case NETHER -> creator.generator(VoidWorldGenerator.get()); //TODO: WRITE THIS CLASS
+            case END -> creator.generator(VoidWorldGenerator.get()); //TODO: WRITE THIS CLASS
+            default -> Logger.logRaw("");
         };
 
         return creator.createWorld();

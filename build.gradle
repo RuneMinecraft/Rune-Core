@@ -23,6 +23,8 @@ repositories {
     maven {
         url "https://repo.dmulloy2.net/repository/public/"
     }
+
+    maven { url = uri("https://maven.enginehub.org/repo/") }
 }
 
 dependencies {
@@ -37,7 +39,12 @@ dependencies {
     implementation("org.jetbrains:annotations:24.1.0")
     implementation("org.mariadb.jdbc:mariadb-java-client:3.4.1")
     implementation("com.zaxxer:HikariCP:5.1.0")
-    // implementation("com.fastasyncworldedit:FastAsyncWorldEdit-Bukkit:2.12.2")
+
+    implementation(platform("com.intellectualsites.bom:bom-newest:1.51"))
+    compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Core")
+    compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Bukkit") {
+        exclude group: "com.fastasyncworldedit", module: "FastAsyncWorldEdit-Core"
+    }
 }
 
 def targetJavaVersion = 21
