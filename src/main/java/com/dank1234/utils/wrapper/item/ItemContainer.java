@@ -38,7 +38,7 @@ public class ItemContainer implements Utils {
     }
 
     public Menu toMenu() {
-        Menu menu = Menu.create("Test", 56);
+        Menu menu = Menu.create("Test", 54);
         this.items().forEach((key, value) -> {
             menu.setItem(key, value);
         });

@@ -5,10 +5,7 @@ database: true
 load: POSTWORLD
 api-version: 1.20
 
-authors:
-  - dank1234
-softdepend:
-  - LuckPerms
 depend:
   - LuckPerms
+  - ProtocolLib
 

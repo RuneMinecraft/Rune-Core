@@ -28,7 +28,7 @@ public class TestCommand extends ICommand {
         Map<Enchantment, Integer> enchants = new HashMap<>();
         enchants.put(Enchantment.CHANNELING, 2);
         ItemContainer menu = ItemContainer.create();
-        menu.set(8, Item.create(Material.SAND, new ItemMeta(enchants, 0, true)));
+        menu.set(8, Item.create(Material.DIAMOND_SWORD, "Help me nigga", new ItemMeta(enchants, 0, true)));
         User.of(sender.getName()).openMenu(menu.toMenu());
     }
 }
