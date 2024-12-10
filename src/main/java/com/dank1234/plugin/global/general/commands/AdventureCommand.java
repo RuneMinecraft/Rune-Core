@@ -23,6 +23,6 @@ public class AdventureCommand extends ICommand {
 
         User target = User.of(args(0));
         target.setGameMode(GameMode.ADVENTURE);
-        Message.create(sender(), "&aSet &f"+target.username()+"'s&a gamemode to &aAdventure&a.").send(false);
+        Message.create(sender(), "&aSet &f"+target.getUsername()+"'s&a gamemode to &aAdventure&a.").send(false);
     }
 }

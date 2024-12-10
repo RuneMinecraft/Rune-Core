@@ -45,7 +45,7 @@ public class EcoCommand extends ICommand {
                     target.setEco(eco, 0);
                     break;
                 case "get":
-                    Message.create(player(), "&f" + target.username() + "&a has $&f" + target.getEco(eco) + "&a " + eco.getName() + ".").send();
+                    Message.create(player(), "&f" + target.getUsername() + "&a has $&f" + target.getEco(eco) + "&a " + eco.getName() + ".").send();
                     return;
                 case "give":
                     target.setEco(eco, target.getEco(eco) + amount);
@@ -54,7 +54,7 @@ public class EcoCommand extends ICommand {
                     Message.create(player(), "&cInvalid action for economy command!").send();
                     return;
             }
-            Message.create(player(), "&aSet &f" + target.username() + "'s &a" + eco.getName() + " balance to $&f" + target.getEco(eco) + "&a.").send();
+            Message.create(player(), "&aSet &f" + target.getUsername() + "'s &a" + eco.getName() + " balance to $&f" + target.getEco(eco) + "&a.").send();
         } else {
             //TODO: NOT VALID ECO MESSAGE :D
         }

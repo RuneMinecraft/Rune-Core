@@ -3,6 +3,7 @@ package com.dank1234.utils.wrapper.item;
 import com.dank1234.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -20,7 +21,7 @@ public class Item implements Utils, Serializable {
     private @Nullable List<String> lore;
     private @NotNull ItemMeta itemMeta;
 
-    private Item(@NotNull final Material material, @Nullable String displayName, int amount, @Nullable List<String> lore, ItemMeta itemMeta) {
+    private Item(@NotNull final Material material, @Nullable String displayName, int amount, @Nullable List<String> lore, @NotNull ItemMeta itemMeta) {
         this.material = material;
 
         if (displayName == null) displayName = ItemUtils.getMaterialName(material);
@@ -136,6 +137,13 @@ public class Item implements Utils, Serializable {
         this.lore = lore;
         return this;
     }
+    public @NotNull ItemMeta itemMeta() {
+        return this.itemMeta;
+    }
+    public Item setItemMeta(@NotNull ItemMeta itemMeta) {
+        this.itemMeta = itemMeta;
+        return this;
+    }
 
     public ItemStack toBukkit() {
         ItemStack itemStack = new ItemStack(this.material(), this.amount());
@@ -152,6 +160,12 @@ public class Item implements Utils, Serializable {
 
         if (this.lore() != null) this.lore().forEach(this::Colour);
         itemMeta.setLore((this.lore() == null ? List.of() : this.lore()));
+
+        for (Enchantment enchantment : this.itemMeta().getEnchants().keySet()) {
+            itemMeta.addEnchant(enchantment, this.itemMeta().getEnchants().get(enchantment), true);
+        }
+        itemMeta.setCustomModelData(this.itemMeta().getCustomModelData());
+        itemMeta.setUnbreakable(this.itemMeta().isUnbreakable());
 
         itemStack.setItemMeta(itemMeta);
         return itemStack;

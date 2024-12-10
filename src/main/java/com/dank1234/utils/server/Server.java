@@ -26,9 +26,9 @@ public final class Server {
     }
     public static Server of() {
         try {
-            final ServerType type = ServerType.valueOf(Main.get().config().getValue(String.class, "server.type"));
-            final int release = Integer.parseInt(Objects.requireNonNull(Main.get().config().getValue(String.class, "server.release")));
-            final String description = Main.get().config().getValue(String.class, "server.description");
+            final ServerType type = ServerType.HUB; //ServerType.valueOf(Main.get().config().getValue(String.class, "server.type"));
+            final int release = 1; //Integer.parseInt(Objects.requireNonNull(Main.get().config().getValue(String.class, "server.release")));
+            final String description = ".";// Main.get().config().getValue(String.class, "server.description");
             return new Server(type, release, description);
         }catch(NullPointerException e) {
             e.printStackTrace();

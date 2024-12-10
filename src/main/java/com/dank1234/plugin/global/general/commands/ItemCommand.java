@@ -3,6 +3,8 @@ package com.dank1234.plugin.global.general.commands;
 import com.dank1234.utils.command.Cmd;
 import com.dank1234.utils.command.ICommand;
 import com.dank1234.utils.wrapper.item.Item;
+import com.dank1234.utils.wrapper.item.Items;
+import com.dank1234.utils.wrapper.player.User;
 import org.bukkit.command.CommandSender;
 
 @Cmd(
@@ -15,9 +17,8 @@ public class ItemCommand extends ICommand {
         if (args.length == 0) {
             return;
         }
-        int amount = 1;
-        String blockTag = args(0);
-
-        Item item;
+        User.of(sender.getName()).giveItem(Items.EPIC_SWORD.getItem());
+        User.of(sender.getName()).giveItem(Items.BACK_ARROW.getItem());
+        User.of(sender.getName()).giveItem(Items.NEXT_ARROW.getItem());
     }
 }

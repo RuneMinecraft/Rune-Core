@@ -3,7 +3,6 @@ package com.dank1234.plugin.global.general.commands;
 import com.dank1234.plugin.Main;
 import com.dank1234.utils.command.Cmd;
 import com.dank1234.utils.command.ICommand;
-import com.dank1234.utils.data.Config;
 import com.dank1234.utils.wrapper.message.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -22,10 +21,10 @@ public class RuneCommand extends ICommand {
     @Override
     public void execute(CommandSender sender, String[] args) {
         if (args.length == 0) {
-            Config config = Config.get();
+            // Config config = Config.get();
             // config.find("plugins/Rune-Core/credit.yml");
 
-            List<String> developerList = (List<String>) config.getValue(List.class, "credits.devs");
+            List<String> developerList = List.of(); //(List<String>) config.getValue(List.class, "credits.devs");
             if (developerList == null) {
                 developerList = new ArrayList<>(Collections.singleton("dank1234"));
             }

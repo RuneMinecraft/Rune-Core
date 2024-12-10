@@ -20,30 +20,30 @@ public class DemoteCommand extends ICommand {
             target = User.of(args(0));
         } else throw new IllegalStateException("User is null!");
 
-        if (StaffManager.getStaff(target.uuid()).isEmpty()) {
+        if (StaffManager.getStaff(target.getUuid()).isEmpty()) {
             Message.create(player(), "&cThat player is not staff!").send();
         } else {
-            Staff staff = Staff.of(target.uuid());
+            Staff staff = Staff.Companion.of(target.getUuid());
             if (args.length != 2) {
                 if (staff.rank().ordinal() == 0) {
-                    StaffManager.delete(staff.uuid());
+                    StaffManager.delete(staff.getUuid());
                     Message.create(player(), "&cThat player cannot be demoted further. Removing staff").send(); // TODO: Write this idk
                     return;
                 }
                 StaffRank rank = StaffRank.getByOrdinal(staff.rank().ordinal()-1);
 
-                StaffManager.delete(staff.uuid());
+                StaffManager.delete(staff.getUuid());
                 StaffManager.insert(staff);
 
-                RankUtils.removeStaffTrack(User.of(staff.uuid()));
+                RankUtils.removeStaffTrack(User.of(staff.getUuid()));
 
                 staff.setRank(rank);
                 if (!staff.staffMode()) staff.setStaffMode(true);
-                Message.create(player(), "&CDemoted &f"+target.username()+"&c to &f"+rank.toString()+"&c.");
+                Message.create(player(), "&CDemoted &f"+target.getUsername()+"&c to &f"+rank.toString()+"&c.");
             }else if (args(1).equalsIgnoreCase("all")){
                 staff.setStaffMode(false);
-                StaffManager.delete(target.uuid());
-                Message.create(player(), "&cDemoted &f"+target.username()+"&c to &fMEMBER").send();
+                StaffManager.delete(target.getUuid());
+                Message.create(player(), "&cDemoted &f"+target.getUsername()+"&c to &fMEMBER").send();
             }
         }
     }

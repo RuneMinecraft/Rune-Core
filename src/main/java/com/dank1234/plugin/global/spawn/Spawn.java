@@ -1,14 +1,11 @@
 package com.dank1234.plugin.global.spawn;
 
 import com.dank1234.plugin.Main;
-import com.dank1234.utils.data.Config;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 
 public final class Spawn {
-    private final Config config = Main.get().config();;
-
     private World world;
     private String worldName;
     private final int x, y, z;
@@ -19,15 +16,15 @@ public final class Spawn {
 
     private Spawn() {
         if (Main.get().isEnabled()) {
-            worldName = config.getValue(String.class, "spawn.world");
+            worldName = "box1";// config.getValue(String.class, "spawn.world");
             world = Bukkit.getWorld(worldName);
 
-            xD = config.getValue(Double.class, "spawn.x");
-            yD = config.getValue(Double.class, "spawn.y");
-            zD = config.getValue(Double.class, "spawn.z");
+            xD = 0;//config.getValue(Double.class, "spawn.x");
+            yD = 100;//config.getValue(Double.class, "spawn.y");
+            zD = 0;//config.getValue(Double.class, "spawn.z");
 
-            yD1 = config.getValue(Double.class, "spawn.yaw");
-            pD = config.getValue(Double.class, "spawn.pitch");
+            yD1 = 0;//config.getValue(Double.class, "spawn.yaw");
+            pD = 0;//config.getValue(Double.class, "spawn.pitch");
         }
         yaw = (float) yD1;
         pitch = (float) pD;

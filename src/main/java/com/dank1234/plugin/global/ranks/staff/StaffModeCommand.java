@@ -18,10 +18,10 @@ public class StaffModeCommand extends ICommand {
             target = User.of(args(0));
         }
 
-        if (StaffManager.getStaff(target.uuid()).isEmpty()) {
+        if (StaffManager.getStaff(target.getUuid()).isEmpty()) {
             Message.create(player(), "&cYou are not a staff!").send();
         } else {
-            Staff staff = Staff.of(target.uuid());
+            Staff staff = Staff.Companion.of(target.getUuid());
             staff.setStaffMode(!staff.staffMode());
             Message.create(player(), staff.staffMode() ? "&cDisabled staff mode." : "&aEnabled staff mode.").send();
         }

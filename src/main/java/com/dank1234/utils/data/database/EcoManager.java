@@ -25,7 +25,7 @@ public class EcoManager extends SQLUtils {
         String sql = "INSERT INTO economy (uuid) VALUES (?);";
 
         executeUpdate(sql, pstmt -> {
-            pstmt.setString(1, user.uuid().toString());
+            pstmt.setString(1, user.getUuid().toString());
         });
     }
 

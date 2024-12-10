@@ -32,7 +32,7 @@ public class StaffManager extends SQLUtils{
     public static void insert(Staff user) {
         String sql = "INSERT INTO " + TABLE + " (uuid, rank, time, messages, warns, mutes, bans, staffmode) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         executeUpdate(sql, pstmt -> {
-            pstmt.setString(1, user.uuid().toString());
+            pstmt.setString(1, user.getUuid().toString());
             pstmt.setString(2, user.rank().name());
             pstmt.setLong(3, user.time());
             pstmt.setInt(4, user.messages());
@@ -101,7 +101,7 @@ public class StaffManager extends SQLUtils{
             rank = StaffRank.HELPER;
         }
 
-        return Staff.of(user.uuid(), user.username(), rank)
+        return Staff.Companion.of(user.getUuid(), user.getUsername(), rank)
                 .setTime(rs.getLong("time"))
                 .setMessages(rs.getInt("messages"))
                 .setWarns(rs.getInt("warns"))

@@ -40,9 +40,9 @@ public class AuctionListeners implements Listener {
             Message.create(user, "&cThis auction item no longer exists.").send();
             return;
         }
-        System.out.println(auctionItem.get().seller().uuid());
-        System.out.println(user.uuid());
-        if (auctionItem.get().seller().uuid().toString().equals(user.uuid().toString())) {
+        System.out.println(auctionItem.get().seller().getUuid());
+        System.out.println(user.getUuid());
+        if (auctionItem.get().seller().getUuid().toString().equals(user.getUuid().toString())) {
             Message.create(user, "&cYou cannot buy your own auctions.").send();
             return;
         }

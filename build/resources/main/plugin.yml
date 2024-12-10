@@ -6,6 +6,16 @@ load: POSTWORLD
 api-version: 1.20
 
 depend:
-  - LuckPerms
   - ProtocolLib
+  - LuckPerms
+
+libraries:
+  - io.papermc.paper:paper-api:1.21.3-R0.1-SNAPSHOT
+  - org.yaml:snakeyaml:2.0
+  - org.reflections:reflections:0.9.12
+  - org.jetbrains:annotations:24.1.0
+  - org.mariadb.jdbc:mariadb-java-client:3.4.1
+  - com.zaxxer:HikariCP:5.1.0
+  - org.graalvm.sdk:graal-sdk:22.3.0
+  - org.graalvm.js:js:22.3.0
 

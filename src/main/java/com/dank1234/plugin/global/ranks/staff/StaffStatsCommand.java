@@ -17,13 +17,13 @@ public class StaffStatsCommand extends ICommand {
             target = User.of(args(0));
         }
 
-        if (StaffManager.getStaff(target.uuid()).isEmpty()) {
+        if (StaffManager.getStaff(target.getUuid()).isEmpty()) {
             Message.create(player(), "&cYou are not a staff!").send();
         } else {
-            Staff staff = Staff.of(target.uuid());
+            Staff staff = Staff.Companion.of(target.getUuid());
 
             Message.create(player(),
-                    "&aStaff Stats for &f"+target.username()+"&a:",
+                    "&aStaff Stats for &f"+target.getUsername()+"&a:",
                     "&a| &lRank&a: &r"+ staff.rank().rank.getCachedData().getMetaData().getPrefix(),
                     "&a| &lStaff Time&a: &f"+staff.time()+"&7&o*Formatting still needed*",
                     "&a| &lMessages&a: &f"+staff.messages(),

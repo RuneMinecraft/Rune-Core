@@ -25,6 +25,6 @@ public class SurvivalCommand extends ICommand {
 
         User target = User.of(args(0));
         target.setGameMode(GameMode.SURVIVAL);
-        Message.create(sender(), "&aSet &f"+target.username()+"'s&a gamemode to &aSurvival&a.").send(false);
+        Message.create(sender(), "&aSet &f"+target.getUsername()+"'s&a gamemode to &aSurvival&a.").send(false);
     }
 }

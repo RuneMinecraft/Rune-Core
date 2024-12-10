@@ -6,7 +6,7 @@ import net.luckperms.api.model.group.Group;
 public enum StaffRank {
     HELPER(LuckPermsProvider.get().getGroupManager().getGroup("staff.helper")),
     MOD(LuckPermsProvider.get().getGroupManager().getGroup("staff.mod")),
-    SRMOD(LuckPermsProvider.get().getGroupManager().getGroup("staff.srmod")),
+    SR_MOD(LuckPermsProvider.get().getGroupManager().getGroup("staff.srmod")),
     ADMIN(LuckPermsProvider.get().getGroupManager().getGroup("staff.admin")),
     DEV(LuckPermsProvider.get().getGroupManager().getGroup("staff.dev")),
     MANAGER(LuckPermsProvider.get().getGroupManager().getGroup("staff.manager"));
@@ -24,7 +24,7 @@ public enum StaffRank {
         return switch(i) {
             case 0 -> HELPER;
             case 1 -> MOD;
-            case 2 -> SRMOD;
+            case 2 -> SR_MOD;
             case 3 -> ADMIN;
             case 4 -> DEV;
             case 5 -> MANAGER;

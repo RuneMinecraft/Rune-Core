@@ -1,78 +1,105 @@
-package com.dank1234.utils.data;
+package com.dank1234.utils.data
 
-import com.dank1234.utils.Consts;
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
+import com.dank1234.utils.Consts
+import com.zaxxer.hikari.HikariConfig
+import com.zaxxer.hikari.HikariDataSource
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.io.*
+import java.sql.*
 
-public final class  Database {
-    private static final HikariDataSource dataSource;
+object Database {
+    private val dataSource: HikariDataSource
 
-    static {
-        HikariConfig hikariConfig = new HikariConfig();
-        Config config = Config.get();
+    init {
+        val hikariConfig = HikariConfig()
+        val configFile = File("config.yml")
+        val config: Map<String, String> = Config.load(configFile)
 
         try {
-            Class.forName("org.mariadb.jdbc.Driver");
+            Class.forName("org.mariadb.jdbc.Driver")
 
-            if (config.getValue(String.class, "database.host") != null) {
-                hikariConfig.setJdbcUrl(config.getValue(String.class, "database.host") + config.getValue(String.class, "database.schema"));
-                hikariConfig.setUsername((config.getValue(String.class, "database.user")));
-                hikariConfig.setPassword((config.getValue(String.class, "database.password")));
-            } else {
-                hikariConfig.setJdbcUrl(Consts.JDBC_URL);
-                hikariConfig.setUsername(Consts.USERNAME);
-                hikariConfig.setPassword(Consts.PASSWORD);
+            hikariConfig.jdbcUrl = Consts.JDBC_URL // config["database.host"] + config["database.schema"]
+            hikariConfig.username = Consts.USERNAME // config["database.user"]
+            hikariConfig.password = Consts.PASSWORD // config["database.password"]
+
+            hikariConfig.maximumPoolSize = 10
+            hikariConfig.minimumIdle = 2
+            hikariConfig.idleTimeout = 30000
+            hikariConfig.maxLifetime = 1800000
+            hikariConfig.connectionTimeout = 10000
+            hikariConfig.connectionTestQuery = "SELECT 1"
+
+            dataSource = HikariDataSource(hikariConfig)
+        } catch (e: ClassNotFoundException) {
+            throw RuntimeException("MariaDB driver not found", e)
+        }
+    }
+
+    @JvmStatic fun getConnection(): Connection {
+        return dataSource.connection
+    }
+    @JvmStatic fun close(conn: Connection?, stmt: PreparedStatement?, rs: ResultSet? = null) {
+        try {
+            rs?.close()
+            stmt?.close()
+            conn?.close()
+        } catch (e: SQLException) {
+            e.printStackTrace()
+        }
+    }
+    @JvmStatic fun shutdown() {
+        if (!dataSource.isClosed) dataSource.close()
+    }
+
+    object SQLUtils {
+        @JvmStatic fun executeUpdate(
+            sql: String
+        ): Int {
+            return try {
+                getConnection().use { conn ->
+                    conn.createStatement().use { stmt ->
+                        stmt.executeUpdate(sql)
+                    }
+                }
+            } catch (e: SQLException) {
+                e.printStackTrace()
+                0
             }
-
-            hikariConfig.setMaximumPoolSize(10);
-            hikariConfig.setMinimumIdle(2);
-            hikariConfig.setIdleTimeout(30000);
-            hikariConfig.setMaxLifetime(1800000);
-            hikariConfig.setConnectionTimeout(10000);
-
-            hikariConfig.setConnectionTestQuery("SELECT 1");
-
-            dataSource = new HikariDataSource(hikariConfig);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException("MariaDB driver not found", e);
         }
-    }
-
-    private Database() {}
-    public static Connection getConnection() throws SQLException {
-        return dataSource.getConnection();
-    }
-
-    public static void close(Connection conn, PreparedStatement stmt, ResultSet rs) {
-        try {
-            if (rs != null) rs.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        @JvmStatic fun executeUpdate(
+            sql: String,
+            consumer: (PreparedStatement) -> Unit
+        ): Int {
+            return try {
+                getConnection().use { conn ->
+                    conn.prepareStatement(sql).use { pstmt ->
+                        consumer(pstmt)
+                        pstmt.executeUpdate()
+                    }
+                }
+            } catch (e: SQLException) {
+                e.printStackTrace()
+                0
+            }
         }
-        try {
-            if (stmt != null) stmt.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        try {
-            if (conn != null) conn.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void close(Connection conn, PreparedStatement stmt) {
-        close(conn, stmt, null);
-    }
-
-    public static void shutdown() {
-        if (dataSource != null && !dataSource.isClosed()) {
-            dataSource.close();
+        @JvmStatic fun <T> executeQuery(
+            sql: String,
+            consumer: (PreparedStatement) -> Unit,
+            mapper: (ResultSet) -> T?
+        ): T? {
+            return try {
+                getConnection().use { conn ->
+                    conn.prepareStatement(sql).use { pstmt ->
+                        consumer(pstmt)
+                        pstmt.executeQuery().use { rs ->
+                            mapper(rs)
+                        }
+                    }
+                }
+            } catch (e: SQLException) {
+                e.printStackTrace()
+                null
+            }
         }
     }
 }

@@ -36,7 +36,7 @@ public class AuctionManager extends SQLUtils implements Utils {
 
         executeUpdate(sql, pstmt -> {
             pstmt.setString(1, auctionItem.auctionId());
-            pstmt.setString(2, auctionItem.seller().uuid().toString());
+            pstmt.setString(2, auctionItem.seller().getUuid().toString());
             pstmt.setBytes(3, Item.serializeItem(auctionItem.item()));
             pstmt.setDouble(4, auctionItem.price());
             pstmt.setString(5, auctionItem.type().name());
@@ -160,7 +160,7 @@ public class AuctionManager extends SQLUtils implements Utils {
                     Utils.sColour(" "),
                     Utils.sColour("&8>------------------------------<"),
                     Utils.sColour(" "),
-                    Utils.sColour("&3&l| &bSeller: &f" + auctionItem.seller().username()),
+                    Utils.sColour("&3&l| &bSeller: &f" + auctionItem.seller().getUsername()),
                     Utils.sColour("&3&l| &bPrice: &f" + auctionItem.price() +" "+ auctionItem.type().getName()),
                     Utils.sColour("&3&l| &bExpires In: &f" + "TODO"),
                     Utils.sColour(" "),

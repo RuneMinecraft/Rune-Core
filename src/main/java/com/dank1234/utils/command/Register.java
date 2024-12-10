@@ -37,7 +37,7 @@ public final class Register {
     private final List<Listener> registeredListeners = new ArrayList<>();
 
     public void autoRegisterCommands() {
-        ServerType currentServer = ServerType.valueOf(Main.get().config().getValue(String.class, "server.type"));
+        ServerType currentServer = ServerType.HUB; // ServerType.valueOf(Main.get().config().getValue(String.class, "server.type"));
 
         Reflections reflections = new Reflections("com.dank1234.plugin", new TypeAnnotationsScanner());
         Logger.logRaw("[Bootstrap | Commands] Scanning 'com.dank1234.plugin' for all commands.");

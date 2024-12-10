@@ -22,7 +22,7 @@ public class SudoCommand extends ICommand {
         boolean chat = String.join(" ", Arrays.copyOfRange(args, 1, args.length)).startsWith("c://") ||
                 String.join(" ", Arrays.copyOfRange(args, 1, args.length)).startsWith("C://");
 
-        Message.create(player(), "&eSudoing &f"+target.username()+" &eto &e"+(chat
+        Message.create(player(), "&eSudoing &f"+target.getUsername()+" &eto &e"+(chat
                 ? "send the message &e'&f" + String.join(" ", Arrays.copyOfRange(args, 1, args.length)).substring(4)
                 : "perform the command &e'&f" + String.join(" ", Arrays.copyOfRange(args, 1, args.length)))+"&e'.").send();
         target.sudo(String.join(" ", Arrays.copyOfRange(args, 1, args.length)));

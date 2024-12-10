@@ -4,7 +4,8 @@ import java.nio.charset.StandardCharsets
 plugins {
     id 'java'
     id 'com.github.johnrengelman.shadow' version '8.1.1'
-    id("io.papermc.paperweight.userdev") version "1.7.3"
+    id 'io.papermc.paperweight.userdev' version "1.7.3"
+    id 'org.jetbrains.kotlin.jvm'
 }
 
 group = 'com.dank1234'
@@ -31,7 +32,7 @@ dependencies {
     paperweight.paperDevBundle("1.21.3-R0.1-SNAPSHOT")
 
     compileOnly("io.papermc.paper:paper-api:1.21.3-R0.1-SNAPSHOT")
-    compileOnly("com.comphenix.protocol:ProtocolLib:4.8.0");
+    implementation("com.comphenix.protocol:ProtocolLib:4.8.0");
     compileOnly("net.luckperms:api:5.4")
 
     implementation("org.yaml:snakeyaml:2.0")
@@ -41,17 +42,19 @@ dependencies {
     implementation("com.zaxxer:HikariCP:5.1.0")
 
     implementation(platform("com.intellectualsites.bom:bom-newest:1.51"))
-    compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Core")
-    compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Bukkit") {
+    implementation("com.fastasyncworldedit:FastAsyncWorldEdit-Core")
+    implementation("com.fastasyncworldedit:FastAsyncWorldEdit-Bukkit") {
         exclude group: "com.fastasyncworldedit", module: "FastAsyncWorldEdit-Core"
     }
+
+    implementation("org.graalvm.sdk:graal-sdk:22.3.0")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    implementation("org.graalvm.js:js:22.3.0")
 }
 
 def targetJavaVersion = 21
 java {
     def javaVersion = JavaVersion.toVersion(targetJavaVersion)
-    sourceCompatibility = javaVersion
-    targetCompatibility = javaVersion
     if (JavaVersion.current() < javaVersion) {
         toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
     }
@@ -76,10 +79,13 @@ tasks.javadoc {
 
 tasks.shadowJar {
     archiveFileName = "Rune-Core-${version}.jar"
-    destinationDirectory = file("E:/Test-Server/plugins") // file("S:/opt/mcsmanager/daemon/data/InstanceData/7fa7bc4eb4544091add082ae0b906aa0/plugins")
+    destinationDirectory = file("S:/opt/mcsmanager/daemon/data/InstanceData/7fa7bc4eb4544091add082ae0b906aa0/plugins")
     mergeServiceFiles()
 }
 
 tasks.build {
     dependsOn(tasks.shadowJar)
+}
+kotlin {
+    jvmToolchain(21)
 }

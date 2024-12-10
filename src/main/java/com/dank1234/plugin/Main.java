@@ -8,7 +8,6 @@ import com.dank1234.utils.wrapper.message.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.plugin.InvalidPluginException;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -24,10 +23,10 @@ public final class Main extends JavaPlugin {
     }
 
     public List<String> worlds() {
-        return this.bootstrap.worlds;
+        return this.bootstrap.getWorlds();
     }
     public Version version(){
-        return this.bootstrap.version;
+        return this.bootstrap.getVersion();
     }
     public Server server() {
         return this.bootstrap.server;
