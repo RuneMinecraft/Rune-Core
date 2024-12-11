@@ -1,5 +1,7 @@
 package com.dank1234.utils.data.database;
 
+import com.dank1234.utils.wrapper.player.User;
+import com.dank1234.utils.wrapper.player.staff.Staff;
 import com.dank1234.utils.wrapper.player.staff.StaffRank;
 
 import java.sql.ResultSet;

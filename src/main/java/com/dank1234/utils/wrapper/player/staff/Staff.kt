@@ -25,11 +25,11 @@ data class Staff(
         fun of(uuid: UUID, username: String, rank: StaffRank): Staff {
             return Staff(uuid, username, rank)
         }
-        fun of(uuid: UUID): Staff? {
+        fun of(uuid: UUID): Staff {
         return StaffManager.getStaff(uuid).orElse(null)
         }
 
-        fun of(username: String): Staff? {
+        fun of(username: String): Staff {
         return StaffManager.getStaff(username).orElse(null)
         }
     }

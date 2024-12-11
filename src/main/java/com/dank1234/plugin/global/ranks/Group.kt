@@ -43,6 +43,21 @@ data class Group(
         }
 
         @Throws(SQLException::class)
+        fun get(
+            name: String,
+            prefix: String,
+            suffix: String? = null,
+            weight: Int
+        ): Group? {
+            val sql = "SELECT * FROM groups WHERE name = ?"
+            return Database.SQLUtils.executeQuery(sql, { pstmt ->
+                pstmt.setString(1, name)
+            }) { rs ->
+                if (rs.next()) mapResultSetToGroup(rs) else create(name, prefix, suffix, weight)
+            }
+        }
+
+        @Throws(SQLException::class)
         fun getAllGroups(): List<Group> {
             val sql = "SELECT * FROM groups"
             return Database.SQLUtils.executeQuery(sql, {}, { rs ->

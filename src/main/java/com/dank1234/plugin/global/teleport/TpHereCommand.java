@@ -3,6 +3,7 @@ package com.dank1234.plugin.global.teleport;
 import com.dank1234.utils.command.Cmd;
 import com.dank1234.utils.command.ICommand;
 import com.dank1234.utils.wrapper.message.Message;
+import com.dank1234.utils.wrapper.player.User;
 import org.bukkit.command.CommandSender;
 
 @Cmd(names = {"tphere", "s"})

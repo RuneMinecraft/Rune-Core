@@ -1,6 +1,7 @@
 package com.dank1234.plugin.global.ranks.command;
 
 import com.dank1234.plugin.global.ranks.Group;
+import com.dank1234.plugin.global.ranks.Ranks;
 import com.dank1234.plugin.global.ranks.Track;
 import com.dank1234.utils.command.Cmd;
 import com.dank1234.utils.command.ICommand;
@@ -34,6 +35,8 @@ public class UserCommand extends ICommand {
 
         List<String> sortedPermissions = new ArrayList<>(target.getPermissions());
         sortedPermissions.sort(Comparator.naturalOrder());
+
+        Ranks.create();
 
         Message.create(sender,
                 "&aInfo for &f"+target.getUsername()+"&a:",

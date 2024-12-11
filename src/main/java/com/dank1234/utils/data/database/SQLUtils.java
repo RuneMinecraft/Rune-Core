@@ -1,5 +1,7 @@
 package com.dank1234.utils.data.database;
 
+import com.dank1234.utils.data.Database;
+
 import java.sql.*;
 import java.util.Optional;
 

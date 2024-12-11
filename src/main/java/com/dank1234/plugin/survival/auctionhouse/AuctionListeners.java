@@ -5,6 +5,7 @@ import com.dank1234.utils.command.Event;
 import com.dank1234.utils.data.database.AuctionManager;
 import com.dank1234.utils.wrapper.item.Item;
 import com.dank1234.utils.wrapper.message.Message;
+import com.dank1234.utils.wrapper.player.User;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

@@ -1,5 +1,6 @@
 package com.dank1234.utils.wrapper.player;
 
+import com.dank1234.plugin.Codex
 import com.dank1234.plugin.global.economy.Economy
 import com.dank1234.plugin.global.ranks.Group
 import com.dank1234.plugin.global.ranks.Track
@@ -30,6 +31,10 @@ open class User (
 ) {
     companion object {
         @JvmStatic fun of(uuid: UUID, username: String): User {
+            Codex.getCachedUsers().firstOrNull { it.uuid == uuid }?.let {
+                return it
+            }
+
             if (!exists(uuid)!!) {
                 Database.SQLUtils.executeUpdate("INSERT INTO users (uuid, username) VALUES (?, ?);") { pstmt ->
                     pstmt.setString(1, uuid.toString())
@@ -39,23 +44,41 @@ open class User (
                     pstmt.setString(1, uuid.toString())
                 }
             }
-            return User(uuid, username).apply { updateEconomy() }
-        }
-        @JvmStatic fun of(uuid: UUID): User? = getUser(uuid)!!.orElse(null)
-        @JvmStatic fun of(username: String): User? = getUser(username)!!.orElse(null)
 
+            return User(uuid, username).apply {
+                updateEconomy()
+                Codex.addUser(this)
+            }
+        }
         @JvmStatic fun getUser(uuid: UUID): Optional<User>? {
+            Codex.getCachedUsers().firstOrNull { it.uuid == uuid }?.let {
+                return Optional.of(it)
+            }
+
             val sql = "SELECT * FROM users WHERE uuid = ?"
             return Database.SQLUtils.executeQuery(sql, { pstmt -> pstmt.setString(1, uuid.toString()) }) { rs ->
                 if (rs.next()) mapResultSet(rs) else null
-            }?.let { Optional.of(it) }
+            }?.let {
+                Codex.addUser(it)
+                Optional.of(it)
+            }
         }
         @JvmStatic fun getUser(username: String): Optional<User>? {
+            Codex.getCachedUsers().firstOrNull { it.username.equals(username, ignoreCase = true) }?.let {
+                return Optional.of(it)
+            }
+
             val sql = "SELECT * FROM users WHERE username = ?"
             return Database.SQLUtils.executeQuery(sql, { pstmt -> pstmt.setString(1, username) }) { rs ->
                 if (rs.next()) mapResultSet(rs) else null
-            }?.let { Optional.of(it) }
+            }?.let {
+                Codex.addUser(it)
+                Optional.of(it)
+            }
         }
+
+        @JvmStatic fun of(uuid: UUID): User? = getUser(uuid)!!.orElse(null)
+        @JvmStatic fun of(username: String): User? = getUser(username)!!.orElse(null)
 
         @JvmStatic fun exists(uuid: UUID): Boolean? {
             val sql = "SELECT 1 FROM users WHERE uuid = ? LIMIT 1"
@@ -108,7 +131,6 @@ open class User (
                 );
             """.trimIndent())
         }
-
         private fun mapResultSet(rs: ResultSet): User {
             val uuid = UUID.fromString(rs.getString("uuid"))
             val username = rs.getString("username")

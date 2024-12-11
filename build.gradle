@@ -32,7 +32,7 @@ dependencies {
     paperweight.paperDevBundle("1.21.3-R0.1-SNAPSHOT")
 
     compileOnly("io.papermc.paper:paper-api:1.21.3-R0.1-SNAPSHOT")
-    implementation("com.comphenix.protocol:ProtocolLib:4.8.0");
+    // implementation("com.comphenix.protocol:ProtocolLib:4.8.0");
     compileOnly("net.luckperms:api:5.4")
 
     implementation("org.yaml:snakeyaml:2.0")
@@ -50,7 +50,7 @@ dependencies {
     implementation("org.graalvm.sdk:graal-sdk:22.3.0")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.graalvm.js:js:22.3.0")
-    implementation("org.json:json:20210307")
+    implementation('org.json:json:20231013')
 }
 
 def targetJavaVersion = 21
@@ -80,7 +80,7 @@ tasks.javadoc {
 
 tasks.shadowJar {
     archiveFileName = "Rune-Core-${version}.jar"
-    destinationDirectory = file("S:/opt/mcsmanager/daemon/data/InstanceData/7fa7bc4eb4544091add082ae0b906aa0/plugins")
+    destinationDirectory = file("X:/JARs")// file("S:/opt/mcsmanager/daemon/data/InstanceData/7fa7bc4eb4544091add082ae0b906aa0/plugins")
     mergeServiceFiles()
 }
 

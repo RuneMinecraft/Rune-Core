@@ -14,9 +14,9 @@ public class NPCCommand extends ICommand {
             //String skinValue = skinData[0];
             //String skinSignature = skinData[1];
 
-            NPCBuilder npc = new NPCBuilder(args(0));//, skinValue, skinSignature);
-            npc.setLocation(player().getLocation());
-            npc.spawn(player());
+            //NPCBuilder npc = new NPCBuilder(args(0));//, skinValue, skinSignature);
+            //npc.setLocation(player().getLocation());
+            //npc.spawn(player());
         } catch (Exception e) {
             e.printStackTrace();
         }

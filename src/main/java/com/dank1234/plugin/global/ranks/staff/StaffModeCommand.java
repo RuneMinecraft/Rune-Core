@@ -4,6 +4,8 @@ import com.dank1234.utils.command.Cmd;
 import com.dank1234.utils.command.ICommand;
 import com.dank1234.utils.data.database.StaffManager;
 import com.dank1234.utils.wrapper.message.Message;
+import com.dank1234.utils.wrapper.player.User;
+import com.dank1234.utils.wrapper.player.staff.Staff;
 import org.bukkit.command.CommandSender;
 
 @Cmd(names="staffmode")

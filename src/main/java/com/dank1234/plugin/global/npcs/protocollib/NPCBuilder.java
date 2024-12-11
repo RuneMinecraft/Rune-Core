@@ -1,9 +1,5 @@
 package com.dank1234.plugin.global.npcs.protocollib;
 
-import com.comphenix.protocol.PacketType;
-import com.comphenix.protocol.ProtocolLibrary;
-import com.comphenix.protocol.events.PacketContainer;
-import com.comphenix.protocol.wrappers.*;
 import com.dank1234.plugin.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -13,6 +9,7 @@ import java.util.Collections;
 import java.util.UUID;
 
 public class NPCBuilder {
+    /*
     private final String name;
     private final UUID uuid;
     private final WrappedGameProfile profile;
@@ -72,4 +69,6 @@ public class NPCBuilder {
             }
         }, 20*10L);
     }
+
+     */
 }

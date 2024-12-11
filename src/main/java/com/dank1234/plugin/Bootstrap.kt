@@ -3,6 +3,7 @@ package com.dank1234.plugin;
 import com.dank1234.plugin.global.player.NameRunnable;
 import com.dank1234.plugin.global.ranks.Group
 import com.dank1234.plugin.global.ranks.Track
+import com.dank1234.plugin.global.ranks.runnables.PermissionRunnable
 import com.dank1234.utils.Logger;
 import com.dank1234.utils.Utils;
 import com.dank1234.utils.command.Register;
@@ -72,7 +73,9 @@ class Bootstrap : Utils {
 
         if (server.TYPE() == ServerType.BOX) {
             // MineRunnable.start() // TODO: FIX THE RUNNABLE BEFORE REMOVING COMMENT
-            NameRunnable.startNameRunabble()
+            // NameRunnable.startNameRunabble() // TODO: FIX THE RUNNABLE BEFORE REMOVING COMMENT
+
+            PermissionRunnable.start()
         }
     }
 

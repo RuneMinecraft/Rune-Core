@@ -6,7 +6,6 @@ load: POSTWORLD
 api-version: 1.20
 
 depend:
-  - ProtocolLib
   - LuckPerms
 
 libraries:

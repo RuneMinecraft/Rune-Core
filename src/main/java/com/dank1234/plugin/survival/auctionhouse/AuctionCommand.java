@@ -7,6 +7,7 @@ import com.dank1234.utils.data.database.AuctionManager;
 import com.dank1234.utils.server.ServerType;
 import com.dank1234.utils.wrapper.item.Item;
 import com.dank1234.utils.wrapper.message.Message;
+import com.dank1234.utils.wrapper.player.User;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 
