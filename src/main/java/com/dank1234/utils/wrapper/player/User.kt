@@ -1,20 +1,22 @@
 package com.dank1234.utils.wrapper.player;
 
-import com.dank1234.plugin.global.economy.Economy;
-import com.dank1234.utils.data.Database
-import com.dank1234.utils.data.database.EcoManager;
-import com.dank1234.utils.data.database.UserManager;
-import com.dank1234.utils.wrapper.inventory.Menu;
-import com.dank1234.utils.wrapper.item.Item;
+import com.dank1234.plugin.global.economy.Economy
 import com.dank1234.plugin.global.ranks.Group
 import com.dank1234.plugin.global.ranks.Track
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.Material;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
+import com.dank1234.utils.data.Database
+import com.dank1234.utils.data.database.EcoManager
+import com.dank1234.utils.wrapper.inventory.Menu
+import com.dank1234.utils.wrapper.item.Item
 
-import java.util.UUID;
+import org.bukkit.Bukkit
+import org.bukkit.GameMode
+import org.bukkit.Material
+import org.bukkit.command.CommandSender
+import org.bukkit.entity.Player
+import org.json.JSONArray
+
+import java.sql.ResultSet
+import java.util.*
 
 open class User (
     open val uuid: UUID,
@@ -28,17 +30,45 @@ open class User (
 ) {
     companion object {
         @JvmStatic fun of(uuid: UUID, username: String): User {
-            if (!UserManager.exists(uuid)) {
-                val sql = "INSERT INTO users (uuid, username) VALUES (?, ?)"
-                Database.SQLUtils.executeUpdate(sql) { pstmt ->
+            if (!exists(uuid)!!) {
+                Database.SQLUtils.executeUpdate("INSERT INTO users (uuid, username) VALUES (?, ?);") { pstmt ->
                     pstmt.setString(1, uuid.toString())
                     pstmt.setString(2, username)
+                }
+                Database.SQLUtils.executeUpdate("INSERT INTO user_data (uuid) VALUES (?)") { pstmt ->
+                    pstmt.setString(1, uuid.toString())
                 }
             }
             return User(uuid, username).apply { updateEconomy() }
         }
-        @JvmStatic fun of(uuid: UUID): User? = UserManager.getUser(uuid).orElse(null)
-        @JvmStatic fun of(username: String): User? = UserManager.getUser(username).orElse(null)
+        @JvmStatic fun of(uuid: UUID): User? = getUser(uuid)!!.orElse(null)
+        @JvmStatic fun of(username: String): User? = getUser(username)!!.orElse(null)
+
+        @JvmStatic fun getUser(uuid: UUID): Optional<User>? {
+            val sql = "SELECT * FROM users WHERE uuid = ?"
+            return Database.SQLUtils.executeQuery(sql, { pstmt -> pstmt.setString(1, uuid.toString()) }) { rs ->
+                if (rs.next()) mapResultSet(rs) else null
+            }?.let { Optional.of(it) }
+        }
+        @JvmStatic fun getUser(username: String): Optional<User>? {
+            val sql = "SELECT * FROM users WHERE username = ?"
+            return Database.SQLUtils.executeQuery(sql, { pstmt -> pstmt.setString(1, username) }) { rs ->
+                if (rs.next()) mapResultSet(rs) else null
+            }?.let { Optional.of(it) }
+        }
+
+        @JvmStatic fun exists(uuid: UUID): Boolean? {
+            val sql = "SELECT 1 FROM users WHERE uuid = ? LIMIT 1"
+            return Database.SQLUtils.executeQuery(sql, { pstmt -> pstmt.setString(1, uuid.toString()) }) { rs ->
+                rs.next()
+            };
+        }
+        @JvmStatic fun exists(username: String): Boolean? {
+            val sql = "SELECT 1 FROM users WHERE username = ? LIMIT 1"
+            return Database.SQLUtils.executeQuery(sql, { pstmt -> pstmt.setString(1, username) }) { rs ->
+                rs.next()
+            };
+        }
 
         @JvmStatic fun ensureTables() {
             Database.SQLUtils.executeUpdate("""
@@ -77,6 +107,78 @@ open class User (
                     FOREIGN KEY (uuid) REFERENCES users(uuid) ON DELETE CASCADE
                 );
             """.trimIndent())
+        }
+
+        private fun mapResultSet(rs: ResultSet): User {
+            val uuid = UUID.fromString(rs.getString("uuid"))
+            val username = rs.getString("username")
+
+            val sql = "SELECT * FROM user_data WHERE uuid = ?"
+            val userDataRs = Database.SQLUtils.executeQuery(sql, { pstmt -> pstmt.setString(1, uuid.toString()) }) { rs -> rs }
+
+            if (userDataRs?.next() != true) {
+                throw IllegalStateException("User data for $username (UUID: $uuid) not found!")
+            }
+
+            val groupsJson = userDataRs.getString("groups") ?: "[]"
+            val groups = parseGroups(groupsJson)
+
+            val tracksJson = userDataRs.getString("tracks") ?: "[]"
+            val tracks = parseTracks(tracksJson)
+
+            val permissionsJson = userDataRs.getString("permissions") ?: "[]"
+            val permissions = parsePermissions(permissionsJson)
+
+            return User(uuid, username).apply {
+                this.groups.addAll(groups)
+                this.tracks.putAll(tracks)
+                this.permissions.addAll(permissions)
+            }
+        }
+
+        private fun parseGroups(groupsJson: String): List<Group> {
+            val groupsList = mutableListOf<Group>()
+            val groupsArray = JSONArray(groupsJson)
+            for (i in 0 until groupsArray.length()) {
+                val groupId = groupsArray.getString(i)
+
+                val sql = "SELECT name FROM groups WHERE id = ?"
+                val groupName = Database.SQLUtils.executeQuery(sql, { pstmt -> pstmt.setString(1, groupId) }) { rs ->
+                    if (rs.next()) rs.getString("name") else null
+                }
+
+                groupName?.let {
+                    Group.get(it)?.let { group -> groupsList.add(group) }
+                }
+            }
+            return groupsList
+        }
+        private fun parseTracks(tracksJson: String): Map<Track, Int> {
+            val tracksMap = mutableMapOf<Track, Int>()
+            val tracksArray = JSONArray(tracksJson)
+            for (i in 0 until tracksArray.length()) {
+                val trackData = tracksArray.getJSONObject(i)
+                val trackId = tracksArray.getString(i)
+
+                val sql = "SELECT name FROM tracks WHERE id = ?"
+                val groupName = Database.SQLUtils.executeQuery(sql, { pstmt -> pstmt.setString(1, trackId) }) { rs ->
+                    if (rs.next()) rs.getString("name") else null
+                }
+                val position = trackData.getInt("position")
+
+                groupName?.let {
+                    Track.get(it)?.let { track -> tracksMap.put(track, position) }
+                }
+            }
+            return tracksMap
+        }
+        private fun parsePermissions(permissionsJson: String): List<String> {
+            val permissionsList = mutableListOf<String>()
+            val permissionsArray = JSONArray(permissionsJson)
+            for (i in 0 until permissionsArray.length()) {
+                permissionsList.add(permissionsArray.getString(i))
+            }
+            return permissionsList
         }
     }
 
@@ -184,6 +286,16 @@ open class User (
         }
         return this
     }
+    fun clearGroups(): User {
+        groups.clear()
+
+        val sql = "UPDATE user_data SET groups = JSON_ARRAY() WHERE uuid = ?"
+        Database.SQLUtils.executeUpdate(sql) { pstmt ->
+            pstmt.setString(1, uuid.toString())
+        }
+        return this
+    }
+
     fun addTrack(track: Track, position: Int): User {
         if (!tracks.containsKey(track)) {
             tracks[track] = position
@@ -206,6 +318,16 @@ open class User (
         }
         return this
     }
+    fun clearTracks(): User {
+        tracks.clear()
+
+        val sql = "UPDATE user_data SET tracks = JSON_OBJECT() WHERE uuid = ?"
+        Database.SQLUtils.executeUpdate(sql) { pstmt ->
+            pstmt.setString(1, uuid.toString())
+        }
+        return this
+    }
+
     fun addPermission(permission: String): User {
         if (!permissions.contains(permission)) {
             permissions.add(permission)
@@ -224,6 +346,15 @@ open class User (
                 pstmt.setString(1, permission)
                 pstmt.setString(2, uuid.toString())
             }
+        }
+        return this
+    }
+    fun clearPermissions(): User {
+        permissions.clear()
+
+        val sql = "UPDATE user_data SET permissions = JSON_ARRAY() WHERE uuid = ?"
+        Database.SQLUtils.executeUpdate(sql) { pstmt ->
+            pstmt.setString(1, uuid.toString())
         }
         return this
     }

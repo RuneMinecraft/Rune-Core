@@ -1,5 +1,7 @@
 package com.dank1234.plugin.global.general.events;
 
+import com.dank1234.plugin.global.ranks.Group;
+import com.dank1234.utils.Consts;
 import com.dank1234.utils.RankUtils;
 import com.dank1234.utils.command.Event;
 import com.dank1234.utils.wrapper.message.Message;
@@ -13,9 +15,18 @@ public class ChatFormatter implements Listener {
 
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent e) {
-        String msg = e.getMessage();
-        e.setCancelled(true);
+        try {
+            User user = User.of(e.getPlayer().getUniqueId());
+            String msg = e.getMessage();
+            e.setCancelled(true);
 
-        Message.broadcast("&r"+RankUtils.getPrefix(User.of(e.getPlayer().getUniqueId()))+"&r "+e.getPlayer().getName()+" &8» &r"+msg).send(false);
+            assert user != null;
+            if (user.getGroups().isEmpty()) {
+                user.addGroup(Consts.MEMBER_GROUP);
+            }
+            Message.broadcast("&r" + user.getGroups().getFirst().getPrefix() + "&r " + user.getUsername() + " &8» &r" + msg).send(false);
+        }catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 }

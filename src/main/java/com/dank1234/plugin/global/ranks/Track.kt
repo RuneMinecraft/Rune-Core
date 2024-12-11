@@ -47,7 +47,6 @@ data class Track(
             val name = rs.getString("name")
             val track = Track(id, name)
 
-            // Fetch associated groups
             val groupSql = "SELECT g.name FROM track_groups tg INNER JOIN groups g ON tg.group_id = g.id WHERE tg.track_id = ?"
             Database.SQLUtils.executeQuery(groupSql, { pstmt ->
                 pstmt.setInt(1, id)

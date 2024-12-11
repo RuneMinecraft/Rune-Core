@@ -10,6 +10,7 @@ import net.luckperms.api.query.QueryOptions;
 public final class RankUtils {
     private static final LuckPerms luckperms = LuckPermsProvider.get();
 
+    /*
     public static Group getGroup(com.dank1234.utils.wrapper.player.User player) {
         User user = luckperms.getUserManager().getUser(player.getUuid());
         if (user == null) {
@@ -26,6 +27,8 @@ public final class RankUtils {
         }
         return user.getCachedData().getMetaData().getPrefix();
     }
+
+     */
     public static void removeStaffTrack(com.dank1234.utils.wrapper.player.User user) {
         LuckPerms lp = LuckPermsProvider.get();
         lp.getGroupManager().getLoadedGroups().forEach(group -> {

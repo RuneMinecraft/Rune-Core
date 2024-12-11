@@ -1,10 +1,8 @@
 package com.dank1234.plugin.box;
 
 import com.dank1234.utils.wrapper.item.Item;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 
 import static com.dank1234.plugin.box.BoxManager.*;
 import static org.bukkit.Material.*;

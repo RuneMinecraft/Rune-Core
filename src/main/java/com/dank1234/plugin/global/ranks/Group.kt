@@ -121,8 +121,7 @@ data class Group(
         }
     }
 
-    @Throws(SQLException::class)
-    fun addPermission(permission: String) {
+    @Throws(SQLException::class) fun addPermission(permission: String) {
         if (!permissions.contains(permission)) {
             val sql = "INSERT INTO group_permissions (group_id, permission) VALUES (?, ?)"
             Database.SQLUtils.executeUpdate(sql) { pstmt ->
@@ -132,9 +131,7 @@ data class Group(
             permissions.add(permission)
         }
     }
-
-    @Throws(SQLException::class)
-    fun removePermission(permission: String) {
+    @Throws(SQLException::class) fun removePermission(permission: String) {
         if (permissions.remove(permission)) {
             val sql = "DELETE FROM group_permissions WHERE group_id = ? AND permission = ?"
             Database.SQLUtils.executeUpdate(sql) { pstmt ->
@@ -143,9 +140,7 @@ data class Group(
             }
         }
     }
-
-    @Throws(SQLException::class)
-    fun addInheritedGroup(groupName: String) {
+    @Throws(SQLException::class) fun addInheritedGroup(groupName: String) {
         val inherited = get(groupName) ?: return
         if (!inheritedGroups.contains(inherited)) {
             val sql = "INSERT INTO group_inheritances (group_id, inherited_group_id) VALUES (?, ?)"
@@ -156,9 +151,7 @@ data class Group(
             inheritedGroups.add(inherited)
         }
     }
-
-    @Throws(SQLException::class)
-    fun removeInheritedGroup(groupName: String) {
+    @Throws(SQLException::class) fun removeInheritedGroup(groupName: String) {
         val inherited = inheritedGroups.find { it.name.equals(groupName, ignoreCase = true) }
         if (inherited != null) {
             val sql = "DELETE FROM group_inheritances WHERE group_id = ? AND inherited_group_id = ?"
@@ -168,5 +161,19 @@ data class Group(
             }
             inheritedGroups.remove(inherited)
         }
+    }
+
+    override fun toString(): String {
+        return """
+            Group[
+                id=$id&r,
+                name=$name&r,
+                prefix=$prefix&r,
+                suffix=$suffix&r,
+                weight=$weight&r,
+                inheritance=$inheritedGroups&r,
+                permissions=$permissions&r,
+            ]
+        """.trimIndent()
     }
 }
