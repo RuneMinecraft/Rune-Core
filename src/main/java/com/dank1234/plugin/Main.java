@@ -1,7 +1,6 @@
 package com.dank1234.plugin;
 
 import com.dank1234.utils.command.Register;
-import com.dank1234.utils.data.Config;
 import com.dank1234.utils.data.Version;
 import com.dank1234.utils.server.Server;
 import com.dank1234.utils.wrapper.message.Message;
@@ -33,9 +32,6 @@ public final class Main extends JavaPlugin {
     }
     public Register register() {
         return this.bootstrap.register;
-    }
-    public Config config() {
-        return this.bootstrap.config;
     }
 
     @Override

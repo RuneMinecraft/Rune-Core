@@ -1,6 +1,5 @@
 package com.dank1234.plugin.global.pluginmanagement;
 
-import com.dank1234.plugin.Bootstrap;
 import com.dank1234.utils.command.Cmd;
 import com.dank1234.utils.command.ICommand;
 import com.dank1234.utils.wrapper.message.Message;

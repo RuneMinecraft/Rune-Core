@@ -1,7 +1,5 @@
 package com.dank1234.utils.data.database;
 
-import com.dank1234.utils.wrapper.player.User;
-
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;

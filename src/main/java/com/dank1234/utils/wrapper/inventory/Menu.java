@@ -2,7 +2,6 @@ package com.dank1234.utils.wrapper.inventory;
 
 import com.dank1234.utils.Utils;
 import com.dank1234.utils.wrapper.item.Item;
-import com.dank1234.utils.wrapper.player.User;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;

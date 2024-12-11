@@ -9,7 +9,6 @@ import com.dank1234.utils.wrapper.inventory.Menu;
 import com.dank1234.utils.wrapper.item.Item;
 import com.dank1234.utils.wrapper.item.Items;
 import com.dank1234.utils.wrapper.message.Message;
-import com.dank1234.utils.wrapper.player.User;
 import org.bukkit.Material;
 
 import java.util.*;
