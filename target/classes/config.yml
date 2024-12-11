@@ -1,0 +1,4 @@
+server:
+  type: 'HUB'
+  release: '1'
+  description: 'The hub servers used to lobby players into all of the different sub-servers.'
