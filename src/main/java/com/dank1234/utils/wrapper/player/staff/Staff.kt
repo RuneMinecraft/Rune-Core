@@ -114,6 +114,6 @@ data class Staff(
                 mutes: $mutes
                 bans: $bans
             ]
-        """.trimIndent()
+        """.trimIndent() // test
     }
 }
