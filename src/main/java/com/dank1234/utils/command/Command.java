@@ -9,10 +9,9 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
-public @interface Cmd {
+public @interface Command {
     ServerType server() default ServerType.GLOBAL;
     String[] names();
-    String[] perms() default "default";
     boolean disabled() default false;
     boolean playerOnly() default false;
 }

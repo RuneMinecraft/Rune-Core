@@ -28,16 +28,20 @@ class UserCommand {
                 "group" -> {
                     when (target) {
                         "set" -> {
-                            user?.clearGroups()
-                            Group.get(value)?.let { user?.addGroup(it) }
-                            Message.create(sender, "&aSet &f$username's&a primary group to &a$value").send()
+                            user.clearGroups()
+                            Group.get(value)?.let { user.addGroup(it) }
+                            if (!Group.exists(value)!!) {
+                                user.sendMessage("&cCannot give &f$value &cto &f$username &cas it does not exist.")
+                                return
+                            }
+                            Message.create(sender, "&aSet &f$username's&a primary group to &f$value&a.").send()
                         }
                         "add" -> {
-                            Group.get(value)?.let { user?.addGroup(it) }
+                            Group.get(value)?.let { user.addGroup(it) }
                             Message.create(sender, "&aAdded &f$value&a to &f$username's&a groups.").send()
                         }
                         "remove" -> {
-                            Group.get(value)?.let { user?.removeGroup(it) }
+                            Group.get(value)?.let { user.removeGroup(it) }
                             Message.create(sender, "&cRemoved &f$value&f from &f$username's&c groups.").send()
                         }
                         else -> Message.create(sender, "&cInvalid group action. Use set/add/remove.").send()
@@ -46,11 +50,11 @@ class UserCommand {
                 "track" -> {
                     when (target) {
                         "add" -> {
-                            Track.get(value)?.let { user?.addTrack(it, 0) }
+                            Track.get(value)?.let { user.addTrack(it, 0) }
                             Message.create(sender, "&aSet &f$username's&a track to &a$value").send()
                         }
                         "remove" -> {
-                            Track.get(value)?.let { user?.removeTrack(it) }
+                            Track.get(value)?.let { user.removeTrack(it) }
                             Message.create(sender, "&cRemoved &f$value&f from &f$username's&c tracks.").send()
                         }
                         else -> Message.create(sender, "&cInvalid track action. Use set/remove.").send()
@@ -59,11 +63,11 @@ class UserCommand {
                 "permissions" -> {
                     when (target) {
                         "add" -> {
-                            user?.addPermission(value)
+                            user.addPermission(value)
                             Message.create(sender, "&aAdded permission &f$value&a to user &f$username").send()
                         }
                         "remove" -> {
-                            user?.removePermission(value)
+                            user.removePermission(value)
                             Message.create(sender, "&cRemoved permission &f$value&c from user &f$username").send()
                         }
                         else -> Message.create(sender, "&cUnknown permission action. Use add/remove.").send()

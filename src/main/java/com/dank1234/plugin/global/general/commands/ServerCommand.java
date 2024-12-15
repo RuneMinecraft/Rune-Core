@@ -1,17 +1,18 @@
 package com.dank1234.plugin.global.general.commands;
 
 import com.dank1234.plugin.Main;
-import com.dank1234.utils.command.Cmd;
+import com.dank1234.utils.command.Command;
 import com.dank1234.utils.command.ICommand;
 import com.dank1234.utils.wrapper.message.Message;
 import com.dank1234.utils.wrapper.message.MessageType;
 import com.dank1234.utils.wrapper.message.Messages;
-import org.bukkit.command.CommandSender;
+import com.dank1234.utils.wrapper.player.User;
+import org.jetbrains.annotations.NotNull;
 
-@Cmd(names="server")
+@Command(names="server")
 public class ServerCommand extends ICommand {
     @Override
-    public void execute(CommandSender sender, String[] args) {
+    public void execute(@NotNull User user, String[] args) {
         if (args.length == 0) {
             Message.create(sender(),
                     "&c<-- &6Server Info &c-->",

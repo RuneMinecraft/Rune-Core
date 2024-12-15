@@ -1,14 +1,14 @@
 package com.dank1234.plugin.global.npcs;
 
-import com.dank1234.plugin.global.npcs.protocollib.NPCBuilder;
-import com.dank1234.utils.command.Cmd;
+import com.dank1234.utils.command.Command;
 import com.dank1234.utils.command.ICommand;
-import org.bukkit.command.CommandSender;
+import com.dank1234.utils.wrapper.player.User;
+import org.jetbrains.annotations.NotNull;
 
-@Cmd(names="npc")
+@Command(names="npc")
 public class NPCCommand extends ICommand {
     @Override
-    public void execute(CommandSender sender, String[] args) {
+    public void execute(@NotNull User user, String[] args) {
         try {
             //String[] skinData = SkinFetcher.fetchSkinData(args(0));
             //String skinValue = skinData[0];

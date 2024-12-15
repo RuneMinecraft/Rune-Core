@@ -6,11 +6,12 @@ import com.dank1234.plugin.global.ranks.command.subcommands.TrackCommand;
 import com.dank1234.plugin.global.ranks.command.subcommands.PromoteCommand;
 import com.dank1234.plugin.global.ranks.command.subcommands.DemoteCommand;
 
-import com.dank1234.utils.command.Cmd;
+import com.dank1234.utils.command.Command;
 import com.dank1234.utils.command.ICommand;
-import org.bukkit.command.CommandSender;
+import com.dank1234.utils.wrapper.player.User;
+import org.jetbrains.annotations.NotNull;
 
-@Cmd(names = "ranks")
+@Command(names = "ranks")
 public class RanksCommand extends ICommand {
     /*
      * /ranks user [USER] group set [RANK]
@@ -41,24 +42,24 @@ public class RanksCommand extends ICommand {
     */
 
     @Override
-    public void execute(CommandSender sender, String[] args) {
+    public void execute(@NotNull User user, String[] args) {
         if (args.length < 3) {
-            sender.sendMessage("Invalid command usage. Type '/ranks help' for help.");
+            user.sendMessage("Invalid command usage. Type '/ranks help' for help.");
             return;
         }
 
         try {
             String subCommand = args[0].toLowerCase();
             switch (subCommand) {
-                case "user" -> UserCommand.execute(sender, args);
-                case "group" -> GroupCommand.execute(sender, args);
-                case "track" -> TrackCommand.execute(sender, args);
-                case "promote" -> PromoteCommand.execute(sender, args);
-                case "demote" -> DemoteCommand.execute(sender, args);
-                default -> sender.sendMessage("Unknown subcommand. Type '/ranks help' for help.");
+                case "user" -> UserCommand.execute(user.getPlayer(), args);
+                case "group" -> GroupCommand.execute(user.getPlayer(), args);
+                case "track" -> TrackCommand.execute(user.getPlayer(), args);
+                case "promote" -> PromoteCommand.execute(user.getPlayer(), args);
+                case "demote" -> DemoteCommand.execute(user.getPlayer(), args);
+                default -> user.sendMessage("Unknown subcommand. Type '/ranks help' for help.");
             }
         } catch (Exception e) {
-            sender.sendMessage("An error occurred while processing the command: " + e.getMessage());
+            user.sendMessage("An error occurred while processing the command: " + e.getMessage());
             e.printStackTrace();
         }
     }

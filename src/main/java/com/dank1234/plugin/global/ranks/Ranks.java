@@ -5,144 +5,24 @@ import com.dank1234.utils.server.ServerType;
 import java.sql.SQLException;
 
 public enum Ranks {
-    MANAGER(ServerType.GLOBAL, new Object() {
-        Group evaluate() {
-            try {
-                return Group.Companion.get("Manager", "&#ff63c8&lᴍᴀɴᴀ", null, 100);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }.evaluate()),
+    // ᴀ ʙ
 
-    DEVELOPER(ServerType.GLOBAL, new Object() {
-        Group evaluate() {
-            try {
-                return Group.Companion.get("Dev", "&#ffb300&lᴅᴇᴠ", null, 90);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }.evaluate()),
+    MANAGER(ServerType.GLOBAL, Group.Companion.get("Manager", "&#ff63c8&lᴍᴀɴᴀɢᴇʀ", null, 150)),
+    DEVELOPER(ServerType.GLOBAL, Group.Companion.get("Dev", "&#ffb300&lᴅᴇᴠ", null, 140)),
+    ADMIN(ServerType.GLOBAL, Group.Companion.get("Admin", "&#e32d2d&lᴀᴅᴍɪɴ", null, 130)),
+    SR_MOD(ServerType.GLOBAL, Group.Companion.get("SrMod", "&#903dfc&lsʀ ᴍᴏᴅ", null, 120)),
+    MOD(ServerType.GLOBAL, Group.Companion.get("Mod", "&#1ec5fc&lᴍᴏᴅ", null, 110)),
+    HELPER(ServerType.GLOBAL, Group.Companion.get("Helper", "&#02f543&lʜᴇʟᴘᴇʀ", null, 100)),
 
-    ADMIN(ServerType.GLOBAL, new Object() {
-        Group evaluate() {
-            try {
-                return Group.Companion.get("Admin", "&#e32d2d&lᴀᴅᴍɪɴ", null, 80);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }.evaluate()),
+    BUILDER(ServerType.GLOBAL, Group.Companion.get("Builder", "&#fcd33f&lʙᴜɪʟᴅᴇʀ", null, 90)),
+    CREATOR(ServerType.GLOBAL, Group.Companion.get("Creator", "&#ff0000&lʏᴏᴜ&f&lᴛᴜʙᴇ", null, 80));
 
-    SR_MOD(ServerType.GLOBAL, new Object() {
-        Group evaluate() {
-            try {
-                return Group.Companion.get("SrMod", "&#903dfc&lsʀ ᴍᴏᴅ", null, 80);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }.evaluate()),
-
-    MOD(ServerType.GLOBAL, new Object() {
-        Group evaluate() {
-            try {
-                return Group.Companion.get("Mod", "&#1ec5fc&lᴍᴏᴅ", null, 80);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }.evaluate()),
-
-    HELPER(ServerType.GLOBAL, new Object() {
-        Group evaluate() {
-            try {
-                return Group.Companion.get("Helper", "&#02f543&lʜᴇʟᴘᴇʀ", null, 80);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }.evaluate()),
-    BUILDER(ServerType.GLOBAL, new Object() {
-        Group evaluate() {
-            try {
-                return Group.Companion.get("Builder", "&#fcd33f&lʙᴜɪʟᴅᴇʀ", null, 80);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }.evaluate()),
-
-    CREATOR(ServerType.GLOBAL, new Object() {
-        Group evaluate() {
-            try {
-                return Group.Companion.get("Creator", "&#ff0000&lʏᴏᴜ&f&lᴛᴜʙᴇ", null, 80);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }.evaluate()),
-
-    MASTER(ServerType.GLOBAL, new Object() {
-        Group evaluate() {
-            try {
-                return Group.Companion.get("Master", "", null, 0);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }.evaluate()),
-
-    WARLOCK(ServerType.GLOBAL, new Object() {
-        Group evaluate() {
-            try {
-                return Group.Companion.get("Warlock", "", null, 0);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }.evaluate()),
-
-    SORCERER(ServerType.GLOBAL, new Object() {
-        Group evaluate() {
-            try {
-                return Group.Companion.get("Sorcerer", "", null, 0);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }.evaluate()),
-
-    WIZARD(ServerType.GLOBAL, new Object() {
-        Group evaluate() {
-            try {
-                return Group.Companion.get("Wizard", "", null, 0);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }.evaluate()),
-
-    MAGE(ServerType.GLOBAL, new Object() {
-        Group evaluate() {
-            try {
-                return Group.Companion.get("Mage", "", null, 0);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }.evaluate()),
-
-    MEMBER(ServerType.GLOBAL, new Object() {
-        Group evaluate() {
-            try {
-                return Group.Companion.get("Member", "", null, 0);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }.evaluate());
+    // MASTER(ServerType.GLOBAL, Group.Companion.get("Master", "", null, 70)),
+    // WARLOCK(ServerType.GLOBAL, Group.Companion.get("Warlock", "", null, 60)),
+    // SORCERER(ServerType.GLOBAL, Group.Companion.get("Sorcerer", "", null, 50)),
+    // WIZARD(ServerType.GLOBAL, Group.Companion.get("Wizard", "", null, 40)),
+    // MAGE(ServerType.GLOBAL, Group.Companion.get("Mage", "", null, 30)),
+    // MEMBER(ServerType.GLOBAL, Group.Companion.get("Member", "", null, 20));
 
     private final ServerType server;
     private final Group group;

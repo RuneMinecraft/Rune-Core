@@ -1,27 +1,30 @@
 package com.dank1234.plugin.global.teleport;
 
-import com.dank1234.utils.command.Cmd;
+import com.dank1234.utils.Locale;
+import com.dank1234.utils.command.Command;
 import com.dank1234.utils.command.ICommand;
 import com.dank1234.utils.wrapper.message.Message;
 import com.dank1234.utils.wrapper.player.User;
-import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
 
-@Cmd(names = {"tphere", "s"})
+import java.util.Optional;
+
+@Command(names = {"tphere", "s"})
 public class TpHereCommand extends ICommand {
     @Override
-    public void execute(CommandSender sender, String[] args) {
+    public void execute(@NotNull User user, String[] args) {
         if (args.length != 1) {
-            Message.create(sender, "&cInvalid arguments! Usage: /<command> <player>").send();
+            Message.create(user, "&cInvalid arguments! Usage: /<command> <player>").send();
             return;
         }
 
-        User user = User.of(args(0));
-        if (user == null) {
-            Message.create(sender, "&cThat player is not in our database!").send();
+        Optional<User> target = User.getUser(args(0));
+        if (target.isEmpty()) {
+            user.sendMessage(Locale.INCORRECT_USER);
             return;
         }
 
-        Message.create(sender, "&eTeleporting...").send();
-        user.getPlayer().teleport(player().getLocation());
+        target.get().sendMessage("&eTeleporting...");
+        target.get().getPlayer().teleport(sender().getPlayer().getLocation());
     }
 }

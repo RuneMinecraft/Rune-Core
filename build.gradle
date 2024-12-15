@@ -80,7 +80,8 @@ tasks.javadoc {
 
 tasks.shadowJar {
     archiveFileName = "Rune-Core-${version}.jar"
-    destinationDirectory = file("X:/JARs")// file("S:/opt/mcsmanager/daemon/data/InstanceData/7fa7bc4eb4544091add082ae0b906aa0/plugins")
+    // destinationDirectory = file("X:/JARs")
+    destinationDirectory = file("S:/opt/mcsmanager/daemon/data/InstanceData/7fa7bc4eb4544091add082ae0b906aa0/plugins")
     mergeServiceFiles()
 }
 

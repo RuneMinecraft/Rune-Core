@@ -4,6 +4,7 @@ import com.dank1234.utils.data.Database
 
 import java.sql.ResultSet
 import java.sql.SQLException
+import java.util.*
 
 data class Group(
     var id: Int? = null,
@@ -15,49 +16,55 @@ data class Group(
     val permissions: MutableList<String> = mutableListOf()
 ) {
     companion object {
-        @Throws(SQLException::class)
         fun create(
             name: String,
             prefix: String,
             suffix: String? = null,
             weight: Int
         ): Group {
-            val sql = "INSERT INTO groups (name, prefix, suffix, weight) VALUES (?, ?, ?, ?)"
-            val id = Database.SQLUtils.executeUpdate(sql) { pstmt ->
-                pstmt.setString(1, name)
-                pstmt.setString(2, prefix)
-                pstmt.setString(3, suffix)
-                pstmt.setInt(4, weight)
-            }
+            var id = -1
+
+            try {
+                val sql = "INSERT INTO groups (name, prefix, suffix, weight) VALUES (?, ?, ?, ?)"
+                id = Database.SQLUtils.executeUpdate(sql) { pstmt ->
+                    pstmt.setString(1, name)
+                    pstmt.setString(2, prefix)
+                    pstmt.setString(3, suffix)
+                    pstmt.setInt(4, weight)
+                }
+            }catch (_: SQLException) {}
             return Group(id, name, prefix, suffix, weight)
         }
-
-        @Throws(SQLException::class)
-        fun get(name: String): Group? {
-            val sql = "SELECT * FROM groups WHERE name = ?"
-            return Database.SQLUtils.executeQuery(sql, { pstmt ->
-                pstmt.setString(1, name)
-            }) { rs ->
-                if (rs.next()) mapResultSetToGroup(rs) else null
-            }
+        fun get(
+            name: String
+        ): Group? {
+            try {
+                val sql = "SELECT * FROM groups WHERE name = ?"
+                return Database.SQLUtils.executeQuery(sql, { pstmt ->
+                    pstmt.setString(1, name)
+                }) { rs ->
+                    if (rs.next()) mapResultSetToGroup(rs) else null
+                }
+            }catch (_: SQLException) {}
+            return null
         }
-
-        @Throws(SQLException::class)
         fun get(
             name: String,
             prefix: String,
             suffix: String? = null,
             weight: Int
         ): Group? {
-            val sql = "SELECT * FROM groups WHERE name = ?"
-            return Database.SQLUtils.executeQuery(sql, { pstmt ->
-                pstmt.setString(1, name)
-            }) { rs ->
-                if (rs.next()) mapResultSetToGroup(rs) else create(name, prefix, suffix, weight)
-            }
+            try {
+                val sql = "SELECT * FROM groups WHERE name = ?"
+                return Database.SQLUtils.executeQuery(sql, { pstmt ->
+                    pstmt.setString(1, name)
+                }) { rs ->
+                    if (rs.next()) mapResultSetToGroup(rs) else create(name, prefix, suffix, weight)
+                }
+            }catch(_: SQLException) {}
+            return null;
         }
 
-        @Throws(SQLException::class)
         fun getAllGroups(): List<Group> {
             val sql = "SELECT * FROM groups"
             return Database.SQLUtils.executeQuery(sql, {}, { rs ->
@@ -68,7 +75,6 @@ data class Group(
                 groups
             }) ?: emptyList()
         }
-
         private fun mapResultSetToGroup(rs: ResultSet): Group {
             val id = rs.getInt("id")
             val name = rs.getString("name")
@@ -101,9 +107,7 @@ data class Group(
             return group
         }
 
-        @JvmStatic
-        @Throws(SQLException::class)
-        fun ensureTables() {
+        @JvmStatic @Throws(SQLException::class) fun ensureTables() {
             Database.SQLUtils.executeUpdate("""
                 CREATE TABLE IF NOT EXISTS groups (
                     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -133,6 +137,19 @@ data class Group(
                     FOREIGN KEY (inherited_group_id) REFERENCES groups(id) ON DELETE CASCADE
                 );
             """.trimIndent())
+        }
+
+        @JvmStatic fun exists(name: String): Boolean? {
+            val sql = "SELECT 1 FROM groups WHERE name = ? LIMIT 1"
+            return Database.SQLUtils.executeQuery(sql, { pstmt -> pstmt.setString(1, name) }) { rs ->
+                rs.next()
+            };
+        }
+        @JvmStatic fun exists(id: Int): Boolean? {
+            val sql = "SELECT 1 FROM groups WHERE id = ? LIMIT 1"
+            return Database.SQLUtils.executeQuery(sql, { pstmt -> pstmt.setInt(1, id) }) { rs ->
+                rs.next()
+            };
         }
     }
 

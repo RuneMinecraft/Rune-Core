@@ -4,16 +4,19 @@ import com.dank1234.plugin.Codex
 import com.dank1234.plugin.global.economy.Economy
 import com.dank1234.plugin.global.ranks.Group
 import com.dank1234.plugin.global.ranks.Track
+import com.dank1234.utils.Consts
 import com.dank1234.utils.data.Database
 import com.dank1234.utils.data.database.EcoManager
 import com.dank1234.utils.wrapper.inventory.Menu
 import com.dank1234.utils.wrapper.item.Item
+import com.dank1234.utils.wrapper.location.Location
+import com.dank1234.utils.wrapper.message.Message
 
 import org.bukkit.Bukkit
-import org.bukkit.GameMode
 import org.bukkit.Material
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
+import org.bukkit.event.player.PlayerTeleportEvent
 import org.json.JSONArray
 
 import java.sql.ResultSet
@@ -50,35 +53,35 @@ open class User (
                 Codex.addUser(this)
             }
         }
-        @JvmStatic fun getUser(uuid: UUID): Optional<User>? {
+        @JvmStatic fun getUser(uuid: UUID): Optional<User> {
             Codex.getCachedUsers().firstOrNull { it.uuid == uuid }?.let {
                 return Optional.of(it)
             }
 
             val sql = "SELECT * FROM users WHERE uuid = ?"
             return Database.SQLUtils.executeQuery(sql, { pstmt -> pstmt.setString(1, uuid.toString()) }) { rs ->
-                if (rs.next()) mapResultSet(rs) else null
+                if (rs.next()) mapResultSet(rs) else Consts.NULL_USER
             }?.let {
                 Codex.addUser(it)
                 Optional.of(it)
-            }
+            }!!
         }
-        @JvmStatic fun getUser(username: String): Optional<User>? {
+        @JvmStatic fun getUser(username: String): Optional<User> {
             Codex.getCachedUsers().firstOrNull { it.username.equals(username, ignoreCase = true) }?.let {
                 return Optional.of(it)
             }
 
             val sql = "SELECT * FROM users WHERE username = ?"
             return Database.SQLUtils.executeQuery(sql, { pstmt -> pstmt.setString(1, username) }) { rs ->
-                if (rs.next()) mapResultSet(rs) else null
+                if (rs.next()) mapResultSet(rs) else Consts.NULL_USER
             }?.let {
                 Codex.addUser(it)
                 Optional.of(it)
-            }
+            }!!
         }
 
-        @JvmStatic fun of(uuid: UUID): User? = getUser(uuid)!!.orElse(null)
-        @JvmStatic fun of(username: String): User? = getUser(username)!!.orElse(null)
+        @JvmStatic fun of(uuid: UUID): User = getUser(uuid).orElse(null)
+        @JvmStatic fun of(username: String): User = getUser(username).orElse(null)
 
         @JvmStatic fun exists(uuid: UUID): Boolean? {
             val sql = "SELECT 1 FROM users WHERE uuid = ? LIMIT 1"
@@ -204,10 +207,37 @@ open class User (
         }
     }
 
+    fun sendMessage(vararg messages: String) {
+        Message.create(this, *messages).send();
+    }
+
+    fun teleport(loc: Location) {
+        this.getPlayer().teleportAsync(org.bukkit.Location(
+            loc.world,
+            loc.x,
+            loc.y,
+            loc.z,
+            loc.yaw,
+            loc.pitch
+        ), PlayerTeleportEvent.TeleportCause.PLUGIN)
+    }
+    fun teleport(user: User) {
+        this.getPlayer().teleportAsync(org.bukkit.Location(
+            user.getLocation().world,
+            user.getLocation().x,
+            user.getLocation().y,
+            user.getLocation().z,
+            user.getLocation().yaw,
+            user.getLocation().pitch
+        ), PlayerTeleportEvent.TeleportCause.PLUGIN)
+    }
+
+    fun getLocation(): Location = Location.of(this.getPlayer().location).get()
+
     fun isOnline(): Boolean = getPlayer().isOnline
-    fun gamemode(): GameMode = getPlayer().gameMode
+    fun gamemode(): GameMode = GameMode.valueOf(getPlayer().gameMode.name)
     fun setGameMode(gm: GameMode): User {
-        getPlayer().gameMode = gm
+        getPlayer().gameMode = org.bukkit.GameMode.valueOf(gm.name)
         return this
     }
     fun sudo(cmd: String): User {
@@ -289,6 +319,9 @@ open class User (
 
     fun addGroup(group: Group): User {
         if (!groups.contains(group)) {
+            if (!Group.exists(group.name)!!) {
+                return this
+            }
             groups.add(group)
             val sql = "UPDATE user_data SET groups = JSON_ARRAY_APPEND(groups, '$', ?) WHERE uuid = ?"
             Database.SQLUtils.executeUpdate(sql) { pstmt ->

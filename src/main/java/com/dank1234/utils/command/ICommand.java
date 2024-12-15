@@ -4,40 +4,38 @@ import com.dank1234.utils.Utils;
 import com.dank1234.utils.wrapper.message.Message;
 import com.dank1234.utils.wrapper.message.MessageType;
 import com.dank1234.utils.wrapper.message.Messages;
+import com.dank1234.utils.wrapper.player.User;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class ICommand implements Utils {
-    public abstract void execute(CommandSender sender, String[] args);
+    public abstract void execute(@NotNull User user, @NotNull String ... args);
 
-    private CommandSender sender;
-    private Player player;
+    private User user;
 
     private String[] names;
-    private String[] permissions;
     private String[] args;
 
-    public void sender(CommandSender sender) {
-        this.sender = sender;
-    }
-    public CommandSender sender() {
-        return this.sender;
+    public ICommand setSender(CommandSender sender) {
+        this.user = User.of(sender.getName());
+        return this;
     }
 
-    public void player(Player player) {
-        if (player != null) {
-            this.player = player;
-        }
+    public User sender() {
+        return this.user;
     }
-    public Player player() {
-        return this.player;
+    public Player getPlayer() {
+        return this.user.getPlayer();
     }
 
-    public void names(String[] names) {
+    public ICommand names(String[] names) {
         this.names = names;
+        return this;
     }
-    public void names(int i, String name) {
+    public ICommand names(int i, String name) {
         this.names[i] = name;
+        return this;
     }
     public String[] names() {
         return this.names;
@@ -46,24 +44,13 @@ public abstract class ICommand implements Utils {
         return this.names[i];
     }
 
-    public void permissions(String[] perms) {
-        this.permissions = perms;
-    }
-    public void permissions(int i, String perm) {
-        this.permissions[i] = perm;
-    }
-    public String[] permissions() {
-        return this.permissions;
-    }
-    public String permissions(int i) {
-        return this.permissions[i];
-    }
-
-    public void args(String[] args) {
+    public ICommand args(String[] args) {
         this.args = args;
+        return this;
     }
-    public void args(int i, String args) {
+    public ICommand args(int i, String args) {
         this.args[i] = args;
+        return this;
     }
     public String[] args() {
         return this.args;
@@ -72,22 +59,16 @@ public abstract class ICommand implements Utils {
         return this.args[i];
     }
 
+    public boolean disabled() {
+        Command cmd = this.getClass().getAnnotation(Command.class);
+        return cmd != null && cmd.disabled();
+    }
+
     public boolean checkArgument(int i, String s) {
         if (i >= args.length) {
             Message.create(this.sender(), Messages.ARGUMENTS.toString()).send();
             return false;
         }
         return args[i].equalsIgnoreCase(s);
-    }
-
-    public Player checkPlayer(Player player) {
-        if (player == null) {
-            Message.create(MessageType.ERROR, this.player, "Player parsing error!");
-            return null;
-        }
-        return player;
-    }
-    public boolean isPlayer() {
-        return player != null;
     }
 }

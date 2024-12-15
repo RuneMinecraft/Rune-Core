@@ -10,7 +10,6 @@ import net.minecraft.world.level.Level;
 import java.util.Objects;
 
 public class FakePlayer extends ServerPlayer {
-
     public FakePlayer(ServerLevel world, GameProfile profile) {
         super(MinecraftServer.getServer(), Objects.requireNonNull(MinecraftServer.getServer().getLevel(Level.OVERWORLD)), profile, ClientInformation.createDefault());
     }

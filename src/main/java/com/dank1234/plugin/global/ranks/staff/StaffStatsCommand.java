@@ -1,28 +1,28 @@
 package com.dank1234.plugin.global.ranks.staff;
 
-import com.dank1234.utils.command.Cmd;
+import com.dank1234.utils.command.Command;
 import com.dank1234.utils.command.ICommand;
 import com.dank1234.utils.data.database.StaffManager;
 import com.dank1234.utils.wrapper.message.Message;
 import com.dank1234.utils.wrapper.player.User;
 import com.dank1234.utils.wrapper.player.staff.Staff;
-import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
 
-@Cmd(names="staffstats")
+@Command(names="staffstats")
 public class StaffStatsCommand extends ICommand {
     @Override
-    public void execute(CommandSender sender, String[] args) {
-        User target = User.of(sender.getName());
+    public void execute(@NotNull User user, String[] args) {
+        User target = user;
         if (args.length >= 1 && User.of(args(0)) != null) {
             target = User.of(args(0));
         }
 
         if (StaffManager.getStaff(target.getUuid()).isEmpty()) {
-            Message.create(player(), "&cYou are not a staff!").send();
+            user.sendMessage("&cYou are not a staff!");
         } else {
             Staff staff = Staff.Companion.of(target.getUuid());
 
-            Message.create(player(),
+            user.sendMessage(
                     "&aStaff Stats for &f"+target.getUsername()+"&a:",
                     "&a| &lRank&a: &r"+ staff.rank().rank.getCachedData().getMetaData().getPrefix(),
                     "&a| &lStaff Time&a: &f"+staff.time()+"&7&o*Formatting still needed*",
@@ -30,7 +30,7 @@ public class StaffStatsCommand extends ICommand {
                     "&a| &lWarns&a: &f"+staff.warns(),
                     "&a| &lMutes&a: &f"+staff.mutes(),
                     "&a| &lBans&a: &f"+staff.bans()
-            ).send();
+            );
         }
     }
 }

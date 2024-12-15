@@ -2,7 +2,7 @@
 <project version="4">
   <component name="EntryPointsManager">
     <list size="1">
-      <item index="0" class="java.lang.String" itemvalue="com.dank1234.utils.command.Cmd" />
+      <item index="0" class="java.lang.String" itemvalue="com.dank1234.utils.command.Command" />
     </list>
   </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />

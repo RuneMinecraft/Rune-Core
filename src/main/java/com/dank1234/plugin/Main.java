@@ -1,16 +1,13 @@
 package com.dank1234.plugin;
 
-import com.dank1234.utils.command.Register;
 import com.dank1234.utils.data.Version;
+import com.dank1234.utils.regster.RegisterCommandsKt;
 import com.dank1234.utils.server.Server;
-import com.dank1234.utils.wrapper.message.Message;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
 import java.util.List;
 
 public final class Main extends JavaPlugin {
@@ -24,43 +21,42 @@ public final class Main extends JavaPlugin {
     public List<String> worlds() {
         return this.bootstrap.getWorlds();
     }
-    public Version version(){
-        return this.bootstrap.getVersion();
-    }
     public Server server() {
         return this.bootstrap.server;
-    }
-    public Register register() {
-        return this.bootstrap.register;
     }
 
     @Override
     public void onLoad() {
-        instance = this;
+        try {
+            instance = this;
 
-        this.setNaggable(false);
-        //bootstrap.load();
+            this.setNaggable(false);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void onEnable() {
-        bootstrap.load();
-        bootstrap.enable();
         try {
-            System.out.println(Class.forName("net.minecraft.server.level.ServerLevel"));
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            bootstrap.load();
+            bootstrap.enable();
+        }catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     @Override
     public void onDisable() {
-        bootstrap.disable();
+        try {
+            bootstrap.disable();
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
-        Message.create(Bukkit.getConsoleSender(), sender.getName()+" executed the command '/"+label+" "+Arrays.toString(Arrays.copyOfRange(args, 0, args.length))+"'").send();
-        return this.register().register(sender, command, label, args);
+        return RegisterCommandsKt.execute(sender, command, args);
     }
 }

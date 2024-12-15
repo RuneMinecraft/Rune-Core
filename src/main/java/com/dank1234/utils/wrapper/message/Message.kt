@@ -28,7 +28,7 @@ class Message private constructor(
                 is CommandSender -> input.forEach {
                     val player = it as CommandSender
                     players.add(player)
-                    User.of(player.name)?.let { it1 -> users.add(it1) }
+                    User.of(player.name).let { it1 -> users.add(it1) }
                 }
                 is User -> input.forEach {
                     val user = it as User
@@ -53,7 +53,7 @@ class Message private constructor(
             return create(MessageType.NORMAL, players, *messages)
         }
         @JvmStatic fun create(type: MessageType, player: CommandSender, vararg messages: Component): Message {
-            return create(type, player, *messages)
+            return create(type, arrayOf(player), *messages)
         }
         @JvmStatic fun create(player: CommandSender, vararg messages: Component): Message {
             return create(MessageType.NORMAL, player, *messages)
@@ -65,7 +65,7 @@ class Message private constructor(
             return create(MessageType.NORMAL, players, *messages)
         }
         @JvmStatic fun create(type: MessageType, user: User, vararg messages: String): Message {
-            return create(type, user, *messages)
+            return create(type, arrayOf(user), *messages)
         }
         @JvmStatic fun create(user: User, vararg messages: String): Message {
             return create(MessageType.NORMAL, user, *messages)
@@ -77,7 +77,7 @@ class Message private constructor(
             return create(MessageType.NORMAL, users, *messages)
         }
         @JvmStatic fun create(type: MessageType, user: User, vararg messages: Component): Message {
-            return create(type, user, *messages)
+            return create(type, arrayOf(user), *messages)
         }
         @JvmStatic fun create(user: User, vararg messages: Component): Message {
             return create(MessageType.NORMAL, user, *messages)

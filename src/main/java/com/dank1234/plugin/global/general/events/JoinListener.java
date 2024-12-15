@@ -1,5 +1,6 @@
 package com.dank1234.plugin.global.general.events;
 
+import com.dank1234.plugin.Codex;
 import com.dank1234.utils.command.Event;
 import com.dank1234.utils.data.database.EcoManager;
 import com.dank1234.utils.wrapper.player.User;
@@ -11,7 +12,15 @@ import org.bukkit.event.player.PlayerJoinEvent;
 public class JoinListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
-        User.of(e.getPlayer().getUniqueId(), e.getPlayer().getName());
-        EcoManager.insert(User.of(e.getPlayer().getUniqueId()));
+        User user;
+
+        if (User.getUser(e.getPlayer().getUniqueId()).isEmpty()) {
+            user = User.of(e.getPlayer().getUniqueId(),e.getPlayer().getName());
+            EcoManager.insert(user);
+        }else{
+            user = User.of(e.getPlayer().getUniqueId());
+        }
+
+        Codex.addUser(user);
     }
 }

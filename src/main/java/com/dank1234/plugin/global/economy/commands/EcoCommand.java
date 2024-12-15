@@ -1,33 +1,27 @@
 package com.dank1234.plugin.global.economy.commands;
 
 import com.dank1234.plugin.global.economy.Economy;
-import com.dank1234.utils.command.Cmd;
+import com.dank1234.utils.Locale;
+import com.dank1234.utils.command.Command;
 import com.dank1234.utils.command.ICommand;
 import com.dank1234.utils.server.ServerType;
-import com.dank1234.utils.wrapper.message.Message;
-import com.dank1234.utils.wrapper.message.Messages;
 import com.dank1234.utils.wrapper.player.User;
-import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
 
-@Cmd(
+@Command(
         server = ServerType.GLOBAL,
-        names = {"eco", "economy"},
-        perms = "admin"
+        names = {"eco", "economy"}
 )
 public class EcoCommand extends ICommand {
     @Override
-    public void execute(CommandSender sender, String[] args) {
+    public void execute(@NotNull User user, String[] args) {
         if (args.length <= 2) {
-            Message.create(sender(), Messages.ARGUMENTS.toString()).send(false);
+            user.sendMessage(Locale.INVALID_ARGUMENTS);
             return;
         }
 
         if (super.checkArgument(1, "souls") || super.checkArgument(1, "tokens") || super.checkArgument(1, "gems")) {
             User target = User.of(args(0));
-            if (target == null) {
-                // TODO: write the fail instead of throwing an error please
-                throw new IllegalStateException("User is null!");
-            }
 
             Economy eco = Economy.getByName(args(1));
             String action = args(2);
@@ -45,16 +39,16 @@ public class EcoCommand extends ICommand {
                     target.setEco(eco, 0);
                     break;
                 case "get":
-                    Message.create(player(), "&f" + target.getUsername() + "&a has $&f" + target.getEco(eco) + "&a " + eco.getName() + ".").send();
+                     user.sendMessage("&f" + target.getUsername() + "&a has $&f" + target.getEco(eco) + "&a " + eco.getName() + ".");
                     return;
                 case "give":
                     target.setEco(eco, target.getEco(eco) + amount);
                     break;
                 default:
-                    Message.create(player(), "&cInvalid action for economy command!").send();
+                    user.sendMessage("&cInvalid action for economy command!");
                     return;
             }
-            Message.create(player(), "&aSet &f" + target.getUsername() + "'s &a" + eco.getName() + " balance to $&f" + target.getEco(eco) + "&a.").send();
+            user.sendMessage("&aSet &f" + target.getUsername() + "'s &a" + eco.getName() + " balance to $&f" + target.getEco(eco) + "&a.");
         } else {
             //TODO: NOT VALID ECO MESSAGE :D
         }

@@ -3,20 +3,20 @@ package com.dank1234.plugin.global.ranks.command;
 import com.dank1234.plugin.global.ranks.Group;
 import com.dank1234.plugin.global.ranks.Ranks;
 import com.dank1234.plugin.global.ranks.Track;
-import com.dank1234.utils.command.Cmd;
+import com.dank1234.utils.command.Command;
 import com.dank1234.utils.command.ICommand;
 import com.dank1234.utils.wrapper.message.Message;
 import com.dank1234.utils.wrapper.player.User;
-import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-@Cmd(names = "user")
+@Command(names = "user")
 public class UserCommand extends ICommand {
     @Override
-    public void execute(CommandSender sender, String[] args) {
+    public void execute(@NotNull User user, String[] args) {
         if (args.length == 0) {
             return;
         }
@@ -38,7 +38,7 @@ public class UserCommand extends ICommand {
 
         Ranks.create();
 
-        Message.create(sender,
+        Message.create(user,
                 "&aInfo for &f"+target.getUsername()+"&a:",
                 "&a| &3User: &f"+target.getUsername(),
                 "&a| &3UUID: &f"+target.getUuid(),

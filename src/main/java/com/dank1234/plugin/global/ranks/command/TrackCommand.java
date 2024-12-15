@@ -1,14 +1,15 @@
 package com.dank1234.plugin.global.ranks.command;
 
-import com.dank1234.utils.command.Cmd;
+import com.dank1234.utils.command.Command;
 import com.dank1234.utils.command.ICommand;
 
-import org.bukkit.command.CommandSender;
+import com.dank1234.utils.wrapper.player.User;
+import org.jetbrains.annotations.NotNull;
 
-@Cmd(names = "track")
+@Command(names = "track")
 public class TrackCommand extends ICommand {
     @Override
-    public void execute(CommandSender sender, String[] args) {
+    public void execute(@NotNull User user, String[] args) {
         if (args.length == 0) {
             return;
         }
