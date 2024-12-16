@@ -6,15 +6,10 @@ import com.dank1234.utils.event.RuneEvent
 import com.dank1234.utils.wrapper.message.Message
 import com.dank1234.utils.wrapper.player.User
 
-class UserChatEvent(
-    val user: User,
-    var message: String
+class UserJoinEvent(
+    val user: User
 ) : RuneEvent {
-    private var format: String = "<${user.username}> $message"
-
-    fun message(message: String) {
-        this.message = message
-    }
+    private var format: String = "&f${user.username} &ejoined the game."
     fun format(format: String) {
         this.format = format
     }
@@ -23,6 +18,7 @@ class UserChatEvent(
         Message.broadcast(format).send()
         Logger.logRaw(Utils.sColour(format))
     }
+
     override fun getName(): String {
         return this.javaClass.simpleName
     }

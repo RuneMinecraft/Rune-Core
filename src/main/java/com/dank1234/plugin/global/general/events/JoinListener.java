@@ -1,26 +1,12 @@
 package com.dank1234.plugin.global.general.events;
 
-import com.dank1234.plugin.Codex;
-import com.dank1234.utils.command.Event;
-import com.dank1234.utils.data.database.EcoManager;
-import com.dank1234.utils.wrapper.player.User;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
+import com.dank1234.utils.event.Event;
+import com.dank1234.utils.event.RuneListener;
+import com.dank1234.utils.event.events.UserJoinEvent;
 
-@Event
-public class JoinListener implements Listener {
-    @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent e) {
-        User user;
-
-        if (User.getUser(e.getPlayer().getUniqueId()).isEmpty()) {
-            user = User.of(e.getPlayer().getUniqueId(),e.getPlayer().getName());
-            EcoManager.insert(user);
-        }else{
-            user = User.of(e.getPlayer().getUniqueId());
-        }
-
-        Codex.addUser(user);
+public class JoinListener extends RuneListener {
+    @Event()
+    public void onPlayerJoin(UserJoinEvent e) {
+        e.format("&8[&a&l+&8] &7"+e.getUser().getUsername());
     }
 }
