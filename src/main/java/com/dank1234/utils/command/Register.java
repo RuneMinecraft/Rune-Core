@@ -4,8 +4,6 @@ import com.dank1234.plugin.Main;
 import com.dank1234.utils.Locale;
 import com.dank1234.utils.Logger;
 import com.dank1234.utils.server.ServerType;
-import com.dank1234.utils.wrapper.message.Message;
-import com.dank1234.utils.wrapper.message.MessageType;
 import com.dank1234.utils.wrapper.player.User;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
@@ -41,12 +39,12 @@ public final class Register {
         ServerType currentServer = ServerType.HUB; // ServerType.valueOf(Main.get().config().getValue(String.class, "server.type"));
 
         Reflections reflections = new Reflections("com.dank1234.plugin", new TypeAnnotationsScanner());
-        Logger.logRaw("[Bootstrap | Commands] Scanning 'com.dank1234.plugin' for all commands.");
+        Logger.infoRaw("[Bootstrap | Commands] Scanning 'com.dank1234.plugin' for all commands.");
 
         Set<Class<?>> annotatedClasses = reflections.getTypesAnnotatedWith(Command.class, true);
 
         if (annotatedClasses.isEmpty()) {
-            Logger.logRaw("[Bootstrap | Commands] No commands found.");
+            Logger.infoRaw("[Bootstrap | Commands] No commands found.");
             return;
         }
 
@@ -54,7 +52,7 @@ public final class Register {
         for (Class<?> clazz : annotatedClasses) {
             classNames.add(clazz.getSimpleName());
         }
-        Logger.logRaw("[Bootstrap | Commands] Found commands: " + String.join(", ", classNames));
+        Logger.infoRaw("[Bootstrap | Commands] Found commands: " + String.join(", ", classNames));
 
         for (Class<?> clazz : annotatedClasses) {
             try {
@@ -85,7 +83,7 @@ public final class Register {
         Set<Class<?>> annotatedClasses = reflections.getTypesAnnotatedWith(Event.class, true);
 
         if (annotatedClasses.isEmpty()) {
-            Logger.logRaw("[Bootstrap | Events] No events found.");
+            Logger.infoRaw("[Bootstrap | Events] No events found.");
             return;
         }
 
@@ -105,7 +103,7 @@ public final class Register {
 
     public void unregisterCommands() {
         Reflections reflections = new Reflections("com.dank1234.plugin", new TypeAnnotationsScanner());
-        Logger.logRaw("[Bootstrap | Commands] Scanning 'com.dank1234.plugin' for all commands.");
+        Logger.infoRaw("[Bootstrap | Commands] Scanning 'com.dank1234.plugin' for all commands.");
 
         Set<Class<?>> annotatedClasses = reflections.getTypesAnnotatedWith(Command.class, true);
         for (Class<?> clazz : annotatedClasses) {
@@ -128,14 +126,14 @@ public final class Register {
             }
         }
         commandHandlers.clear();
-        Logger.logRaw("[Bootstrap | Commands] Unregistered all commands.");
+        Logger.infoRaw("[Bootstrap | Commands] Unregistered all commands.");
     }
     public void unregisterListeners() {
         for (Listener listener : registeredListeners) {
             HandlerList.unregisterAll(listener);
         }
         registeredListeners.clear();
-        Logger.logRaw("[Bootstrap | Events] Unregistered all events.");
+        Logger.infoRaw("[Bootstrap | Events] Unregistered all events.");
     }
 
     private void registerBukkitCommand(String name, Command commandAnnotation) {
@@ -159,7 +157,7 @@ public final class Register {
             command.setAliases(aliases);
 
             commandMap.register(Main.get().getName(), command);
-            Logger.logRaw("[Bootstrap | Commands] Command[Server="+ commandAnnotation.server().name()+"] [Name="+name+"] [Disabled="+ commandAnnotation.disabled()+"] registered!");
+            Logger.infoRaw("[Bootstrap | Commands] Command[Server="+ commandAnnotation.server().name()+"] [Name="+name+"] [Disabled="+ commandAnnotation.disabled()+"] registered!");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -183,7 +181,7 @@ public final class Register {
             if (handler != null) {
                 handler.sender().sendMessage(Locale.EXCEPTION_THROWN);
             }
-            Logger.log(Locale.EXCEPTION_THROWN);
+            Logger.info(Locale.EXCEPTION_THROWN);
             e.printStackTrace();
         }
         return true;

@@ -48,7 +48,7 @@ open class User (
                 }
             }
 
-            return User(uuid, username).apply {
+            return of(uuid).apply {
                 updateEconomy()
                 Codex.addUser(this)
             }

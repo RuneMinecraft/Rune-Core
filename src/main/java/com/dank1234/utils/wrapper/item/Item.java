@@ -119,7 +119,7 @@ public class Item implements Utils, Serializable {
     public @Nullable String displayName() {
         return this.displayName;
     }
-    public Item setDisplayName(@Nullable String displayName) {
+    public Item setDisplayName(@NotNull String displayName) {
         this.displayName = displayName;
         return this;
     }

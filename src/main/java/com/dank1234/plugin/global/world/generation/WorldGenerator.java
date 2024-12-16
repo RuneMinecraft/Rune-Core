@@ -22,7 +22,7 @@ public class WorldGenerator {
             case NORMAL -> creator.generator(VoidWorldGenerator.get()); //TODO: WRITE THIS CLASS
             case NETHER -> creator.generator(VoidWorldGenerator.get()); //TODO: WRITE THIS CLASS
             case END -> creator.generator(VoidWorldGenerator.get()); //TODO: WRITE THIS CLASS
-            default -> Logger.logRaw("");
+            default -> Logger.infoRaw("");
         };
 
         return creator.createWorld();

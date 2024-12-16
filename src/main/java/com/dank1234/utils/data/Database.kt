@@ -13,7 +13,7 @@ object Database {
     init {
         val hikariConfig = HikariConfig()
         val configFile = File("config.yml")
-        val config: Map<String, String> = Config.load(configFile)
+        // val config: Map<String, String> = Config.load(configFile)
 
         try {
             Class.forName("org.mariadb.jdbc.Driver")

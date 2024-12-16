@@ -27,13 +27,13 @@ class DemoteCommand {
                 return
             }
 
-            val currentLevel = user?.tracks?.get(track) ?: 0
+            val currentLevel = user.tracks[track] ?: 0
             if (currentLevel <= 0) {
                 Message.create(sender, "&cUser &f$username&c is already at the lowest level in track &f$trackName&c.").send()
                 return
             }
 
-            user?.tracks?.set(track, currentLevel - 1)
+            user.tracks[track] = currentLevel - 1
             Message.create(sender, "&aDemoted user &f$username&a in track &f$trackName&a to level &f${currentLevel - 1}&a.").send()
         }
     }

@@ -2,7 +2,6 @@ package com.dank1234.plugin;
 
 import com.dank1234.plugin.global.ranks.Group
 import com.dank1234.plugin.global.ranks.Track
-import com.dank1234.plugin.global.ranks.runnables.PermissionRunnable
 import com.dank1234.utils.Logger;
 import com.dank1234.utils.Utils;
 import com.dank1234.utils.data.Config;
@@ -31,14 +30,14 @@ class Bootstrap : Utils {
     fun load() {
         config = Config
 
-        Logger.logRaw(centreText("<--------------------------------------------------------->"))
-        Logger.logRaw(centreText("<------------------> RuneMC | Rune-Core <----------------->"))
-        Logger.logRaw(centreText("<--------------------------------------------------------->"))
-        Logger.logRaw(centreText("<-----------------------> Version <----------------------->"))
-        Logger.logRaw(centreText("<------------------> $version <-------------------->"))
-        Logger.logRaw(centreText("<--------------------------------------------------------->"))
+        Logger.infoRaw(centreText("<--------------------------------------------------------->"))
+        Logger.infoRaw(centreText("<------------------> RuneMC | Rune-Core <----------------->"))
+        Logger.infoRaw(centreText("<--------------------------------------------------------->"))
+        Logger.infoRaw(centreText("<-----------------------> Version <----------------------->"))
+        Logger.infoRaw(centreText("<------------------> $version <-------------------->"))
+        Logger.infoRaw(centreText("<--------------------------------------------------------->"))
 
-        Logger.logRaw("[RuneMC | Bootstrap] Initializing server info...")
+        Logger.infoRaw("[RuneMC | Bootstrap] Initializing server info...")
         server = Server.of()
     }
 
@@ -46,10 +45,10 @@ class Bootstrap : Utils {
         registerCommands()
         registerAllListeners()
 
-        Logger.logRaw("[RuneMC | Bootstrap] Loading worlds...")
+        Logger.infoRaw("[RuneMC | Bootstrap] Loading worlds...")
         loadWorlds()
 
-        Logger.logRaw("[RuneMC | Bootstrap] Plugin Enabled!")
+        Logger.infoRaw("[RuneMC | Bootstrap] Plugin Enabled!")
 
         User.ensureTables()
         Group.ensureTables()
@@ -63,10 +62,10 @@ class Bootstrap : Utils {
     }
 
     fun disable() {
-        Logger.logRaw("[RuneMC | Bootstrap] Disconnecting from database...")
+        Logger.infoRaw("[RuneMC | Bootstrap] Disconnecting from database...")
         Runtime.getRuntime().addShutdownHook(Thread(Database::shutdown))
 
-        Logger.logRaw("[RuneMC | Bootstrap] Plugin Disabled!")
+        Logger.infoRaw("[RuneMC | Bootstrap] Plugin Disabled!")
     }
 
     private fun loadWorlds() {

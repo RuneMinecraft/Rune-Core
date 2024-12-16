@@ -19,7 +19,7 @@ fun registerListeners() {
     val annotatedClasses = reflections.getTypesAnnotatedWith(Event::class.java, true)
 
     if (annotatedClasses.isEmpty()) {
-        Logger.logRaw("[Bootstrap | Events] No events found.")
+        Logger.infoRaw("[Bootstrap | Events] No events found.")
         return
     }
 
@@ -50,7 +50,6 @@ fun registerAllListeners() {
         try {
             val listener = listenerClass.getDeclaredConstructor().newInstance()
             eventManager.registerListener(listener)
-            println("Registered listener: " + listenerClass.simpleName)
         } catch (e: java.lang.Exception) {
             e.printStackTrace()
         }

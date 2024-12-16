@@ -25,7 +25,7 @@ fun registerCommands() {
     val annotatedClasses = reflections.getTypesAnnotatedWith(Command::class.java, true)
 
     if (annotatedClasses.isEmpty()) {
-        Logger.logRaw("[Bootstrap | Commands] No commands found.")
+        Logger.infoRaw("[Bootstrap | Commands] No commands found.")
         return
     }
     val currentServer = ServerType.HUB
@@ -77,7 +77,7 @@ fun execute(
         }
     } catch (e: java.lang.Exception) {
         handler?.sender()?.sendMessage(Locale.EXCEPTION_THROWN)
-        Logger.log(Locale.EXCEPTION_THROWN)
+        Logger.info(Locale.EXCEPTION_THROWN)
         e.printStackTrace()
     }
     return true

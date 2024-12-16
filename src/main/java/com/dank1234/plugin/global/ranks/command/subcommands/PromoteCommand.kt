@@ -27,8 +27,8 @@ class PromoteCommand {
                 return
             }
 
-            val currentLevel = user?.tracks?.get(track) ?: 0
-            user?.tracks?.set(track, currentLevel + 1)
+            val currentLevel = user.tracks[track] ?: 0
+            user.tracks[track] = currentLevel + 1
 
             Message.create(sender, "&aPromoted user &f$username&a in track &f$trackName&a to level &f${currentLevel + 1}&a.").send()
         }

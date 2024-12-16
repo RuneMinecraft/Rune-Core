@@ -1,5 +1,7 @@
 package com.dank1234.utils.event;
 
+import com.dank1234.utils.Logger;
+
 import java.lang.reflect.Method;
 import java.util.*;
 
@@ -25,24 +27,17 @@ public class RuneEventManager {
 
     public void triggerEvent(Object event) {
         if (event == null) {
-            System.err.println("Triggered event is null!");
+            Logger.error("Triggered event is null!");
             return;
         }
-
-        System.out.println("Event being triggered: " + event.getClass().getName());
 
         List<RegisteredHandler> eventHandlers = handlers.get(event.getClass());
         if (eventHandlers != null) {
             for (RegisteredHandler handler : eventHandlers) {
                 try {
-                    System.out.println("Invoking method: " + handler.method().getName());
-                    System.out.println("Handler expects: " + handler.method().getParameterTypes()[0].getName());
-                    System.out.println("Actual event type: " + event.getClass().getName());
-
                     Class<?> expectedType = handler.method().getParameterTypes()[0];
                     if (expectedType.isAssignableFrom(event.getClass())) {
                         handler.method().invoke(handler.listener(), event);
-                        // RuneEvent runeEvent = (RuneEvent) event;
                         ((RuneEvent) event).execute();
                     } else {
                         System.err.println("Event type mismatch! Cannot pass " + event.getClass().getName() +
@@ -52,8 +47,6 @@ public class RuneEventManager {
                     e.printStackTrace();
                 }
             }
-        } else {
-            System.err.println("No handlers found for event type: " + event.getClass().getName());
         }
     }
 }

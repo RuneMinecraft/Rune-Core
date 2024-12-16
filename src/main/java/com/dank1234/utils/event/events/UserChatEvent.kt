@@ -9,8 +9,9 @@ import com.dank1234.utils.wrapper.player.User
 class UserChatEvent(
     val user: User,
     var message: String
-) : RuneEvent {
-    private var format: String = "<${user.username}> $message"
+) : RuneEvent() {
+    private var format = "<${user.username}> $message"
+    private var cancelled = false;
 
     fun message(message: String) {
         this.message = message
@@ -18,10 +19,16 @@ class UserChatEvent(
     fun format(format: String) {
         this.format = format
     }
+    fun cancelled(cancelled: Boolean) {
+        this.cancelled = cancelled
+    }
 
     override fun execute() {
+        if (cancelled) {
+            return
+        }
         Message.broadcast(format).send()
-        Logger.logRaw(Utils.sColour(format))
+        Logger.log(Utils.sColour(format))
     }
     override fun getName(): String {
         return this.javaClass.simpleName

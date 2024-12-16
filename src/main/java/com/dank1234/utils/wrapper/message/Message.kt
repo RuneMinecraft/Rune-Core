@@ -7,11 +7,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import net.kyori.adventure.text.Component;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.stream.Collectors;
-
 class Message private constructor(
     private val type: MessageType,
     input: Set<*>,
@@ -104,7 +99,7 @@ class Message private constructor(
 
     fun send() {
         if (players.isEmpty() || users.isEmpty()) {
-            Logger.log("Failed to send a message. 'Set<CommandSender> players' is empty.")
+            Logger.info("Failed to send a message. 'Set<CommandSender> players' is empty.")
             return
         }
         messages.forEach { message ->
@@ -121,12 +116,12 @@ class Message private constructor(
     fun send(log: Boolean) {
         send()
         if (log) {
-            Logger.log(toString())
+            Logger.info(toString())
         }
     }
 
     override fun toString(): String {
-        val playersNames = players.joinToString { it.name }
+        // val playersNames = players.joinToString { it.name }
         return """
             Message[
                 type=$type,
