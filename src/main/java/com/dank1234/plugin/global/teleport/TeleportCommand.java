@@ -1,62 +1,68 @@
 package com.dank1234.plugin.global.teleport;
 
+import com.dank1234.utils.Locale;
 import com.dank1234.utils.command.Command;
 import com.dank1234.utils.command.ICommand;
+import com.dank1234.utils.wrapper.location.Location;
 import com.dank1234.utils.wrapper.message.Message;
 import com.dank1234.utils.wrapper.player.User;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
+
 import org.jetbrains.annotations.NotNull;
+import java.util.Optional;
 
 @Command(names={"teleport", "tp", "tele"}, playerOnly = true)
 public class TeleportCommand extends ICommand {
     @Override
     public void execute(@NotNull User user, String[] args) {
-        Player player = (Player) user;
-
         try {
             if (args.length == 1) {
                 // /tp <target>
-                Player target = Bukkit.getPlayer(args[0]);
-                if (target == null) {
-                    Message.create(user,"&cThat player is not online!").send();
+                Optional<User> target = User.getUser(args[0]);
+                if (target.isEmpty()) {
+                    user.sendMessage(Locale.INCORRECT_USER+" &c[&f"+args[0]+"&c]");
                     return;
                 }
 
-                player.teleport(target);
-                Message.create(user,"&eTeleporting to &f"+target.getName()+"&e...").send();
+                user.teleport(target.get());
+                user.sendMessage("&eTeleporting to &f"+target.get().getUsername()+"&e...");
             } else if (args.length == 2) {
                 // /tp <player1> <target>
-                Player player1 = Bukkit.getPlayer(args[0]);
-                Player target = Bukkit.getPlayer(args[1]);
+                Optional<User> player = User.getUser(args[0]);
+                Optional<User> target = User.getUser(args[1]);
 
-                if (player1 == null) {
-                    Message.create(user,"&cThe player &c"+args(0)+"&c is not online!").send();
+                if (player.isEmpty()) {
+                    user.sendMessage(Locale.INCORRECT_USER+" &c[&f"+args[0]+"&c]");
                     return;
                 }
-                if (target == null) {
-                    Message.create(user,"&cThe player &c"+args(1)+"&c is not online!").send();
+                if (target.isEmpty()) {
+                    user.sendMessage(Locale.INCORRECT_USER+" &c[&f"+args[1]+"&c]");
                     return;
                 }
 
-                player1.teleport(target);
-                Message.create(user,"&eTeleporting &f"+player1.getName()+"&e to &f"+target.getName()+"&e...").send();
-                if (user != player1) Message.create(player1,"&eTeleporting to &f"+target.getName()+"&e...").send();
+                player.get().teleport(target.get());
+                user.sendMessage("&eTeleporting &f"+player.get().getUsername()+"&e to &f"+target.get().getUsername()+"&e...");
+                if (user != player.get()) {
+                    player.get().sendMessage("&eTeleporting to &f"+target.get().getUsername()+"&e...");
+                }
             } else if (args.length == 3) {
                 // /tp <x> <y> <z>
                 double x = Double.parseDouble(args[0]);
                 double y = Double.parseDouble(args[1]);
                 double z = Double.parseDouble(args[2]);
 
-                Location location = new Location(player.getWorld(), x, y, z);
-                player.teleport(location);
-                Message.create(user,"&eTeleporting to &f["+x+", "+y+", "+z+"]&e...").send();
+                Location location = new Location(
+                        user.getLocation().getWorld(),
+                        x, y, z,
+                        user.getLocation().getYaw(),
+                        user.getLocation().getPitch()
+                );
+                user.teleport(location);
+                user.sendMessage("&eTeleporting to &f["+x+", "+y+", "+z+"]&e...");
             } else if (args.length == 4) {
                 // /tp <player1> <x> <y> <z>
-                Player player1 = Bukkit.getPlayer(args[0]);
-                if (player1 == null) {
-                    Message.create(user,"&cThe player &c"+args(0)+"&c is not online!").send();
+                Optional<User> player = User.getUser(args[0]);
+                if (player.isEmpty()) {
+                    user.sendMessage(Locale.INCORRECT_USER+" &c[&f"+args[0]+"&c]");
                     return;
                 }
 
@@ -64,16 +70,23 @@ public class TeleportCommand extends ICommand {
                 double y = Double.parseDouble(args[2]);
                 double z = Double.parseDouble(args[3]);
 
-                Location location = new Location(player1.getWorld(), x, y, z);
-                player1.teleport(location);
-                player.sendMessage(player1.getName() + " teleported to coordinates: " + x + ", " + y + ", " + z + ".");
-                Message.create(user,"&eTeleporting &f"+player1+" to &f["+x+", "+y+", "+z+"]&e...").send();
-                if (user != player1) Message.create(player1,"&eTeleporting you to &f["+x+", "+y+", "+z+"]&e...").send();
+                Location location = new Location(
+                        player.get().getLocation().getWorld(),
+                        x, y, z,
+                        player.get().getLocation().getYaw(),
+                        player.get().getLocation().getPitch()
+                );
+                player.get().teleport(location);
+
+                Message.create(user,"&eTeleporting &f"+player.get()+" to &f["+x+", "+y+", "+z+"]&e...").send();
+                if (user != player.get()) {
+                    player.get().sendMessage("&eTeleporting you to &f["+x+", "+y+", "+z+"]&e...");
+                }
             } else {
-                player.sendMessage("Invalid command usage. Try: /tp <target>, /tp <player1> <target>, /tp <x> <y> <z>, or /tp <player1> <x> <y> <z>.");
+                user.sendMessage(Locale.INVALID_ARGUMENTS);
             }
         } catch (NumberFormatException e) {
-            player.sendMessage("Coordinates must be valid numbers.");
+            user.sendMessage(Locale.INVALID_NUMBER_FORMAT);
         }
     }
 }

@@ -10,11 +10,11 @@ import org.bukkit.event.player.PlayerJoinEvent;
 public class SpawnListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
-        e.getPlayer().teleport(Spawn.get().location());
+        // e.getPlayer().teleport(Spawn.get());
     }
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent e) {
-        e.getPlayer().teleport(Spawn.get().location());
+        // e.getPlayer().teleport(Spawn.get());
     }
 }

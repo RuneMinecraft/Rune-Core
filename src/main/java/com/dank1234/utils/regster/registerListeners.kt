@@ -4,10 +4,14 @@ import com.dank1234.plugin.Codex
 import com.dank1234.plugin.Main
 import com.dank1234.utils.Logger
 import com.dank1234.utils.command.Event
+import com.dank1234.utils.event.EventBridge
+import com.dank1234.utils.event.RuneEventManager
+import com.dank1234.utils.event.RuneListener
 import org.bukkit.Bukkit
 import org.bukkit.event.Listener
 import org.reflections.Reflections
 import org.reflections.scanners.TypeAnnotationsScanner
+
 
 fun registerListeners() {
     val reflections = Reflections("com.dank1234.plugin", TypeAnnotationsScanner())
@@ -28,6 +32,26 @@ fun registerListeners() {
                 Codex.addEvent(listener)
             }
         } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+}
+
+fun registerAllListeners() {
+    val eventManager = RuneEventManager()
+    Bukkit.getPluginManager().registerEvents(EventBridge(eventManager), Main.get())
+
+    val reflections = Reflections("com.dank1234.plugin")
+    val listenerClasses = reflections.getSubTypesOf(
+        RuneListener::class.java
+    )
+
+    for (listenerClass in listenerClasses) {
+        try {
+            val listener = listenerClass.getDeclaredConstructor().newInstance()
+            eventManager.registerListener(listener)
+            println("Registered listener: " + listenerClass.simpleName)
+        } catch (e: java.lang.Exception) {
             e.printStackTrace()
         }
     }

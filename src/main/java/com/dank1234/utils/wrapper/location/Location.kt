@@ -4,7 +4,7 @@ import org.bukkit.World
 import java.util.*
 import kotlin.jvm.Throws
 
-class Location(
+open class Location(
     val world: World,
     val x: Double,
     val y: Double,

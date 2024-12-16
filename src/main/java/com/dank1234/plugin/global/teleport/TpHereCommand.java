@@ -9,12 +9,12 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
-@Command(names = {"tphere", "s"})
+@Command(names = {"tphere", "s", "tp-here"})
 public class TpHereCommand extends ICommand {
     @Override
     public void execute(@NotNull User user, String[] args) {
         if (args.length != 1) {
-            Message.create(user, "&cInvalid arguments! Usage: /<command> <player>").send();
+            user.sendMessage(Locale.INVALID_ARGUMENTS+" &cUsage: /<command> <player>");
             return;
         }
 
@@ -25,6 +25,6 @@ public class TpHereCommand extends ICommand {
         }
 
         target.get().sendMessage("&eTeleporting...");
-        target.get().getPlayer().teleport(sender().getPlayer().getLocation());
+        target.get().teleport(sender());
     }
 }

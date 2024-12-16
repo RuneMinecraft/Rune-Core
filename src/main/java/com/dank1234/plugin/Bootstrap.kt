@@ -12,6 +12,7 @@ import com.dank1234.utils.data.VersionType;
 import com.dank1234.utils.data.database.AuctionManager;
 import com.dank1234.utils.data.database.EcoManager;
 import com.dank1234.utils.data.database.StaffManager;
+import com.dank1234.utils.regster.registerAllListeners
 import com.dank1234.utils.regster.registerCommands
 import com.dank1234.utils.server.Server;
 import com.dank1234.utils.wrapper.player.User;
@@ -43,6 +44,7 @@ class Bootstrap : Utils {
 
     fun enable() {
         registerCommands()
+        registerAllListeners()
 
         Logger.logRaw("[RuneMC | Bootstrap] Loading worlds...")
         loadWorlds()
@@ -57,7 +59,7 @@ class Bootstrap : Utils {
         EcoManager.ensureTableExists()
         AuctionManager.ensureTableExists()
 
-        PermissionRunnable.start()
+        // PermissionRunnable.start()
     }
 
     fun disable() {
