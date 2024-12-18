@@ -1,7 +1,7 @@
 package com.dank1234.plugin.global.world.generation;
 
 import com.dank1234.plugin.global.world.generation.generator.VoidWorldGenerator;
-import com.dank1234.utils.Logger;
+import com.dank1234.api.Logger;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 

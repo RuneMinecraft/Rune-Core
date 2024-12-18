@@ -1,6 +1,6 @@
 package com.dank1234.plugin.global.ranks
 
-import com.dank1234.utils.data.Database
+import com.dank1234.api.data.Database
 
 import java.sql.ResultSet
 import java.sql.SQLException

@@ -1,10 +1,10 @@
 package com.dank1234.plugin.global.player.commands
 
 import com.dank1234.plugin.Codex
-import com.dank1234.utils.command.Command
-import com.dank1234.utils.command.ICommand
-import com.dank1234.utils.data.Database
-import com.dank1234.utils.wrapper.player.User
+import com.dank1234.api.command.Command
+import com.dank1234.api.command.ICommand
+import com.dank1234.api.data.Database
+import com.dank1234.api.wrapper.player.User
 import net.kyori.adventure.text.Component
 
 @Command(names=["wipe-data"])

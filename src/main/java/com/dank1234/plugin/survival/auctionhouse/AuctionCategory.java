@@ -1,6 +1,6 @@
 package com.dank1234.plugin.survival.auctionhouse;
 
-import com.dank1234.utils.wrapper.item.Item;
+import com.dank1234.api.wrapper.item.Item;
 import org.bukkit.Material;
 
 import java.util.ArrayList;

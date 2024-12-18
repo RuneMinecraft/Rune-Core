@@ -1,8 +1,8 @@
 package com.dank1234.plugin.global.general.events
 
-import com.dank1234.utils.event.Event
-import com.dank1234.utils.event.RuneListener
-import com.dank1234.utils.event.events.UserJoinEvent
+import com.dank1234.api.event.Event
+import com.dank1234.api.event.RuneListener
+import com.dank1234.api.event.events.UserJoinEvent
 
 class JoinHandler : RuneListener() {
     @Event fun onPlayerJoin(e: UserJoinEvent) {

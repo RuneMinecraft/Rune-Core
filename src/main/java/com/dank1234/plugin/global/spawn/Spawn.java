@@ -1,6 +1,6 @@
 package com.dank1234.plugin.global.spawn;
 
-import com.dank1234.utils.wrapper.location.Location;
+import com.dank1234.api.wrapper.location.Location;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;

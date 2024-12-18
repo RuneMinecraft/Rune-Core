@@ -1,11 +1,11 @@
 package com.dank1234.plugin.global.teleport;
 
-import com.dank1234.utils.Locale;
-import com.dank1234.utils.command.Command;
-import com.dank1234.utils.command.ICommand;
-import com.dank1234.utils.wrapper.location.Location;
-import com.dank1234.utils.wrapper.message.Message;
-import com.dank1234.utils.wrapper.player.User;
+import com.dank1234.api.Locale;
+import com.dank1234.api.command.Command;
+import com.dank1234.api.command.ICommand;
+import com.dank1234.api.wrapper.location.Location;
+import com.dank1234.api.wrapper.message.Message;
+import com.dank1234.api.wrapper.player.User;
 
 import org.jetbrains.annotations.NotNull;
 import java.util.Optional;

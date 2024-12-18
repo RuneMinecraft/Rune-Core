@@ -1,7 +1,7 @@
 package com.dank1234.plugin;
 
-import com.dank1234.utils.regster.RegisterCommandsKt;
-import com.dank1234.utils.server.Server;
+import com.dank1234.api.regster.RegisterCommandsKt;
+import com.dank1234.api.server.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;

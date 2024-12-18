@@ -1,17 +1,17 @@
 package com.dank1234.plugin.global.shops.gem
 
 import com.dank1234.plugin.global.shops.gem.subshops.*
-import com.dank1234.utils.command.Command
-import com.dank1234.utils.command.ICommand
-import com.dank1234.utils.wrapper.inventory.Menu
-import com.dank1234.utils.wrapper.item.Item
-import com.dank1234.utils.wrapper.player.User
+import com.dank1234.api.command.Command
+import com.dank1234.api.command.ICommand
+import com.dank1234.api.wrapper.inventory.Menu
+import com.dank1234.api.wrapper.item.Item
+import com.dank1234.api.wrapper.player.User
 import org.bukkit.Material
 
 @Command(names = ["buy"])
 class BuyCommand : ICommand() {
-    override fun execute(user: User, vararg args: String) {
-        val menu = Menu.create("Gem Shop", 27)
+    companion object {
+        @JvmStatic val menu: Menu = Menu.create("Gem Shop", 27)
             .setItem(9, Item.create(Material.NETHER_STAR, "&b&lRanks", 1, " ", "&7-----------------------", "&7| Click here to purchase ranks."))
             .setItem(10, Item.create(Material.SUNFLOWER, "&c&lRunePass", 1, " ", "&7-----------------------", "&7| Click here to purchase the pass."))
             .setItem(11, Item.create(Material.NAME_TAG, "&d&lBadges", 1, " ", "&7-----------------------", "&7| Click here to purchase badges."))
@@ -20,7 +20,9 @@ class BuyCommand : ICommand() {
             .setItem(15, Item.create(Material.REDSTONE, "&3&lParticles", 1, " ", "&7-----------------------", "&7| Click here to purchase particles."))
             .setItem(16, Item.create(Material.SKELETON_SKULL, "&6&lPets", 1, " ", "&7-----------------------", "&7| Click here to purchase pets."))
             .setItem(17, Item.create(Material.GLOWSTONE, "&a&lGlows", 1, " ", "&7-----------------------", "&7| Click here to purchase glows."))
-            .setAction(9) { it: User -> user.openMenu(ranksMenu(it)) }
+    }
+    override fun execute(user: User, vararg args: String) {
+        menu.setAction(9) { it: User -> user.openMenu(ranksMenu(it)) }
             .setAction(10) { it: User -> user.openMenu(passMenu(it)) }
             .setAction(11) { it: User -> user.openMenu(badgesMenu(it)) }
             .setAction(12) { it: User -> user.openMenu(coloursMenu(it)) }
@@ -28,6 +30,7 @@ class BuyCommand : ICommand() {
             .setAction(15) { it: User -> user.openMenu(particlesMenu(it)) }
             .setAction(16) { it: User -> user.openMenu(petsMenu(it)) }
             .setAction(17) { it: User -> user.openMenu(glowsMenu(it)) }
-        .open(user)
+
+        user.openMenu(menu = menu)
     }
 }

@@ -1,10 +1,12 @@
 package com.dank1234.plugin.global.general.commands;
 
-import com.dank1234.utils.command.Command;
-import com.dank1234.utils.command.ICommand;
-import com.dank1234.utils.server.ServerType;
-import com.dank1234.utils.wrapper.player.GameMode;
-import com.dank1234.utils.wrapper.player.User;
+import com.dank1234.api.Locale;
+import com.dank1234.api.Result;
+import com.dank1234.api.command.Command;
+import com.dank1234.api.command.ICommand;
+import com.dank1234.api.server.ServerType;
+import com.dank1234.api.wrapper.player.GameMode;
+import com.dank1234.api.wrapper.player.User;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
@@ -19,9 +21,14 @@ public class SurvivalCommand extends ICommand {
 
     @Override
     public void execute(@NotNull User user, String[] args) {
+        // TODO: Permission Check! (rune.gamemode.survival)
+
         if (args.length == 0) {
-            user.sendMessage("&aSet your gamemode to &f"+gameMode.getName()+"&a.");
-            user.setGameMode(this.gameMode);
+            Result result = user.setGameMode(this.gameMode);
+            switch (result) {
+                case SUCCESSFUL -> user.sendMessage("&aSet your gamemode to &f"+gameMode.getName()+"&a.");
+                case EXCEPTION -> user.sendMessage(Locale.EXCEPTION_THROWN);
+            }
             return;
         }
 
@@ -33,8 +40,11 @@ public class SurvivalCommand extends ICommand {
 
         User target = optionalUser.get();
         if (target.isOnline()) {
-            target.setGameMode(this.gameMode);
-            user.sendMessage("&aSet &f" + target.getUsername() + "'s&a gamemode to &a"+gameMode.getName()+"&a.");
+            Result result = target.setGameMode(this.gameMode);
+            switch (result) {
+                case SUCCESSFUL -> user.sendMessage("&aSet &f" + target.getUsername() + "&a's gamemode to &a"+gameMode.getName()+"&a.");
+                case EXCEPTION -> user.sendMessage(Locale.EXCEPTION_THROWN);
+            }
         } else {
             user.sendMessage("&cThat user is not online.");
         }

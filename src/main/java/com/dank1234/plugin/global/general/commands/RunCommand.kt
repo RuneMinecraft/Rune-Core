@@ -1,13 +1,15 @@
 package com.dank1234.plugin.global.general.commands
 
-import com.dank1234.utils.Locale
-import com.dank1234.utils.command.Command
-import com.dank1234.utils.command.ICommand
-import com.dank1234.utils.wrapper.player.User
+import com.dank1234.api.Locale
+import com.dank1234.api.command.Command
+import com.dank1234.api.command.ICommand
+import com.dank1234.api.wrapper.player.User
 
 @Command(names=["run", "cmd"])
 class RunCommand : ICommand() {
     override fun execute(user: User, vararg args: String) { // run (cmd) 100
+        // TODO: Permission Check! (rune.admin.run)
+
         if (args.size <= 1) {
             user.sendMessage(Locale.INVALID_ARGUMENTS)
             return

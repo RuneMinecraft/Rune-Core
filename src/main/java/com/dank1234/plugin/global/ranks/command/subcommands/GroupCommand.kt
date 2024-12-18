@@ -1,7 +1,7 @@
 package com.dank1234.plugin.global.ranks.command.subcommands
 
 import com.dank1234.plugin.global.ranks.Group
-import com.dank1234.utils.wrapper.message.Message
+import com.dank1234.api.wrapper.message.Message
 import org.bukkit.command.CommandSender
 import java.io.IOException
 

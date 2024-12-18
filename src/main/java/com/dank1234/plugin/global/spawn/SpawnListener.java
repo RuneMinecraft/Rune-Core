@@ -1,6 +1,6 @@
 package com.dank1234.plugin.global.spawn;
 
-import com.dank1234.utils.command.Event;
+import com.dank1234.api.command.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;

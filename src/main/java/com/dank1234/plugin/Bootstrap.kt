@@ -1,29 +1,25 @@
-package com.dank1234.plugin;
+package com.dank1234.plugin
 
 import com.dank1234.plugin.global.ranks.Group
 import com.dank1234.plugin.global.ranks.Ranks
 import com.dank1234.plugin.global.ranks.Track
-import com.dank1234.utils.Logger;
-import com.dank1234.utils.Utils;
-import com.dank1234.utils.data.Config;
-import com.dank1234.utils.data.Database;
-import com.dank1234.utils.data.Version;
-import com.dank1234.utils.data.VersionType;
-import com.dank1234.utils.data.database.AuctionManager;
-import com.dank1234.utils.data.database.EcoManager;
-import com.dank1234.utils.data.database.StaffManager;
-import com.dank1234.utils.regster.registerAllListeners
-import com.dank1234.utils.regster.registerCommands
-import com.dank1234.utils.server.Server;
-import com.dank1234.utils.wrapper.player.User;
+import com.dank1234.api.Logger
+import com.dank1234.api.Utils
+import com.dank1234.api.data.Config
+import com.dank1234.api.data.Database
+import com.dank1234.api.data.database.AuctionManager
+import com.dank1234.api.data.database.EcoManager
+import com.dank1234.api.regster.registerAllListeners
+import com.dank1234.api.regster.registerCommands
+import com.dank1234.api.server.Server
+import com.dank1234.api.wrapper.player.User
 
-import org.bukkit.Bukkit;
-import org.bukkit.WorldCreator;
+import org.bukkit.Bukkit
+import org.bukkit.WorldCreator
 
 class Bootstrap : Utils {
     val worlds = mutableListOf<String>()
-    private val NOT_WORLDS = arrayOf("config", "crash-reports", "libraries", "versions", "logs", "plugins")
-    private val version: Version = Version.of(VersionType.DEVELOPMENT, "0.1")
+    private val FOLDERS = arrayOf("config", "crash-reports", "libraries", "versions", "logs", "plugins")
 
     private lateinit var config: Config
     lateinit var server: Server
@@ -31,12 +27,19 @@ class Bootstrap : Utils {
     fun load() {
         config = Config
 
-        Logger.infoRaw(centreText("<--------------------------------------------------------->"))
-        Logger.infoRaw(centreText("<------------------> RuneMC | Rune-Core <----------------->"))
-        Logger.infoRaw(centreText("<--------------------------------------------------------->"))
-        Logger.infoRaw(centreText("<-----------------------> Version <----------------------->"))
-        Logger.infoRaw(centreText("<------------------> $version <-------------------->"))
-        Logger.infoRaw(centreText("<--------------------------------------------------------->"))
+        Logger.log("""
+           \_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/==\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/
+           \_/                                      RuneMC                                      \_/
+           \_/                                                                                  \_/
+           \_/                           insert important data here!                            \_/
+           \_/                                                                                  \_/
+           \_/                                                                                  \_/
+           \_/                                                                                  \_/
+           \_/                                                                                  \_/
+           \_/                                                                                  \_/
+           \_/                                                                                  \_/
+           \_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/==\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/
+        """.trimIndent())
 
         Logger.infoRaw("[RuneMC | Bootstrap] Initializing server info...")
         server = Server.of()
@@ -45,6 +48,10 @@ class Bootstrap : Utils {
     fun enable() {
         registerCommands()
         registerAllListeners()
+
+        for (player in Bukkit.getOnlinePlayers()) {
+            Codex.addUser(User.of(player.uniqueId))
+        }
 
         Logger.infoRaw("[RuneMC | Bootstrap] Loading worlds...")
         loadWorlds()
@@ -76,7 +83,7 @@ class Bootstrap : Utils {
         if (worldsFolder.exists() && worldsFolder.isDirectory) {
             val files = worldsFolder.listFiles()
             files?.forEach { file ->
-                if (NOT_WORLDS.contains(file.name)) {
+                if (FOLDERS.contains(file.name)) {
                     return@forEach
                 }
                 if (file.isDirectory) {

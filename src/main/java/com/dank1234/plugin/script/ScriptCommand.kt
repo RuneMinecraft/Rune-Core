@@ -1,14 +1,5 @@
 package com.dank1234.plugin.script
 
-import com.dank1234.utils.command.Command
-import com.dank1234.utils.command.ICommand
-import com.dank1234.utils.wrapper.player.User
-
-import net.runemc.plugin.script.ScriptManager
-import net.runemc.plugin.script.actions.load
-import net.runemc.plugin.script.actions.unload
-import org.bukkit.command.CommandSender
-import org.bukkit.command.TabCompleter
 /*
 @Command(names=[])
 class ScriptCommand(private val scriptManager: ScriptManager) : ICommand() {

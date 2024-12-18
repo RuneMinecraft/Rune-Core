@@ -1,11 +1,11 @@
 package com.dank1234.plugin.global.economy.commands;
 
 import com.dank1234.plugin.global.economy.Economy;
-import com.dank1234.utils.Locale;
-import com.dank1234.utils.command.Command;
-import com.dank1234.utils.command.ICommand;
-import com.dank1234.utils.server.ServerType;
-import com.dank1234.utils.wrapper.player.User;
+import com.dank1234.api.Locale;
+import com.dank1234.api.command.Command;
+import com.dank1234.api.command.ICommand;
+import com.dank1234.api.server.ServerType;
+import com.dank1234.api.wrapper.player.User;
 import org.jetbrains.annotations.NotNull;
 
 @Command(

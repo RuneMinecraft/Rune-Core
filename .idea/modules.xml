@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Rune-Core.iml" filepath="$PROJECT_DIR$/.idea/modules/Rune-Core.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Rune-Core.main.iml" filepath="$PROJECT_DIR$/.idea/modules/Rune-Core.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Rune-Core.test.iml" filepath="$PROJECT_DIR$/.idea/modules/Rune-Core.test.iml" />
     </modules>

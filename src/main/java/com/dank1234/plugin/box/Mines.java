@@ -1,6 +1,6 @@
 package com.dank1234.plugin.box;
 
-import com.dank1234.utils.wrapper.item.Item;
+import com.dank1234.api.wrapper.item.Item;
 import org.bukkit.Location;
 import org.bukkit.Material;
 

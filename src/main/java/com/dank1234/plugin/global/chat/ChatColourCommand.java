@@ -1,10 +1,10 @@
 package com.dank1234.plugin.global.chat;
 
-import com.dank1234.utils.Locale;
-import com.dank1234.utils.Result;
-import com.dank1234.utils.command.Command;
-import com.dank1234.utils.command.ICommand;
-import com.dank1234.utils.wrapper.player.User;
+import com.dank1234.api.Locale;
+import com.dank1234.api.Result;
+import com.dank1234.api.command.Command;
+import com.dank1234.api.command.ICommand;
+import com.dank1234.api.wrapper.player.User;
 import org.jetbrains.annotations.NotNull;
 
 @Command(names = {"chat-colour", "chatcolour", "colour", "chat-color", "chatcolor", "color"})

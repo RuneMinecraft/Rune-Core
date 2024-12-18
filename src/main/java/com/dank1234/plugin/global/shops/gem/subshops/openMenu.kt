@@ -1,7 +1,7 @@
 package com.dank1234.plugin.global.shops.gem.subshops
 
-import com.dank1234.utils.wrapper.inventory.Menu
-import com.dank1234.utils.wrapper.player.User
+import com.dank1234.api.wrapper.inventory.Menu
+import com.dank1234.api.wrapper.player.User
 
 fun ranksMenu(user: User): Menu {
     return Menu.create("", 9)

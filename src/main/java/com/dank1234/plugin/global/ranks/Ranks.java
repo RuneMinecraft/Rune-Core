@@ -1,8 +1,6 @@
 package com.dank1234.plugin.global.ranks;
 
-import com.dank1234.utils.server.ServerType;
-
-import java.sql.SQLException;
+import com.dank1234.api.server.ServerType;
 
 public enum Ranks {
     // ᴀ ʙ ᴄ ᴅ ᴇ ғ ɢ ʜ ɪ ᴊ ᴋ ʟ ᴍ ɴ ᴏ ᴘ ǫ ʀ s ᴛ ᴜ ᴠ ᴡ x ʏ ᴢ

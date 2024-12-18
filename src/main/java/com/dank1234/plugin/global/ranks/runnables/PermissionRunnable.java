@@ -2,7 +2,7 @@ package com.dank1234.plugin.global.ranks.runnables;
 
 import com.dank1234.plugin.Codex;
 import com.dank1234.plugin.Main;
-import com.dank1234.utils.wrapper.player.User;
+import com.dank1234.api.wrapper.player.User;
 import org.bukkit.Bukkit;
 
 public class PermissionRunnable {

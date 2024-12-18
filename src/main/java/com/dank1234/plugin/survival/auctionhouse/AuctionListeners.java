@@ -1,11 +1,11 @@
 package com.dank1234.plugin.survival.auctionhouse;
 
-import com.dank1234.utils.Locale;
-import com.dank1234.utils.command.Event;
-import com.dank1234.utils.data.database.AuctionManager;
-import com.dank1234.utils.wrapper.item.Item;
-import com.dank1234.utils.wrapper.message.Message;
-import com.dank1234.utils.wrapper.player.User;
+import com.dank1234.api.Locale;
+import com.dank1234.api.command.Event;
+import com.dank1234.api.data.database.AuctionManager;
+import com.dank1234.api.wrapper.item.Item;
+import com.dank1234.api.wrapper.message.Message;
+import com.dank1234.api.wrapper.player.User;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

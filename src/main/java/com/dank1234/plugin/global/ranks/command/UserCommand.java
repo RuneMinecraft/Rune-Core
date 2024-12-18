@@ -2,12 +2,11 @@ package com.dank1234.plugin.global.ranks.command;
 
 import com.dank1234.plugin.global.economy.Economy;
 import com.dank1234.plugin.global.ranks.Group;
-import com.dank1234.plugin.global.ranks.Ranks;
 import com.dank1234.plugin.global.ranks.Track;
-import com.dank1234.utils.command.Command;
-import com.dank1234.utils.command.ICommand;
-import com.dank1234.utils.wrapper.message.Message;
-import com.dank1234.utils.wrapper.player.User;
+import com.dank1234.api.command.Command;
+import com.dank1234.api.command.ICommand;
+import com.dank1234.api.wrapper.message.Message;
+import com.dank1234.api.wrapper.player.User;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;

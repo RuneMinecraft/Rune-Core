@@ -1,6 +1,6 @@
 package com.dank1234.plugin.global.scoreboard
 
-import com.dank1234.utils.wrapper.player.User
+import com.dank1234.api.wrapper.player.User
 
 class Scoreboard(
     val user: User,

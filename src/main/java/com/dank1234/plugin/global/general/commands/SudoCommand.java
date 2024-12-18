@@ -1,11 +1,10 @@
 package com.dank1234.plugin.global.general.commands;
 
-import com.dank1234.utils.command.Command;
-import com.dank1234.utils.command.ICommand;
-import com.dank1234.utils.wrapper.message.Message;
-import com.dank1234.utils.wrapper.message.MessageType;
-import com.dank1234.utils.wrapper.message.Messages;
-import com.dank1234.utils.wrapper.player.User;
+import com.dank1234.api.Locale;
+import com.dank1234.api.Result;
+import com.dank1234.api.command.Command;
+import com.dank1234.api.command.ICommand;
+import com.dank1234.api.wrapper.player.User;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
@@ -16,17 +15,27 @@ import java.util.Arrays;
 public class SudoCommand extends ICommand {
     @Override
     public void execute(@NotNull User user, String[] args) {
+        // TODO: Permission Check! (rune.admin.sudo)
+
         if (args.length <= 1) {
-            Message.create(MessageType.ERROR, sender(), Messages.ARGUMENTS + " &cUsage: /sudo <target> <command>").send(false);
+            user.sendMessage(Locale.INVALID_ARGUMENTS+" &c/sudo <target> <command>");
             return;
         }
         User target = User.of(args(0));
-        boolean chat = String.join(" ", Arrays.copyOfRange(args, 1, args.length)).startsWith("c://") ||
+        if (user.getPrimaryGroup().getWeight() > target.getPrimaryGroup().getWeight()) {
+            user.sendMessage("&cYou cannot sudo that user!");
+            return;
+        }
+
+        boolean isChat = String.join(" ", Arrays.copyOfRange(args, 1, args.length)).startsWith("c://") ||
                 String.join(" ", Arrays.copyOfRange(args, 1, args.length)).startsWith("C://");
 
-        user.sendMessage("&eSudoing &f"+target.getUsername()+" &eto &e"+(chat
-                ? "send the message &e'&f" + String.join(" ", Arrays.copyOfRange(args, 1, args.length)).substring(4)
-                : "perform the command &e'&f" + String.join(" ", Arrays.copyOfRange(args, 1, args.length)))+"&e'.");
-        target.sudo(String.join(" ", Arrays.copyOfRange(args, 1, args.length)));
+        Result result = target.sudo(String.join(" ", Arrays.copyOfRange(args, 1, args.length)));
+        switch (result) {
+            case SUCCESSFUL -> user.sendMessage("&eForced &f"+target.getUsername()+" &eto &e"+(isChat
+                    ? "send the message &e'&f" + String.join(" ", Arrays.copyOfRange(args, 1, args.length)).substring(4)
+                    : "perform the command &e'&f" + String.join(" ", Arrays.copyOfRange(args, 1, args.length)))+"&e'.");
+            case EXCEPTION -> user.sendMessage(Locale.EXCEPTION_THROWN);
+        }
     }
 }
