@@ -1,5 +1,6 @@
 package com.dank1234.plugin.global.ranks.command;
 
+import com.dank1234.plugin.global.economy.Economy;
 import com.dank1234.plugin.global.ranks.Group;
 import com.dank1234.plugin.global.ranks.Ranks;
 import com.dank1234.plugin.global.ranks.Track;
@@ -36,9 +37,9 @@ public class UserCommand extends ICommand {
                 "&a| &3User: &f"+target.getUsername(),
                 "&a| &3UUID: &f"+target.getUuid(),
                 " ",
-                "&a| &3Tokens: &f"+target.tokens(),
-                "&a| &3Souls: &f"+target.souls(),
-                "&a| &3Gems: &f"+target.gems(),
+                "&a| &3Tokens: &f"+target.getEco(Economy.TOKENS),
+                "&a| &3Souls: &f"+target.getEco(Economy.SOULS),
+                "&a| &3Gems: &f"+target.getEco(Economy.GEMS),
                 " ",
                 "&a| &3&lGroups &8»",
                 formatList(groups),

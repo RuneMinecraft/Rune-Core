@@ -18,6 +18,7 @@ import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
+import org.bukkit.OfflinePlayer
 import org.bukkit.event.player.PlayerTeleportEvent
 import org.json.JSONArray
 
@@ -25,6 +26,30 @@ import java.sql.ResultSet
 import java.sql.SQLException
 import java.util.*
 
+/**
+ * A [User] is a version of the Minecraft [Player], which allows developers to easily interact with the in-game [Player].
+ * It abstracts certain functions such as sending messages, to allow for ease of use and serialization through a database,
+ * so that developers can also access the [User] whilst offline, which cannot be done in [Bukkit] without the [OfflinePlayer]
+ * class.
+ *
+ * @param uuid The unique id of the minecraft player.
+ * @param username The in-game name of the minecraft player.
+ * @param gems The balance of gems the [User] has.
+ * @param tokens The balance of tokens the [User] has.
+ * @param souls The balance of souls the [User] has.
+ * @param groups A [List] of groups.
+ * @param tracks A [Map] of tracks linking to the [User]'s position in them.
+ * @param permissions A [List] of strings relating to the permissions the [User] itself has been given.
+ *
+ * @see Location
+ * @see Item
+ * @see Menu
+ * @see Economy
+ * @see Group
+ * @see Track
+ *
+ * @author dank1234
+ */
 @Suppress("NAME_SHADOWING", "UNUSED")
 open class User (
     open val uuid: UUID,
@@ -485,59 +510,11 @@ open class User (
             return Result.EXCEPTION
         }
     }
-
     /**
+     * Updates the values of each [Economy] variable in the [User].
      *
-     */
-    fun setGems(gems: Double): Result {
-        try {
-            this.gems = gems
-            EcoManager.setValue(uuid, "gems", gems)
-            return Result.SUCCESSFUL
-        }catch (e: Exception) {
-            e.printStackTrace()
-            return Result.EXCEPTION
-        }
-    }
-
-    /**
-     *
-     */
-    fun tokens(): Double = tokens
-    /**
-     *
-     */
-    fun setTokens(tokens: Double): Result {
-        try {
-            this.tokens = tokens
-            EcoManager.setValue(uuid, "tokens", tokens)
-            return Result.SUCCESSFUL
-        }catch (e: Exception) {
-            e.printStackTrace()
-            return Result.EXCEPTION
-        }
-    }
-
-    /**
-     *
-     */
-    fun souls(): Double = souls
-    /**
-     *
-     */
-    fun setSouls(souls: Double): Result {
-        try {
-            this.souls = souls
-            EcoManager.setValue(uuid, "souls", souls)
-            return Result.SUCCESSFUL
-        }catch (e: Exception) {
-            e.printStackTrace()
-            return Result.EXCEPTION
-        }
-    }
-
-    /**
-     *
+     * @return [Result]
+     * @author dank1234
      */
     fun updateEconomy(): Result {
         try {
@@ -552,14 +529,21 @@ open class User (
     }
 
     /**
+     * Opens a [Menu] for the [User].
+     * @param menu The [Menu] that the [User] is opening.
      *
+     * @return The open [Menu].
+     * @author dank1234
      */
     fun openMenu(menu: Menu): Menu {
         getPlayer().openInventory(menu.inventory())
         return menu
     }
     /**
+     * Closes the currently open [Menu] for the [User].
      *
+     * @return [Result]
+     * @author dank1234
      */
     fun closeMenu(): Result {
         try {
@@ -572,14 +556,21 @@ open class User (
     }
 
     /**
+     * Retrieves the [Item] that the [User] is currently holding.
      *
+     * @return A nullable [Item] that is not handled.
+     * @author dank1234
      */
     fun getHeldItem(): Item? {
     val itemStack = getPlayer().inventory.itemInMainHand
             return if (itemStack.type == Material.AIR) null else Item.of(itemStack)
         }
     /**
+     * Puts an [Item] in the [User]'s Inventory ([Menu]).
+     * @param item The [Item] that will be put in the Inventory.
      *
+     * @return [Result]
+     * @author dank1234
      */
     fun giveItem(item: Item): Result {
         try {
@@ -592,20 +583,11 @@ open class User (
     }
 
     /**
+     * Adds a [Group] to the [User]'s groups.
+     * @param group The [Group] that is being added.
      *
-     */
-    fun getPlayer(): Player {
-        return Bukkit.getPlayer(uuid) ?: throw IllegalStateException("Player is not online. Cannot retrieve player.")
-    }
-    /**
-     *
-     */
-    fun getCommandSender(): CommandSender {
-        return Bukkit.getPlayer(uuid) ?: throw IllegalStateException("Player is not online. Cannot retrieve command sender.")
-    }
-
-    /**
-     *
+     * @return [Result]
+     * @author dank1234
      */
     fun addGroup(group: Group): Result {
         try {
@@ -628,7 +610,11 @@ open class User (
         }
     }
     /**
+     * Removes a [Group] from the [User]'s groups.
+     * @param group The [Group] that is being removed.
      *
+     * @return [Result]
+     * @author dank1234
      */
     fun removeGroup(group: Group): Result {
         try {
@@ -647,7 +633,10 @@ open class User (
         }
     }
     /**
+     * Clears all of a [User]'s groups.
      *
+     * @return [Result]
+     * @author dank1234
      */
     fun clearGroups(): Result {
         try{
@@ -665,7 +654,11 @@ open class User (
     }
 
     /**
+     * Adds a [Track] to the [User]'s tracks.
+     * @param track The [Track] that is being added.
      *
+     * @return [Result]
+     * @author dank1234
      */
     fun addTrack(track: Track, position: Int): Result {
         try {
@@ -688,7 +681,11 @@ open class User (
         }
     }
     /**
+     * Removes a [Track] from the [User]'s tracks.
+     * @param track The [Track] that is being removed.
      *
+     * @return [Result]
+     * @author dank1234
      */
     fun removeTrack(track: Track): Result {
         try {
@@ -707,7 +704,10 @@ open class User (
         }
     }
     /**
+     * Clears all of a [User]'s tracks.
      *
+     * @return [Result]
+     * @author dank1234
      */
     fun clearTracks(): Result {
         try {
@@ -725,7 +725,11 @@ open class User (
     }
 
     /**
+     * Adds a permission ([String]) to the [User]'s permissions.
+     * @param permission The permission that is being added.
      *
+     * @return [Result]
+     * @author dank1234
      */
     fun addPermission(permission: String): Result {
         try {
@@ -745,7 +749,11 @@ open class User (
         }
     }
     /**
+     * Removes a permission ([String]) from the [User]'s permissions.
+     * @param permission The permission that is being removed.
      *
+     * @return [Result]
+     * @author dank1234
      */
     fun removePermission(permission: String): Result {
         try {
@@ -764,7 +772,10 @@ open class User (
         }
     }
     /**
+     * Clears all of a [User]'s permissions.
      *
+     * @return [Result]
+     * @author dank1234
      */
     fun clearPermissions(): Result {
         try {
@@ -782,7 +793,10 @@ open class User (
     }
 
     /**
+     * Sorts all of a [User]'s groups into weight order.
      *
+     * @return [Result]
+     * @author dank1234
      */
     private fun sortGroups(): Result {
         try {
@@ -795,7 +809,10 @@ open class User (
 
     }
     /**
+     * Sorts all of a [User]'s groups into alphabetical order.
      *
+     * @return [Result]
+     * @author dank1234
      */
     private fun sortTracks(): Result {
         try {
@@ -811,7 +828,10 @@ open class User (
         }
     }
     /**
+     * Sorts all of a [User]'s permissions into alphabetical order.
      *
+     * @return [Result]
+     * @author dank1234
      */
     private fun sortPermissions(): Result {
         try {
@@ -824,14 +844,52 @@ open class User (
     }
 
     /**
+     * Retrieves the [Bukkit] form of the [User].
      *
+     * @return A [Player] object. (The [Bukkit] version of a [User])
+     * @author dank1234
      */
+    fun getPlayer(): Player {
+        return Bukkit.getPlayer(uuid) ?: throw IllegalStateException("Player is not online. Cannot retrieve player.")
+    }
+    /**
+     * Retrieves the [Bukkit] form of the [User].
+     *
+     * @return A [CommandSender] object. (The [Bukkit] version of a [User])
+     * @author dank1234
+     */
+    fun getCommandSender(): CommandSender {
+        return Bukkit.getPlayer(uuid) ?: throw IllegalStateException("Player is not online. Cannot retrieve command sender.")
+    }
+
     override fun toString(): String {
         return """
             User[
-                username=$username, 
-                uuid=$uuid
+                uuid=$uuid, 
+                username='$username', 
+                gems=$gems, 
+                tokens=$tokens, 
+                souls=$souls, 
+                groups=$groups, 
+                tracks=$tracks, 
+                permissions=$permissions
             ]
-        """.trimIndent()
+        """.trimMargin()
     }
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is User) return false
+
+        if (uuid != other.uuid) return false
+        if (username != other.username) return false
+
+        return true
+    }
+    override fun hashCode(): Int {
+        var result = uuid.hashCode()
+        result = 31 * result + username.hashCode()
+        return result
+    }
+
+
 }
