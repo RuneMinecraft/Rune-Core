@@ -71,18 +71,19 @@ public class ItemMeta implements Serializable {
         return new ItemMeta(enchants, customModelData, unbreakable);
     }
 
-    private @Serial void writeObject(ObjectOutputStream out) throws IOException {
+    /*
+    private @Serial void writeObject(ObjectOutputStream out) {
         out.defaultWriteObject();
     }
-    private @Serial void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+    private @Serial void readObject(ObjectInputStream in) {
         in.defaultReadObject();
     }
-    private void writeExternalData(ObjectOutputStream out) throws IOException {
+    private void writeExternalData(ObjectOutputStream out) {
         out.writeObject(enchants);
         out.writeInt(customModelData);
         out.writeBoolean(unbreakable);
     }
-    private @SuppressWarnings("unchecked") void readExternalData(ObjectInputStream in) throws IOException, ClassNotFoundException {
+    private @SuppressWarnings("unchecked") void readExternalData(ObjectInputStream in) {
         Map<Enchantment, Integer> enchants = (Map<Enchantment, Integer>) in.readObject();
         int amount = in.readInt();
         boolean unbreakable = in.readBoolean();
@@ -105,7 +106,11 @@ public class ItemMeta implements Serializable {
                 return (ItemMeta) objectInputStream.readObject();
             }
         }catch (Exception e) {
-            throw new IllegalStateException("An error occured whilst deserializing an ItemMeta.");
+            e.printStackTrace();
+            System.out.println("An error occured whilst deserializing an ItemMeta.");
         }
+        return null;
     }
+
+     */
 }

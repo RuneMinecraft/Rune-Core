@@ -13,7 +13,7 @@ class StopCommand : ICommand() {
         Thread {
             var i = 5
             while (i != 0) {
-                Message.broadcast("&c&lShutting down in &f&l&n$i &c&lseconds!").send()
+                Message.broadcast("&cShutting down in &f&l$i&c seconds!").send()
                 Thread.sleep(Duration.ofSeconds(1))
                 i--
             }

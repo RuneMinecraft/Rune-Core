@@ -1,4 +1,3 @@
 package com.dank1234.utils.event;
 
-public abstract class RuneListener {
-}
+public abstract class RuneListener {}

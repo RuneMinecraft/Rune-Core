@@ -10,7 +10,6 @@ import com.dank1234.utils.wrapper.player.User;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 @Command(names = "user")
@@ -21,22 +20,16 @@ public class UserCommand extends ICommand {
             return;
         }
         User target = User.of(args(0));
-        assert target != null;
 
-        List<String> sortedGroups = target.getGroups().stream()
-                .sorted(Comparator.comparingInt(Group::getWeight))
+        List<String> groups = target.getGroups().stream()
                 .map(Group::getName)
                 .toList();
 
-        List<String> sortedTracks = target.getTracks().keySet().stream()
-                .sorted(Comparator.comparing(Track::getName))
+        List<String> tracks = target.getTracks().keySet().stream()
                 .map(Track::getName)
                 .toList();
 
-        List<String> sortedPermissions = new ArrayList<>(target.getPermissions());
-        sortedPermissions.sort(Comparator.naturalOrder());
-
-        Ranks.create();
+        List<String> perms = new ArrayList<>(target.getPermissions());
 
         Message.create(user,
                 "&aInfo for &f"+target.getUsername()+"&a:",
@@ -48,13 +41,13 @@ public class UserCommand extends ICommand {
                 "&a| &3Gems: &f"+target.gems(),
                 " ",
                 "&a| &3&lGroups &8»",
-                formatList(sortedGroups),
+                formatList(groups),
                 " ",
                 "&a| &3&lTracks &8»",
-                formatList(sortedTracks),
+                formatList(tracks),
                 " ",
                 "&a| &3&lPermissions &8»",
-                formatList(sortedPermissions)
+                formatList(perms)
         ).send();
     }
 

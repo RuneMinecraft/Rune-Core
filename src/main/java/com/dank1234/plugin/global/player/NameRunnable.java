@@ -1,5 +1,5 @@
 package com.dank1234.plugin.global.player;
-
+/*
 import com.dank1234.plugin.Main;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundPlayerInfoUpdatePacket;
@@ -51,3 +51,5 @@ public class NameRunnable {
         }
     }
 }
+
+ */

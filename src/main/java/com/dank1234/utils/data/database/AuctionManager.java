@@ -12,6 +12,7 @@ import com.dank1234.utils.wrapper.message.Message;
 import com.dank1234.utils.wrapper.player.User;
 import org.bukkit.Material;
 
+import java.sql.SQLException;
 import java.util.*;
 
 public class AuctionManager extends SQLUtils implements Utils {
@@ -32,56 +33,77 @@ public class AuctionManager extends SQLUtils implements Utils {
     }
 
     public static void insert(AuctionItem auctionItem) {
-        String sql = "INSERT INTO auctions (auction_id, seller, item, price, economy_type) VALUES (?, ?, ?, ?, ?);";
+        try {
+            String sql = "INSERT INTO auctions (auction_id, seller, item, price, economy_type) VALUES (?, ?, ?, ?, ?);";
 
-        executeUpdate(sql, pstmt -> {
-            pstmt.setString(1, auctionItem.auctionId());
-            pstmt.setString(2, auctionItem.seller().getUuid().toString());
-            pstmt.setBytes(3, Item.serializeItem(auctionItem.item()));
-            pstmt.setDouble(4, auctionItem.price());
-            pstmt.setString(5, auctionItem.type().name());
-        });
+            executeUpdate(sql, pstmt -> {
+                pstmt.setString(1, auctionItem.auctionId());
+                pstmt.setString(2, auctionItem.seller().getUuid().toString());
+                pstmt.setBytes(3, Item.serializeItem(auctionItem.item()));
+                pstmt.setDouble(4, auctionItem.price());
+                pstmt.setString(5, auctionItem.type().name());
+            });
+        }catch (Exception e) {}
     }
     public static void delete(AuctionItem auctionItem) {
-        executeUpdate("DELETE FROM auctions WHERE auction_id = ?;", pstmt -> pstmt.setString(1, auctionItem.auctionId()));
+        executeUpdate("DELETE FROM auctions WHERE auction_id = ?;", pstmt -> {
+            try {
+                pstmt.setString(1, auctionItem.auctionId());
+            } catch (SQLException e) {
+                //throw new RuntimeException(e);
+            }
+        });
     }
     public static Optional<AuctionItem> getAuction(String auctionId) {
-        String sql = "SELECT auction_id, seller, item, price, economy_type FROM " + TABLE + " WHERE auction_id = ?;";
+        try {
+            String sql = "SELECT auction_id, seller, item, price, economy_type FROM " + TABLE + " WHERE auction_id = ?;";
 
-        return executeQuery(sql, pstmt -> pstmt.setString(1, auctionId), rs -> {
-            if (rs.next()) {
-                String auctionID = rs.getString("auction_id");
-                UUID sellerUUID = UUID.fromString(rs.getString("seller"));
-                Item item = Item.deserializeItem(rs.getBytes("item"));
-                double price = rs.getDouble("price");
-                Economy economyType = Economy.valueOf(rs.getString("economy_type"));
+            return executeQuery(sql, pstmt -> {
+                try {
+                    pstmt.setString(1, auctionId);
+                } catch (SQLException e) {
+                    //throw new RuntimeException(e);
+                }
+            }, rs -> {
+                if (rs.next()) {
+                    String auctionID = rs.getString("auction_id");
+                    UUID sellerUUID = UUID.fromString(rs.getString("seller"));
+                    Item item = Item.deserializeItem(rs.getBytes("item"));
+                    double price = rs.getDouble("price");
+                    Economy economyType = Economy.valueOf(rs.getString("economy_type"));
 
-                User seller = User.of(sellerUUID);
-                return new AuctionItem(auctionID, seller, item, economyType, price);
-            }
-            return null;
-        });
+                    User seller = User.of(sellerUUID);
+                    return new AuctionItem(auctionID, seller, item, economyType, price);
+                }
+                return null;
+            });
+        }catch(Exception e){}
+        return Optional.empty();
     }
     public static Optional<List<AuctionItem>> getAllAuctions() {
-        String sql = "SELECT auction_id, seller, item, price, economy_type FROM " + TABLE + ";";
+        try {
+            String sql = "SELECT auction_id, seller, item, price, economy_type FROM " + TABLE + ";";
 
-        return executeQuery(sql, pstmt -> {}, rs -> {
-            List<AuctionItem> auctionItems = new ArrayList<>();
+            return executeQuery(sql, pstmt -> {
+            }, rs -> {
+                List<AuctionItem> auctionItems = new ArrayList<>();
 
-            while (rs.next()) {
-                String auctionID = rs.getString("auction_id");
-                UUID sellerUUID = UUID.fromString(rs.getString("seller"));
-                Item item = Item.deserializeItem(rs.getBytes("item"));
-                double price = rs.getDouble("price");
-                Economy economyType = Economy.valueOf(rs.getString("economy_type"));
+                while (rs.next()) {
+                    String auctionID = rs.getString("auction_id");
+                    UUID sellerUUID = UUID.fromString(rs.getString("seller"));
+                    Item item = Item.deserializeItem(rs.getBytes("item"));
+                    double price = rs.getDouble("price");
+                    Economy economyType = Economy.valueOf(rs.getString("economy_type"));
 
-                User seller = User.of(sellerUUID);
-                AuctionItem auctionItem = new AuctionItem(auctionID, seller, item, economyType, price);
-                auctionItems.add(auctionItem);
-            }
+                    User seller = User.of(sellerUUID);
+                    AuctionItem auctionItem = new AuctionItem(auctionID, seller, item, economyType, price);
+                    auctionItems.add(auctionItem);
+                }
 
-            return auctionItems.isEmpty() ? null : auctionItems;
-        });
+                return auctionItems.isEmpty() ? null : auctionItems;
+            });
+        }catch(Exception e){}
+        return Optional.empty();
     }
 
     public static void handlePurchase(User user, AuctionItem auctionItem) {

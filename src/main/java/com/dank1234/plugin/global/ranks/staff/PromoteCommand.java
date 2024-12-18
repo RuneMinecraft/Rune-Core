@@ -13,6 +13,7 @@ import org.jetbrains.annotations.NotNull;
 public class PromoteCommand extends ICommand {
     @Override
     public void execute(@NotNull User user, String[] args) {
+        /*
         User target = User.of(args(0));
 
         Staff staff;
@@ -35,5 +36,7 @@ public class PromoteCommand extends ICommand {
         }
 
         user.sendMessage("&aPromoted &f"+args(0)+"&a to &f"+ staff.rank() +"&a.");
+
+         */
     }
 }

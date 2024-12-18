@@ -3,6 +3,7 @@ package com.dank1234.utils.wrapper.player.staff;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.model.group.Group;
 
+@Deprecated
 public enum StaffRank {
     HELPER(LuckPermsProvider.get().getGroupManager().getGroup("staff.helper")),
     MOD(LuckPermsProvider.get().getGroupManager().getGroup("staff.mod")),

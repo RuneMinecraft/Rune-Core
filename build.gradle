@@ -1,11 +1,10 @@
-import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
 
 plugins {
     id 'java'
     id 'com.github.johnrengelman.shadow' version '8.1.1'
-    id 'io.papermc.paperweight.userdev' version "1.7.3"
-    id 'org.jetbrains.kotlin.jvm'
+    //id 'io.papermc.paperweight.userdev' version "1.7.3"
+    id 'org.jetbrains.kotlin.jvm' version '2.1.0'
 }
 
 group = 'com.dank1234'
@@ -21,18 +20,22 @@ repositories {
         name = "sonatype"
         url = "https://oss.sonatype.org/content/groups/public/"
     }
-    maven {
-        url "https://repo.dmulloy2.net/repository/public/"
-    }
-
+    maven { url "https://repo.dmulloy2.net/repository/public/" }
     maven { url = uri("https://maven.enginehub.org/repo/") }
+
+    flatDir {
+        dirs 'src/main/libs'
+    }
 }
 
 dependencies {
-    paperweight.paperDevBundle("1.21.3-R0.1-SNAPSHOT")
-
+    implementation files('src\\main\\libs\\spigot-1.21.3.jar')
+    implementation files('src\\main\\libs\\spigot-1.21.1-R0.1-SNAPSHOT.jar')
+    implementation files('src\\main\\libs\\spigot.jar')
+    implementation files('src\\main\\libs\\craftbukkit-1.21.3.jar')
+    implementation files('src\\main\\libs\\server.jar')
+    // paperweight.paperDevBundle("1.21.3-R0.1-SNAPSHOT")
     compileOnly("io.papermc.paper:paper-api:1.21.3-R0.1-SNAPSHOT")
-    // implementation("com.comphenix.protocol:ProtocolLib:4.8.0");
     compileOnly("net.luckperms:api:5.4")
 
     implementation("org.yaml:snakeyaml:2.0")
@@ -48,9 +51,32 @@ dependencies {
     }
 
     implementation("org.graalvm.sdk:graal-sdk:22.3.0")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.graalvm.js:js:22.3.0")
     implementation('org.json:json:20231013')
+
+    // Kotlin standard libraries (use a single version)
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:2.1.0") // Core stdlib
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.1.0") // JDK 8 extensions
+
+    // Kotlin Scripting Dependencies
+    // implementation("org.jetbrains.kotlin:kotlin-scripting-jvm:2.1.0")
+    // implementation("org.jetbrains.kotlin:kotlin-scripting-jvm-host:2.1.0")
+    // implementation("org.jetbrains.kotlin:kotlin-scripting-common:2.1.0")
+    // implementation("org.jetbrains.kotlin:kotlin-script-runtime:2.1.0") // Updated
+
+    // Kotlin Scripting Compiler (required for script compilation)
+    // implementation("org.jetbrains.kotlin:kotlin-scripting-compiler-embeddable:2.1.0")
+
+    // Reflection library
+    // implementation("org.jetbrains.kotlin:kotlin-reflect:2.1.0") // Updated
+
+    // Coroutines
+    // implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0") // Latest coroutine core
+    // implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0") // Latest coroutine Android
+
+    // MCCoroutine for Bukkit
+    // implementation("com.github.shynixn.mccoroutine:mccoroutine-bukkit-api:2.20.0")
+    // implementation("com.github.shynixn.mccoroutine:mccoroutine-bukkit-core:2.20.0")
 }
 
 def targetJavaVersion = 21
@@ -70,6 +96,17 @@ processResources {
     }
 }
 
+tasks.register('generateJavadoc', Javadoc) {
+    source = sourceSets.main.allJava
+    classpath = configurations.runtimeClasspath
+    destinationDir = file("$buildDir/docs/javadoc")
+}
+
+tasks.withType(Javadoc).configureEach {
+    failOnError = false
+    options.encoding("UTF-8")
+}
+
 tasks.compileJava {
     options.encoding = StandardCharsets.UTF_8.name()
 }
@@ -78,13 +115,16 @@ tasks.javadoc {
     options.encoding = StandardCharsets.UTF_8.name()
 }
 
+tasks.withType(Zip).configureEach {
+    zip64 = true
+}
+
 tasks.shadowJar {
     archiveFileName = "Rune-Core-${version}.jar"
     // destinationDirectory = file("X:/JARs")
     destinationDirectory = file("S:/opt/mcsmanager/daemon/data/InstanceData/7fa7bc4eb4544091add082ae0b906aa0/plugins")
     mergeServiceFiles()
 }
-
 tasks.build {
     dependsOn(tasks.shadowJar)
 }

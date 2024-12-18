@@ -8,29 +8,35 @@ import java.io.IOException
 
 class PromoteCommand {
     companion object {
-        @JvmStatic
-        @Throws(IOException::class)
-        fun execute(sender: CommandSender, args: Array<String>) {
-            if (args.size < 3) {
-                Message.create(sender, "&cInvalid promote command usage. Use &f'/ranks promote [USER] [TRACK]'&c.").send()
-                return
+        @JvmStatic fun execute(sender: CommandSender, args: Array<String>) {
+            try {
+                if (args.size < 3) {
+                    Message.create(sender, "&cInvalid promote command usage. Use &f'/ranks promote [USER] [TRACK]'&c.")
+                        .send()
+                    return
+                }
+
+                val username = args[1]
+                val trackName = args[2]
+
+                val user = User.of(username);
+
+                val track = Track.get(trackName)
+                if (track == null) {
+                    Message.create(sender, "&cTrack &f$trackName&c does not exist!").send()
+                    return
+                }
+
+                val currentLevel = user.tracks[track] ?: 0
+                user.tracks[track] = currentLevel + 1
+
+                Message.create(
+                    sender,
+                    "&aPromoted user &f$username&a in track &f$trackName&a to level &f${currentLevel + 1}&a."
+                ).send()
+            }catch(e: IOException) {
+                e.printStackTrace()
             }
-
-            val username = args[1]
-            val trackName = args[2]
-
-            val user = User.of(username);
-
-            val track = Track.get(trackName)
-            if (track == null) {
-                Message.create(sender, "&cTrack &f$trackName&c does not exist!").send()
-                return
-            }
-
-            val currentLevel = user.tracks[track] ?: 0
-            user.tracks[track] = currentLevel + 1
-
-            Message.create(sender, "&aPromoted user &f$username&a in track &f$trackName&a to level &f${currentLevel + 1}&a.").send()
         }
     }
 }

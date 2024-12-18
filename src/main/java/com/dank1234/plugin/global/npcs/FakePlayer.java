@@ -1,5 +1,5 @@
 package com.dank1234.plugin.global.npcs;
-
+/*
 import com.mojang.authlib.GameProfile;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ClientInformation;
@@ -14,3 +14,5 @@ public class FakePlayer extends ServerPlayer {
         super(MinecraftServer.getServer(), Objects.requireNonNull(MinecraftServer.getServer().getLevel(Level.OVERWORLD)), profile, ClientInformation.createDefault());
     }
 }
+
+ */

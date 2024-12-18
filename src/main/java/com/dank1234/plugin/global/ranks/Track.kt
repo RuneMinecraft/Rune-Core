@@ -1,6 +1,7 @@
 package com.dank1234.plugin.global.ranks
 
 import com.dank1234.utils.data.Database
+import java.io.IOException
 
 import java.sql.ResultSet
 import java.sql.SQLException
@@ -11,27 +12,33 @@ data class Track(
     val groups: MutableList<Group> = mutableListOf()
 ) {
     companion object {
-        @Throws(SQLException::class)
-        fun create(name: String): Track {
-            val sql = "INSERT INTO tracks (name) VALUES (?)"
-            val id = Database.SQLUtils.executeUpdate(sql) { pstmt ->
-                pstmt.setString(1, name)
+        fun create(name: String): Track? {
+            try {
+                val sql = "INSERT INTO tracks (name) VALUES (?)"
+                val id = Database.SQLUtils.executeUpdate(sql) { pstmt ->
+                    pstmt.setString(1, name)
+                }
+                return Track(id, name)
+            }catch(e: IOException) {
+                e.printStackTrace()
+                return null
             }
-            return Track(id, name)
         }
 
-        @Throws(SQLException::class)
         fun get(name: String): Track? {
-            val sql = "SELECT * FROM tracks WHERE name = ?"
-            return Database.SQLUtils.executeQuery(sql, { pstmt ->
-                pstmt.setString(1, name)
-            }) { rs ->
-                if (rs.next()) mapResultSetToTrack(rs) else null
-            }
+            try {
+                val sql = "SELECT * FROM tracks WHERE name = ?"
+                return Database.SQLUtils.executeQuery(sql, { pstmt ->
+                    pstmt.setString(1, name)
+                }) { rs ->
+                    if (rs.next()) mapResultSetToTrack(rs) else null
+                }
+            }catch (ignore: Exception) {}
+            return null
         }
 
-        @Throws(SQLException::class)
-        fun getAllTracks(): List<Track> {
+        fun getAllTracks(): List<Track>? {
+            try {
             val sql = "SELECT * FROM tracks"
             return Database.SQLUtils.executeQuery(sql, {}, { rs ->
                 val tracks = mutableListOf<Track>()
@@ -40,6 +47,8 @@ data class Track(
                 }
                 tracks
             }) ?: emptyList()
+            }catch (ignore: Exception) {}
+            return null
         }
 
         private fun mapResultSetToTrack(rs: ResultSet): Track {
@@ -63,50 +72,57 @@ data class Track(
         }
 
         @JvmStatic
-        @Throws(SQLException::class)
         fun ensureTables() {
-            Database.SQLUtils.executeUpdate("""
-                CREATE TABLE IF NOT EXISTS tracks (
-                    id INT AUTO_INCREMENT PRIMARY KEY,
-                    name VARCHAR(255) UNIQUE NOT NULL
-                );
-            """.trimIndent())
+            try {
+                Database.SQLUtils.executeUpdate(
+                    """
+                    CREATE TABLE IF NOT EXISTS tracks (
+                        id INT AUTO_INCREMENT PRIMARY KEY,
+                        name VARCHAR(255) UNIQUE NOT NULL
+                    );
+                """.trimIndent()
+                )
 
-            Database.SQLUtils.executeUpdate("""
-                CREATE TABLE IF NOT EXISTS track_groups (
-                    id INT AUTO_INCREMENT PRIMARY KEY,
-                    track_id INT NOT NULL,
-                    group_id INT NOT NULL,
-                    FOREIGN KEY (track_id) REFERENCES tracks(id) ON DELETE CASCADE,
-                    FOREIGN KEY (group_id) REFERENCES groups(id) ON DELETE CASCADE
-                );
-            """.trimIndent())
+                Database.SQLUtils.executeUpdate(
+                    """
+                    CREATE TABLE IF NOT EXISTS track_groups (
+                        id INT AUTO_INCREMENT PRIMARY KEY,
+                        track_id INT NOT NULL,
+                        group_id INT NOT NULL,
+                        FOREIGN KEY (track_id) REFERENCES tracks(id) ON DELETE CASCADE,
+                        FOREIGN KEY (group_id) REFERENCES groups(id) ON DELETE CASCADE
+                    );
+                """.trimIndent()
+                )
+            } catch (ignore: Exception) {}
         }
     }
 
-    @Throws(SQLException::class)
     fun addGroup(groupName: String) {
-        val group = Group.get(groupName) ?: return
-        if (!groups.contains(group)) {
-            val sql = "INSERT INTO track_groups (track_id, group_id) VALUES (?, ?)"
-            Database.SQLUtils.executeUpdate(sql) { pstmt ->
-                pstmt.setInt(1, id!!)
-                pstmt.setInt(2, group.id!!)
+        try {
+            val group = Group.get(groupName) ?: return
+            if (!groups.contains(group)) {
+                val sql = "INSERT INTO track_groups (track_id, group_id) VALUES (?, ?)"
+                Database.SQLUtils.executeUpdate(sql) { pstmt ->
+                    pstmt.setInt(1, id!!)
+                    pstmt.setInt(2, group.id!!)
+                }
+                groups.add(group)
             }
-            groups.add(group)
-        }
+        }catch (ignore: Exception) {}
     }
 
-    @Throws(SQLException::class)
     fun removeGroup(groupName: String) {
-        val group = groups.find { it.name.equals(groupName, ignoreCase = true) }
-        if (group != null) {
-            val sql = "DELETE FROM track_groups WHERE track_id = ? AND group_id = ?"
-            Database.SQLUtils.executeUpdate(sql) { pstmt ->
-                pstmt.setInt(1, id!!)
-                pstmt.setInt(2, group.id!!)
+        try {
+            val group = groups.find { it.name.equals(groupName, ignoreCase = true) }
+            if (group != null) {
+                val sql = "DELETE FROM track_groups WHERE track_id = ? AND group_id = ?"
+                Database.SQLUtils.executeUpdate(sql) { pstmt ->
+                    pstmt.setInt(1, id!!)
+                    pstmt.setInt(2, group.id!!)
+                }
+                groups.remove(group)
             }
-            groups.remove(group)
-        }
+        }catch (ignore: Exception){}
     }
 }

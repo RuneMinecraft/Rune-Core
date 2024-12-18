@@ -14,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 public class DemoteCommand extends ICommand {
     @Override
     public void execute(@NotNull User user, String[] args) {
+        /*
         User target = User.of(args(0));
 
         if (StaffManager.getStaff(target.getUuid()).isEmpty()) {
@@ -42,5 +43,7 @@ public class DemoteCommand extends ICommand {
                  user.sendMessage("&cDemoted &f"+target.getUsername()+"&c to &fMEMBER");
             }
         }
+
+         */
     }
 }

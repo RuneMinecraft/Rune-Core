@@ -8,6 +8,8 @@ import com.dank1234.utils.wrapper.player.User;
 import com.dank1234.utils.wrapper.player.staff.Staff;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Optional;
+
 @Command(names="staffmode")
 public class StaffModeCommand extends ICommand {
 
@@ -17,13 +19,14 @@ public class StaffModeCommand extends ICommand {
         if (args.length >= 1 && User.of(args(0)) != null) {
             target = User.of(args(0));
         }
+        Optional<Staff> optionalStaff = Staff.getStaff(target.getUuid());
 
-        if (StaffManager.getStaff(target.getUuid()).isEmpty()) {
+        if (optionalStaff.isEmpty()) {
             user.sendMessage("&cYou are not a staff!");
         } else {
-            Staff staff = Staff.Companion.of(target.getUuid());
-            staff.setStaffMode(!staff.staffMode());
-            user.sendMessage(staff.staffMode() ? "&cDisabled staff mode." : "&aEnabled staff mode.");
+            Staff staff = optionalStaff.get();
+            staff.toggleStaffMode();
+            user.sendMessage(!staff.getStaffMode() ? "&cDisabled staff mode." : "&aEnabled staff mode.");
         }
     }
 }

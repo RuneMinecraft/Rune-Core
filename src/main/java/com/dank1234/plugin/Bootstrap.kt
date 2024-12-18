@@ -1,6 +1,7 @@
 package com.dank1234.plugin;
 
 import com.dank1234.plugin.global.ranks.Group
+import com.dank1234.plugin.global.ranks.Ranks
 import com.dank1234.plugin.global.ranks.Track
 import com.dank1234.utils.Logger;
 import com.dank1234.utils.Utils;
@@ -54,11 +55,13 @@ class Bootstrap : Utils {
         Group.ensureTables()
         Track.ensureTables()
 
-        StaffManager.ensureTableExists()
+        // StaffManager.ensureTableExists()
         EcoManager.ensureTableExists()
         AuctionManager.ensureTableExists()
 
-        // PermissionRunnable.start()
+        for (rank in Ranks.entries.reversed()) {
+            rank.group()
+        }
     }
 
     fun disable() {

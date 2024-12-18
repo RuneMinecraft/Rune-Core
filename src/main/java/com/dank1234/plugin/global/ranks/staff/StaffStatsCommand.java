@@ -12,6 +12,7 @@ import org.jetbrains.annotations.NotNull;
 public class StaffStatsCommand extends ICommand {
     @Override
     public void execute(@NotNull User user, String[] args) {
+        /*
         User target = user;
         if (args.length >= 1 && User.of(args(0)) != null) {
             target = User.of(args(0));
@@ -32,5 +33,7 @@ public class StaffStatsCommand extends ICommand {
                     "&a| &lBans&a: &f"+staff.bans()
             );
         }
+
+         */
     }
 }

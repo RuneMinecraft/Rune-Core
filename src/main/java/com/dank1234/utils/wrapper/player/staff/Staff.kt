@@ -1,119 +1,137 @@
 package com.dank1234.utils.wrapper.player.staff;
 
-import com.dank1234.plugin.Main;
-import com.dank1234.utils.RankUtils;
-import com.dank1234.utils.data.database.StaffManager;
+import com.dank1234.plugin.Codex
+import com.dank1234.plugin.global.ranks.Group
+import com.dank1234.plugin.global.ranks.Ranks
+import com.dank1234.plugin.global.ranks.Track
+import com.dank1234.utils.data.Database
 import com.dank1234.utils.wrapper.player.User;
-import org.bukkit.Bukkit;
+import java.sql.ResultSet
+import java.util.*
 
-import javax.annotation.Nullable;
-import java.util.UUID;
-
-data class Staff(
-    override var uuid: UUID,
-    override var username: String,
-    private var rank: StaffRank,
-    private var time: Long = 0,
-    private var messages: Int = 0,
+open class Staff(
+    uuid: UUID,
+    private var staffRank: Ranks,
+    private var onlineTime: Long = 0,
+    private var messagesSent: Int = 0,
     private var warns: Int = 0,
     private var mutes: Int = 0,
     private var bans: Int = 0,
-    private var staffMode: Boolean = false
-) : User(uuid, username) {
+    var staffMode: Boolean = false,
+    groups: MutableList<Group> = mutableListOf(),
+    tracks: MutableMap<Track, Int> = mutableMapOf(),
+    permissions: MutableList<String> = mutableListOf()
+) : User(uuid, of(uuid).username, groups = groups, tracks = tracks, permissions = permissions) {
 
     companion object {
-        fun of(uuid: UUID, username: String, rank: StaffRank): Staff {
-            return Staff(uuid, username, rank)
+        @JvmStatic fun of(uuid: UUID, staffRank: Ranks): Staff {
+            return getStaff(uuid).orElse(Staff(uuid, staffRank).apply {
+                Database.SQLUtils.executeUpdate("INSERT INTO staff (uuid, staff_rank) VALUES (?, ?);") { pstmt ->
+                    pstmt.setString(1, uuid.toString())
+                    pstmt.setString(2, staffRank.name)
+                }
+                Codex.addUser(this)
+            })
         }
-        fun of(uuid: UUID): Staff {
-        return StaffManager.getStaff(uuid).orElse(null)
+        @JvmStatic fun getStaff(uuid: UUID): Optional<Staff> {
+            val sql = "SELECT * FROM staff WHERE uuid = ?"
+            return Database.SQLUtils.executeQuery(sql, { pstmt -> pstmt.setString(1, uuid.toString()) }) { rs ->
+                if (rs.next()) mapResultSet(rs) else null
+            }?.let {
+                Optional.of(it)
+            } ?: Optional.empty()
+        }
+        @JvmStatic fun exists(uuid: UUID): Boolean {
+            val sql = "SELECT 1 FROM staff WHERE uuid = ? LIMIT 1"
+            return Database.SQLUtils.executeQuery(sql, { pstmt -> pstmt.setString(1, uuid.toString()) }) { rs -> rs.next() } == true
         }
 
-        fun of(username: String): Staff {
-        return StaffManager.getStaff(username).orElse(null)
+        @JvmStatic fun ensureTables() {
+            Database.SQLUtils.executeUpdate("""
+                CREATE TABLE IF NOT EXISTS staff (
+                    uuid            VARCHAR(36)     PRIMARY KEY NOT NULL,
+                    staff_rank      VARCHAR(255)    NOT NULL,
+                    online_time     LONG            DEFAULT 0,
+                    messages_sent   INT             DEFAULT 0,
+                    warns           INT             DEFAULT 0,
+                    mutes           INT             DEFAULT 0,
+                    bans            INT             DEFAULT 0,
+                    staffmode       BOOLEAN         DEFAULT FALSE,
+                    FOREIGN KEY (uuid) REFERENCES users(uuid) ON DELETE CASCADE
+                );
+            """.trimIndent())
+        }
+
+        private fun mapResultSet(rs: ResultSet): Staff {
+            val uuid = UUID.fromString(rs.getString("uuid"))
+            val staffRank = Ranks.valueOf(rs.getString("staff_rank"))
+            val onlineTime = rs.getLong("online_time")
+            val messagesSent = rs.getInt("messages_sent")
+            val warns = rs.getInt("warns")
+            val mutes = rs.getInt("mutes")
+            val bans = rs.getInt("bans")
+            val staffMode = rs.getBoolean("staffMode")
+
+            return Staff(uuid, staffRank, onlineTime = onlineTime, messagesSent = messagesSent, warns = warns, mutes = mutes, bans = bans, staffMode = staffMode)
         }
     }
 
-    fun rank(): StaffRank = rank
-
-    fun setRank(rank: StaffRank): Staff {
-        this.rank = rank
-        StaffManager.setValue(super.uuid, "rank", rank.toString())
-        return this
+    fun promote() {
+        // +1 staff rank
+    }
+    fun demote() {
+        // -1 staff rank
     }
 
-    fun time(): Long = time
-
-    fun setTime(time: Long): Staff {
-        this.time = time
-        StaffManager.setValue(super.uuid, "time", time)
-        return this
-    }
-
-    fun messages(): Int = messages
-
-    fun setMessages(messages: Int): Staff {
-        this.messages = messages
-        StaffManager.setValue(super.uuid, "messages", messages)
-        return this
-    }
-
-    fun warns(): Int = warns
-
-    fun setWarns(warns: Int): Staff {
-        this.warns = warns
-        StaffManager.setValue(super.uuid, "warns", warns)
-        return this
-    }
-
-    fun mutes(): Int = mutes
-
-    fun setMutes(mutes: Int): Staff {
-        this.mutes = mutes
-        StaffManager.setValue(super.uuid, "mutes", mutes)
-        return this
-    }
-
-    fun bans(): Int = bans
-
-    fun setBans(bans: Int): Staff {
-        this.bans = bans
-        StaffManager.setValue(super.uuid, "bans", bans)
-        return this
-    }
-
-    fun staffMode(): Boolean = staffMode
-
-    fun setStaffMode(staffMode: Boolean): Staff {
-        if (this.staffMode == staffMode) return this
+    fun staffMode(staffMode: Boolean): Staff {
+        if (this.staffMode == staffMode) {
+            return this
+        }
         this.staffMode = staffMode
-        StaffManager.setValue(super.uuid, "staffmode", staffMode)
 
-        Bukkit.getScheduler().runTask(Main.get(), Runnable {
+        Database.SQLUtils.executeUpdate("UPDATE staff SET staffMode = ? WHERE uuid = ?") { statement ->
+            statement.setBoolean(1, staffMode)
+            statement.setString(2, uuid.toString())
+        }
+
+        synchronized(this) {
+            val user = of(this.uuid)
             if (staffMode) {
-                RankUtils.removeStaffTrack(User.of(super.uuid))
-            } else {
-                val username = User.of(super.uuid)?.username
-                if (username != null) {
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user $username parent add ${rank.rank.name}")
+                Database.SQLUtils.executeQuery("SELECT staff_rank FROM staff WHERE uuid = ?", { pstmt ->
+                    pstmt.setString(1, uuid.toString())
+                }) { rs ->
+                    if (rs.next())  rs.getString("staff_rank") else null
+                }?.let {
+                    user.addGroup(Ranks.valueOf(it).group())
+                }
+            }else {
+                for (group in Ranks.entries) {
+                    if (user.groups.contains(element = group.group()) && group.rankType() == Ranks.RankType.STAFF) {
+                        user.groups.remove(group.group())
+                    }
                 }
             }
-        })
+        }
         return this
     }
+    fun toggleStaffMode() {
+        staffMode(!staffMode)
+    }
 
-    override fun toString(): String {
-        return """
-            Staff[
-                name: $username
-                uuid: $uuid
-                rank: $rank
-                time: $time
-                messages: $messages
-                warns: $warns
-                mutes: $mutes
-                bans: $bans
-            ]
-        """.trimIndent() // test
+    fun incrementMessages() {
+        messagesSent++
+    }
+    fun incrementWarns() {
+        warns++
+    }
+    fun incrementMutes() {
+        mutes++
+    }
+    fun incrementBans() {
+        bans++
+    }
+
+    fun incrementTime(time: Long) {
+        onlineTime += time
     }
 }

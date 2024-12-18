@@ -15,28 +15,7 @@ public class RuneClassLoader extends ClassLoader {
     }
 
     @Override
-    protected Class<?> findClass(String name) throws ClassNotFoundException {
-        if (classes.containsKey(name)) {
-            return classes.get(name);
-        }
-
-        File classFile = new File(classesDir, name.replace('.', File.separatorChar) + ".class");
-        if (!classFile.exists()) {
-            throw new ClassNotFoundException(name);
-        }
-
-        try (FileInputStream fis = new FileInputStream(classFile)) {
-            byte[] buffer = new byte[(int) classFile.length()];
-            int bytesRead = fis.read(buffer);
-            if (bytesRead != buffer.length) {
-                throw new IOException("Could not read entire file: " + classFile.getName());
-            }
-
-            Class<?> clazz = defineClass(name, buffer, 0, buffer.length);
-            classes.put(name, clazz);
-            return clazz;
-        } catch (IOException e) {
-            throw new ClassNotFoundException(name, e);
-        }
+    protected Class<?> findClass(String name) {
+        return null;
     }
 }

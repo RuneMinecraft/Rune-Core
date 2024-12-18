@@ -9,7 +9,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @NotNull
 public class Item implements Utils, Serializable {
@@ -158,8 +160,9 @@ public class Item implements Utils, Serializable {
         }
         itemMeta.setDisplayName(Colour(this.displayName()));
 
-        if (this.lore() != null) this.lore().forEach(this::Colour);
-        itemMeta.setLore((this.lore() == null ? List.of() : this.lore()));
+        List<String> lore = new ArrayList<>(Objects.requireNonNull(lore()));
+        lore.forEach(Utils::sColour);
+        itemMeta.setLore((this.lore() == null ? List.of() : lore));
 
         for (Enchantment enchantment : this.itemMeta().getEnchants().keySet()) {
             itemMeta.addEnchant(enchantment, this.itemMeta().getEnchants().get(enchantment), true);
@@ -175,9 +178,9 @@ public class Item implements Utils, Serializable {
      * SERIALIZATION CODE
      *
      * If any of you fucks touch this then it will most likely break the auctions database
-     * do don't because you will be the one fixing the fuck-up.
+     * so don't because you will be the one fixing the fuck-up.
      */
-
+/*
     private @Serial void writeObject(ObjectOutputStream out) throws IOException {
         out.defaultWriteObject(); // Serialize all non-transient fields
     }
@@ -190,12 +193,16 @@ public class Item implements Utils, Serializable {
         out.writeInt(amount);
         out.writeObject(lore);
     }
-    private void readExternalData(ObjectInputStream in) throws IOException, ClassNotFoundException {
-        Material material = Material.valueOf(in.readUTF());
-        String displayName = in.readUTF();
-        int amount = in.readInt();
-        List<String> lore = (List<String>) in.readObject();
+    private void readExternalData(ObjectInputStream in) {
+        try {
+            Material material = Material.valueOf(in.readUTF());
+            String displayName = in.readUTF();
+            int amount = in.readInt();
+            List<String> lore = (List<String>) in.readObject();
+        }catch(Exception e) {}
     }
+
+ */
     public static byte[] serializeItem(Item item) {
         try {
             try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -204,7 +211,7 @@ public class Item implements Utils, Serializable {
                 return byteArrayOutputStream.toByteArray();
             }
         }catch (Exception e) {
-            throw new IllegalStateException("An error occured whilst serializing an item.");
+            return new byte[0];
         }
     }
     public static Item deserializeItem(byte[] bytes) {
@@ -214,7 +221,8 @@ public class Item implements Utils, Serializable {
                 return (Item) objectInputStream.readObject();
             }
         }catch (Exception e) {
-            throw new IllegalStateException("An error occured whilst deserializing an item.");
+            //throw new IllegalStateException("An error occured whilst deserializing an item.");
         }
+        return Item.create(Material.AIR);
     }
 }
