@@ -1,6 +1,7 @@
 package com.dank1234.utils.wrapper.player
 
 import com.dank1234.plugin.Codex
+import com.dank1234.plugin.global.chat.Colour
 import com.dank1234.plugin.global.economy.Economy
 import com.dank1234.plugin.global.ranks.Group
 import com.dank1234.plugin.global.ranks.Track
@@ -21,6 +22,7 @@ import org.bukkit.entity.Player
 import org.bukkit.OfflinePlayer
 import org.bukkit.event.player.PlayerTeleportEvent
 import org.json.JSONArray
+import java.sql.PreparedStatement
 
 import java.sql.ResultSet
 import java.sql.SQLException
@@ -59,7 +61,8 @@ open class User (
     private var souls: Double = 0.0,
     val groups: MutableList<Group> = mutableListOf(),
     val tracks: MutableMap<Track, Int> = mutableMapOf(),
-    val permissions: MutableList<String> = mutableListOf()
+    val permissions: MutableList<String> = mutableListOf(),
+    var hasJoinedBefore: Boolean = false
 ) {
     /**
      * Holds static objects for the class also so be annotated by [@JvmStatic]
@@ -76,6 +79,7 @@ open class User (
          */
         @JvmStatic fun of(uuid: UUID, username: String): User {
             Codex.getCachedUsers().firstOrNull { it.uuid == uuid }?.let {
+                it.hasJoinedBefore = true
                 return it
             }
 
@@ -87,11 +91,18 @@ open class User (
                 Database.SQLUtils.executeUpdate("INSERT INTO user_data (uuid) VALUES (?)") { pstmt ->
                     pstmt.setString(1, uuid.toString())
                 }
+            } else {
+                return of(uuid).apply {
+                    updateEconomy()
+                    Codex.addUser(this)
+                    hasJoinedBefore = true
+                }
             }
 
             return of(uuid).apply {
                 updateEconomy()
                 Codex.addUser(this)
+                hasJoinedBefore = false
             }
         }
 
@@ -111,6 +122,7 @@ open class User (
             return Database.SQLUtils.executeQuery(sql, { pstmt -> pstmt.setString(1, uuid.toString()) }) { rs ->
                 if (rs.next()) mapResultSet(rs) else Consts.NULL_USER
             }?.let {
+                it.hasJoinedBefore = false
                 Codex.addUser(it)
                 Optional.of(it)
             }!!
@@ -222,7 +234,7 @@ open class User (
                     """
                 CREATE TABLE IF NOT EXISTS user_data (
                     uuid VARCHAR(36) PRIMARY KEY NOT NULL,
-                    chat_colour VARCHAR(225) DEFAULT,
+                    chat_colour VARCHAR(225) DEFAULT '&f',
                     groups JSON DEFAULT '[]',
                     permissions JSON DEFAULT '[]',
                     tracks JSON DEFAULT '[]',
@@ -256,16 +268,12 @@ open class User (
                 throw IllegalStateException("User data for $username (UUID: $uuid) not found!")
             }
 
-            val groupsJson = userDataRs.getString("groups") ?: "[]"
-            val groups = parseGroups(groupsJson)
-
-            val tracksJson = userDataRs.getString("tracks") ?: "[]"
-            val tracks = parseTracks(tracksJson)
-
-            val permissionsJson = userDataRs.getString("permissions") ?: "[]"
-            val permissions = parsePermissions(permissionsJson)
+            val groups = parseGroups(userDataRs.getString("groups") ?: "[]")
+            val tracks = parseTracks(userDataRs.getString("tracks") ?: "[]")
+            val permissions = parsePermissions( userDataRs.getString("permissions") ?: "[]")
 
             return User(uuid, username).apply {
+                this.hasJoinedBefore = true
                 this.groups.addAll(groups)
                 this.tracks.putAll(tracks)
                 this.permissions.addAll(permissions)
@@ -844,6 +852,37 @@ open class User (
     }
 
     /**
+     * Retrieves the [User]'s [Colour] from the user_data [Database].
+     *
+     * @return Returns the [Colour] code.
+     * @author dank1234
+     */
+    fun getChatColour(): String {
+        return Database.SQLUtils.executeQuery(
+            sql = "SELECT chat_colour FROM user_data WHERE uuid = ?",
+            consumer = { statement: PreparedStatement -> statement.setString(1, uuid.toString()) },
+            mapper = { rs -> if (rs.next()) return@executeQuery rs.getString("chat_colour") else "&f" }
+        )!!
+    }
+    /**
+     * Updates the [User]'s chat colour.
+     *
+     */
+    fun setChatColour(colour: String): Result {
+        if (colour.length != 2) {
+            return Result.FAILURE
+        }
+        if (colour.startsWith('&')) {
+            Database.SQLUtils.executeUpdate("UPDATE user_data SET chat_colour = ? WHERE uuid = ?") { statement ->
+                statement.setString(1, colour)
+                statement.setString(2, uuid.toString())
+            }
+            return Result.SUCCESSFUL
+        }
+        return Result.FAILURE
+    }
+
+    /**
      * Retrieves the [Bukkit] form of the [User].
      *
      * @return A [Player] object. (The [Bukkit] version of a [User])
@@ -890,6 +929,4 @@ open class User (
         result = 31 * result + username.hashCode()
         return result
     }
-
-
 }

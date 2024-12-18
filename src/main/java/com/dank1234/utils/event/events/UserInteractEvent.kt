@@ -7,7 +7,7 @@ import com.dank1234.utils.wrapper.player.User
 class UserInteractEvent(
     val user: User,
     val item: Item,
-    var clickType: ClickType
+    private var clickType: ClickType
 ) : RuneEvent() {
     fun clickType(type: ClickType) {
         this.clickType = type

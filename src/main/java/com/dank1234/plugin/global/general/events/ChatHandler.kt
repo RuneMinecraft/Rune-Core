@@ -15,7 +15,7 @@ class ChatHandler : RuneListener() {
         if (e.user.username == "AGCol_" && e.user.gamemode() == GameMode.ADVENTURE) {
             e.message("oh shit, turns out i'm a massive twink, or in other words, i'm a sado g")
         }
-        e.format("&r" + e.user.groups.last().prefix + "&r " + e.user.username + " &8» &r" + e.message)
+        e.format("&r${e.user.groups.last().prefix} &r${e.user.username} &8» &r${e.user.getChatColour()}${e.message}")
     }
 }
 

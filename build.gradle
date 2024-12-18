@@ -29,12 +29,8 @@ repositories {
 }
 
 dependencies {
-    implementation files('src\\main\\libs\\spigot-1.21.3.jar')
-    implementation files('src\\main\\libs\\spigot-1.21.1-R0.1-SNAPSHOT.jar')
-    implementation files('src\\main\\libs\\spigot.jar')
-    implementation files('src\\main\\libs\\craftbukkit-1.21.3.jar')
-    implementation files('src\\main\\libs\\server.jar')
     // paperweight.paperDevBundle("1.21.3-R0.1-SNAPSHOT")
+
     compileOnly("io.papermc.paper:paper-api:1.21.3-R0.1-SNAPSHOT")
     compileOnly("net.luckperms:api:5.4")
 
@@ -54,29 +50,8 @@ dependencies {
     implementation("org.graalvm.js:js:22.3.0")
     implementation('org.json:json:20231013')
 
-    // Kotlin standard libraries (use a single version)
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:2.1.0") // Core stdlib
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.1.0") // JDK 8 extensions
-
-    // Kotlin Scripting Dependencies
-    // implementation("org.jetbrains.kotlin:kotlin-scripting-jvm:2.1.0")
-    // implementation("org.jetbrains.kotlin:kotlin-scripting-jvm-host:2.1.0")
-    // implementation("org.jetbrains.kotlin:kotlin-scripting-common:2.1.0")
-    // implementation("org.jetbrains.kotlin:kotlin-script-runtime:2.1.0") // Updated
-
-    // Kotlin Scripting Compiler (required for script compilation)
-    // implementation("org.jetbrains.kotlin:kotlin-scripting-compiler-embeddable:2.1.0")
-
-    // Reflection library
-    // implementation("org.jetbrains.kotlin:kotlin-reflect:2.1.0") // Updated
-
-    // Coroutines
-    // implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0") // Latest coroutine core
-    // implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0") // Latest coroutine Android
-
-    // MCCoroutine for Bukkit
-    // implementation("com.github.shynixn.mccoroutine:mccoroutine-bukkit-api:2.20.0")
-    // implementation("com.github.shynixn.mccoroutine:mccoroutine-bukkit-core:2.20.0")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:2.1.0")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.1.0")
 }
 
 def targetJavaVersion = 21
