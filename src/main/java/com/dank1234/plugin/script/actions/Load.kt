@@ -1,7 +1,8 @@
-package net.runemc.plugin.script.actions
+package com.dank1234.plugin.script.actions
 
-import net.runemc.plugin.script.ScriptManager
+import com.dank1234.plugin.Bootstrap
+import com.dank1234.plugin.script.ScriptManager
 
-fun load(scriptManager: ScriptManager, script: String) {
-    scriptManager.getScript(script)?.let { scriptManager.loadedScripts.putIfAbsent(script, it) }
+fun load(script: String) {
+    ScriptManager.getScript(script)?.let { Bootstrap.loadedScripts.putIfAbsent(script, it) }
 }

@@ -1,7 +1,7 @@
-package net.runemc.plugin.script.actions
+package com.dank1234.plugin.script.actions
 
-import net.runemc.plugin.script.ScriptManager
+import com.dank1234.plugin.Bootstrap
 
-fun unload(scriptManager: ScriptManager, script: String) {
-    scriptManager.loadedScripts.remove(script)
+fun unload(script: String) {
+    Bootstrap.loadedScripts.remove(script)
 }

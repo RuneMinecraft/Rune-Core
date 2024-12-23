@@ -13,21 +13,29 @@ import com.dank1234.api.regster.registerAllListeners
 import com.dank1234.api.regster.registerCommands
 import com.dank1234.api.server.Server
 import com.dank1234.api.wrapper.player.User
+import com.dank1234.plugin.script.ScriptManager
 
 import org.bukkit.Bukkit
 import org.bukkit.WorldCreator
+import java.io.File
 
 class Bootstrap : Utils {
     val worlds = mutableListOf<String>()
     private val FOLDERS = arrayOf("config", "crash-reports", "libraries", "versions", "logs", "plugins")
 
+    companion object {
+        @JvmStatic val loadedScripts = mutableMapOf<String, File>()
+    }
     private lateinit var config: Config
     lateinit var server: Server
 
     fun load() {
         config = Config
 
+        ScriptManager.initialize()
+
         Logger.log("""
+            
            \_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/==\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/
            \_/                                      RuneMC                                      \_/
            \_/                                                                                  \_/

@@ -15,6 +15,6 @@ public final class Consts {
     public static final @NotNull Server DEFAULT_SERVER = Server.of(ServerType.GLOBAL, 0, "The default server. An error has occurred in the code.");
 
     public static final @NotNull String JDBC_URL = "jdbc:mariadb://localhost:3306/rune_database";
-    public static final @NotNull String USERNAME = "sftpUser";
-    public static final @NotNull String PASSWORD = "B24Z69K11M.";
+    public static final @NotNull String USERNAME = "root"; //""sftpUser";
+    public static final @NotNull String PASSWORD = "admin"; // ""B24Z69K11M.";
 }

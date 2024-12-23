@@ -1,10 +1,15 @@
 package com.dank1234.plugin.script
 
-/*
-@Command(names=[])
-class ScriptCommand(private val scriptManager: ScriptManager) : ICommand() {
+import com.dank1234.api.command.Command
+import com.dank1234.api.command.ICommand
+import com.dank1234.api.wrapper.player.User
+import com.dank1234.plugin.script.actions.load
+import com.dank1234.plugin.script.actions.unload
+import kotlinx.coroutines.*
 
-    // @OptIn(DelicateCoroutinesApi::class)
+@Command(names=["script"])
+class ScriptCommand : ICommand() {
+    @OptIn(DelicateCoroutinesApi::class)
     override fun execute(user: User, vararg args: String){
         if (args.isEmpty()) {
             user.sendMessage("&cInvalid Arguments! Usage: /script <load|unload|reload|execute> <scriptPath>")
@@ -16,38 +21,38 @@ class ScriptCommand(private val scriptManager: ScriptManager) : ICommand() {
 
         when (subCommand) {
             "load" -> scriptName?.let {
-                val start = System.currentTimeMillis();
+                val start = System.currentTimeMillis()
                 user.sendMessage("&eLoading &f$scriptName...")
 
-                load(scriptManager, it)
+                load(it)
 
                 user.sendMessage("&aLoaded &f$scriptName! &7&o(Took ${System.currentTimeMillis()-start}ms)")
             } ?: user.sendMessage("&cPlease specify a script!")
 
             "unload" -> scriptName?.let {
-                val start = System.currentTimeMillis();
+                val start = System.currentTimeMillis()
                 user.sendMessage("&eUnloading &f$scriptName...")
 
-                unload(scriptManager, it)
+                unload(it)
 
                 user.sendMessage("&aUnloaded &f$scriptName! &7&o(Took ${System.currentTimeMillis()-start}ms)")
             } ?: user.sendMessage("&cPlease specify a script!")
 
             "reload" -> scriptName?.let {
-                val start = System.currentTimeMillis();
+                val start = System.currentTimeMillis()
                 user.sendMessage("&eReloading &f$scriptName...")
 
-                unload(scriptManager, it)
-                load(scriptManager, it)
+                unload(it)
+                load(it)
 
                 user.sendMessage("&aReloaded &f$scriptName! &7&o(Took ${System.currentTimeMillis()-start}ms)")
             } ?: user.sendMessage("&cPlease specify a script!")
 
             "execute" -> scriptName?.let {
-                val start = System.currentTimeMillis();
+                val start = System.currentTimeMillis()
                 GlobalScope.launch {
                     try {
-                        execute(scriptManager, scriptName)
+                        com.dank1234.plugin.script.actions.execute(scriptName)
 
                         withContext(Dispatchers.IO) {
                             user.sendMessage("&aExecuted the script: &f$scriptName &7&o(Took ${System.currentTimeMillis()-start}ms)")
@@ -64,6 +69,3 @@ class ScriptCommand(private val scriptManager: ScriptManager) : ICommand() {
         return
     }
 }
-
-
- */

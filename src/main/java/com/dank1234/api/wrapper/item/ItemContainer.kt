@@ -6,6 +6,7 @@ import java.util.function.Consumer
 
 @Suppress("")
 class ItemContainer {
+    /*
     private var items: MutableMap<Int, Item>? = null
 
     private fun ItemContainer(items: MutableMap<Int, Item>) {
@@ -50,4 +51,6 @@ class ItemContainer {
             }
         return menu
     }
+
+     */
 }

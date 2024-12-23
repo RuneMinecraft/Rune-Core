@@ -3,8 +3,8 @@ import java.nio.charset.StandardCharsets
 plugins {
     id 'java'
     id 'com.github.johnrengelman.shadow' version '8.1.1'
-    //id 'io.papermc.paperweight.userdev' version "1.7.3"
     id 'org.jetbrains.kotlin.jvm' version '2.1.0'
+    // id 'io.papermc.paperweight.userdev' version "1.7.3"
 }
 
 group = 'com.dank1234'
@@ -34,24 +34,33 @@ dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.3-R0.1-SNAPSHOT")
     compileOnly("net.luckperms:api:5.4")
 
-    implementation("org.yaml:snakeyaml:2.0")
-    implementation("org.reflections:reflections:0.9.12")
-    implementation("org.jetbrains:annotations:24.1.0")
     implementation("org.mariadb.jdbc:mariadb-java-client:3.4.1")
     implementation("com.zaxxer:HikariCP:5.1.0")
 
     implementation(platform("com.intellectualsites.bom:bom-newest:1.51"))
-    implementation("com.fastasyncworldedit:FastAsyncWorldEdit-Core")
-    implementation("com.fastasyncworldedit:FastAsyncWorldEdit-Bukkit") {
-        exclude group: "com.fastasyncworldedit", module: "FastAsyncWorldEdit-Core"
-    }
+    implementation("com.fastasyncworldedit:FastAsyncWorldEdit-Bukkit")
 
     implementation("org.graalvm.sdk:graal-sdk:22.3.0")
     implementation("org.graalvm.js:js:22.3.0")
+    implementation("org.yaml:snakeyaml:2.0")
     implementation('org.json:json:20231013')
 
+    implementation("org.reflections:reflections:0.9.12")
+
+    implementation("org.jetbrains:annotations:24.1.0")
     implementation("org.jetbrains.kotlin:kotlin-stdlib:2.1.0")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.1.0")
+    implementation("org.jetbrains.kotlin:kotlin-scripting-jvm:2.1.0")
+    implementation("org.jetbrains.kotlin:kotlin-scripting-jvm-host:2.1.0")
+    implementation("org.jetbrains.kotlin:kotlin-scripting-common:2.1.0")
+    implementation("org.jetbrains.kotlin:kotlin-script-runtime:2.1.0")
+    implementation("org.jetbrains.kotlin:kotlin-scripting-compiler-embeddable:2.1.0")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:2.1.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0")
+
+    implementation("com.github.shynixn.mccoroutine:mccoroutine-bukkit-api:2.20.0")
+    implementation("com.github.shynixn.mccoroutine:mccoroutine-bukkit-core:2.20.0")
 }
 
 def targetJavaVersion = 21
@@ -69,12 +78,6 @@ processResources {
     filesMatching('plugin.yml') {
         expand props
     }
-}
-
-tasks.register('generateJavadoc', Javadoc) {
-    source = sourceSets.main.allJava
-    classpath = configurations.runtimeClasspath
-    destinationDir = file("$buildDir/docs/javadoc")
 }
 
 tasks.withType(Javadoc).configureEach {
@@ -95,8 +98,8 @@ tasks.withType(Zip).configureEach {
 }
 
 tasks.shadowJar {
-    archiveFileName = "Rune-Core-${version}.jar"
-    destinationDirectory = file("X:/JARs")
+    archiveFileName = "Rune-Core-v${version}.jar"
+    destinationDirectory = file("E:\\Test-Server\\plugins")
     // destinationDirectory = file("S:/opt/mcsmanager/daemon/data/InstanceData/7fa7bc4eb4544091add082ae0b906aa0/plugins")
     mergeServiceFiles()
 }
